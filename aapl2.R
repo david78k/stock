@@ -12,11 +12,11 @@ aapl = aapl[nrow(aapldata):1, ]
 
 print(names(aapldata))
 print(names(aapldata)[c(2,5)])
-print(aapl)
+print(aapldata)
 #print(googdata)
 
-write.csv(aapl, file = "aapl.csv")
-write.table(aapl, file = "aapl.tab")
+write.csv(aapldata, file = "aapl.csv")
+write.table(aapldata, file = "aapl.tab")
 
 #axis = (1, lab = aapl[2])
 #axis = (2, aapl[2])

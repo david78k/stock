@@ -28,7 +28,7 @@ ylabel="STOCK VALUE ($)"
 #url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2008&enddate=Mar+1%2C+2013&output=csv"
 # 10 years: 2003-2013
 #url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2003&enddate=Mar+1%2C+2013&output=csv"
-# 33 years: 1980-2013
+# 33 years: 1980-2013 (actually 16 years of 1997-2013)
 url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+1980&enddate=Mar+1%2C+2013&output=csv"
 #url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2008&enddate=Mar+1%2C+2012&output=csv"
 
@@ -63,11 +63,11 @@ aapl = aapl[nrow(aapldata):1, ]
 
 print(names(aapldata))
 print(names(aapldata)[c(2,5)])
-print(aapl)
+print(aapldata)
 #print(googdata)
 
-write.csv(aapl, file = "aapl.csv")
-write.table(aapl, file = "aapl.tab")
+write.csv(aapldata, file = "aapl.csv")
+write.table(aapldata, file = "aapl.tab")
 
 #axis = (1, lab = aapl[2])
 #axis = (2, aapl[2])
