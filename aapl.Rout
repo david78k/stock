@@ -89,7 +89,7 @@ Loading required package: devEMF
 > # open value
 > lines(aapl[,2], type = "l", col="red")
 > 
-> legend("topleft", names(aapldata)[2,4])
-Error in names(aapldata)[2, 4] : incorrect number of dimensions
+> legend("topleft", names(aapldata)[2,5])
+Error in names(aapldata)[2, 5] : incorrect number of dimensions
 Calls: legend
 Execution halted
