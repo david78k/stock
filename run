@@ -24,8 +24,12 @@ xlabel="DAY"
 ylabel="STOCK VALUE ($)"
 #ylabel="CLOSE VALUE"
 
+# 5 years: 2008-2013
 #url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2008&enddate=Mar+1%2C+2013&output=csv"
-url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2003&enddate=Mar+1%2C+2013&output=csv"
+# 10 years: 2003-2013
+#url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2003&enddate=Mar+1%2C+2013&output=csv"
+# 33 years: 1980-2013
+url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+1980&enddate=Mar+1%2C+2013&output=csv"
 #url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2008&enddate=Mar+1%2C+2012&output=csv"
 
 colors=6
