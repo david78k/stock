@@ -1,50 +1,7 @@
-#!/bin/bash
-
-if [ $# -lt 0 ]; then
-	echo "usage: $0 data"	
-	exit
-fi
-
-#name=$1
-#name=aapl1
-name=aapl2
-#name=aapl
-
-#data=${name}.dat
-#data=$1
-#prefix=${data%\.*}
-#name=$prefix
-script=${name}.R
-png=${name}.png
-emf=${name}.emf
-eps=${name}.eps
-
-#xlabel="DATE"
-xlabel="DAY"
-ylabel="STOCK VALUE ($)"
-#ylabel="CLOSE VALUE"
-
-colors=6
-
-function genplot() {
-	cmd="emf($emf)"
-
-	if [ $1 == "png" ]; then
-		figure=$png
-		cmd="png('$figure')"
-	elif [ $1 == "eps" ]; then
-		figure=$eps
-		cmd="postscript('$figure')"
-	elif [ $1 == "emf" ]; then
-		figure=$emf
-		cmd="emf('$figure')"
-	fi
-
-cat >$script << EOF
 library(ggplot2)
 
 require(devEMF)
-$cmd
+emf('aapl2.emf')
 
 aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
 
@@ -66,7 +23,7 @@ print(aapl[, 1])
 # close value
 #plot(aapl[,5], type = "l", col="blue")
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-plot(aapl[,5], xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
+plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # open value
 lines(aapl[,2], type = "l", col="red")
@@ -102,27 +59,12 @@ legend("topleft", names(aapldata)[c(2,5)], lty = 1, col = c('red', 'blue'))
 #points(x2, y2, pch=16, col="green")
 
 # header = TRUE ignores the first line, check.names = FALSE allows '+' in 'C++'
-#benchmark <- read.table("$data", header = TRUE, row.names = "vwnd", check.names = FALSE)
+#benchmark <- read.table("", header = TRUE, row.names = "vwnd", check.names = FALSE)
 
 # 't()' is matrix tranposition, 'beside = TRUE' separates the benchmarks, 'heat' provides nice colors
-#barplot(t(as.matrix(benchmark)), beside = TRUE, col = heat.colors($colors))
-#barplot(t(as.matrix(benchmark)), beside = TRUE, col = heat.colors($colors), xlab = "$xlabel", ylab = "$ylabel")
+#barplot(t(as.matrix(benchmark)), beside = TRUE, col = heat.colors(6))
+#barplot(t(as.matrix(benchmark)), beside = TRUE, col = heat.colors(6), xlab = "DAY", ylab = "STOCK VALUE ($)")
 
 # 'cex' stands for 'character expansion', 'bty' for 'box type' (we don't want borders)
-#legend("topright", names(benchmark), cex = 0.9, bty = "n", fill = heat.colors($colors))
-
-EOF
-
-	R CMD BATCH $script
-}
-
-genplot png
-
-genplot eps
-
-genplot emf
-
-git add .
-git commit -a -m $script
-git push
+#legend("topright", names(benchmark), cex = 0.9, bty = "n", fill = heat.colors(6))
 
