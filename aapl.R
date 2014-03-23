@@ -24,13 +24,13 @@ print(aapl[, 1])
 #matplot(aapl[,1], aapl[,5], type = "l", col="red")
 #plot(aapl[,5], type = "l", col="blue")
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-#plot(aapl[,0], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # open value
 lines(aapl[,2], type = "l", col="red")
 
-legend("topleft", names(aapldata)[c(2,5)])
+#legend("topleft", names(aapldata)[c(2,5)], fill = heat.colors(2))
+legend("topleft", names(aapldata)[c(2,5)], col = c('red', 'blue'))
 
 #plot(aapl[c(1:40), 1], aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")

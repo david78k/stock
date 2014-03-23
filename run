@@ -6,9 +6,9 @@ if [ $# -lt 0 ]; then
 fi
 
 #name=$1
-name=aapl1
+#name=aapl1
 #name=aapl2
-#name=aapl
+name=aapl
 
 #data=${name}.dat
 #data=$1
@@ -72,7 +72,8 @@ plot(aapl[,5], xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
 # open value
 lines(aapl[,2], type = "l", col="red")
 
-legend("topleft", names(aapldata)[c(2,5)], fill = heat.colors(2))
+#legend("topleft", names(aapldata)[c(2,5)], fill = heat.colors(2))
+legend("topleft", names(aapldata)[c(2,5)], col = c('red', 'blue'))
 
 #plot(aapl[c(1:40), 1], aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
