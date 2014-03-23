@@ -17,6 +17,15 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+[Previously saved workspace restored]
+
 > library(ggplot2)
-Error in library(ggplot2) : there is no package called ‘ggplot2’
+> 
+> require(devEMF)
+Loading required package: devEMF
+Warning message:
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘devEMF’
+> emf('aapl.emf')
+Error: could not find function "emf"
 Execution halted
