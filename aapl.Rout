@@ -90,7 +90,7 @@ Loading required package: devEMF
 > lines(aapl[,2], type = "l", col="red")
 > 
 > #legend("topleft", names(aapldata)[c(2,5)], fill = heat.colors(2))
-> legend("topleft", names(aapldata)[c(2,5)], col = c('red', 'blue'))
+> legend("topleft", names(aapldata)[c(2,5)], lty = 1, col = c('red', 'blue'))
 > 
 > #matplot(aapl[,1], aapl[,5], type = "l", col="red")
 > #plot(aapl[c(1:40), 1], aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
@@ -132,4 +132,4 @@ Loading required package: devEMF
 > 
 > proc.time()
    user  system elapsed 
-  0.951   0.025   1.151 
+  0.972   0.042   1.102 

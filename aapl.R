@@ -29,7 +29,7 @@ plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 lines(aapl[,2], type = "l", col="red")
 
 #legend("topleft", names(aapldata)[c(2,5)], fill = heat.colors(2))
-legend("topleft", names(aapldata)[c(2,5)], col = c('red', 'blue'))
+legend("topleft", names(aapldata)[c(2,5)], lty = 1, col = c('red', 'blue'))
 
 #matplot(aapl[,1], aapl[,5], type = "l", col="red")
 #plot(aapl[c(1:40), 1], aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
