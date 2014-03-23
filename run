@@ -57,8 +57,8 @@ aapl = aapl[nrow(aapldata):1, ]
 
 print(names(aapldata))
 print(names(aapldata)[c(2,5)])
-print(googdata)
-#print(aapl[, 1])
+print(aapl)
+#print(googdata)
 
 #write.csv(aapl, file = "appl.csv")
 #write.table(aapl, file = "appl.tab")
