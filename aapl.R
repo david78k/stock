@@ -8,7 +8,7 @@ aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&aut
 # reverse data rows
 aapl = aapl[nrow(aapldata):1, ]
 
-#print(aapl)
+print(names(aapldata))
 #print(aapl.google)
 print(aapl[, 1])
 
@@ -29,7 +29,7 @@ plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 # open value
 lines(aapl[,2], type = "l", col="red")
 
-legend("topleft", names(aapldata))
+legend("topleft", names(aapldata)[2,4])
 
 #plot(aapl[c(1:40), 1], aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
