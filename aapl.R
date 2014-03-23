@@ -9,6 +9,7 @@ aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&aut
 aapl = aapl[nrow(aapldata):1, ]
 
 print(names(aapldata))
+print(names(aapldata)[c(2,5)])
 #print(aapl.google)
 print(aapl[, 1])
 
