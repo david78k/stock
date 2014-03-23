@@ -4,14 +4,15 @@ require(devEMF)
 emf('aapl.emf')
 
 aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
+googdata <- read.csv("http://www.google.com/finance?chdnp=1&chdd=1&chds=1&chdv=1&chvs=maximized&chdeh=0&chfdeh=0&chdet=1395603818611&chddm=939573&chls=IntervalBasedLine&q=NASDAQ:GOOG&ntsp=0&ei=hzkvU-CwD--ssQeqtgE")
 
 # reverse data rows
 aapl = aapl[nrow(aapldata):1, ]
 
 print(names(aapldata))
 print(names(aapldata)[c(2,5)])
-#print(aapl.google)
-print(aapl[, 1])
+print(googdata)
+#print(aapl[, 1])
 
 #write.csv(aapl, file = "appl.csv")
 #write.table(aapl, file = "appl.tab")
