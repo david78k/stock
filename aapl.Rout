@@ -26,8 +26,96 @@ Loading required package: devEMF
 > emf('aapl.emf')
 > 
 > aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
-> googdata <- read.csv("http://www.google.com/finance?chdnp=1&chdd=1&chds=1&chdv=1&chvs=maximized&chdeh=0&chfdeh=0&chdet=1395603818611&chddm=939573&chls=IntervalBasedLine&q=NASDAQ:GOOG&ntsp=0&ei=hzkvU-CwD--ssQeqtgE")
-Error in read.table(file = file, header = header, sep = sep, quote = quote,  : 
-  more columns than column names
-Calls: read.csv -> read.table
-Execution halted
+> googdata <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Nov%201,%202011&enddate=Nov%2030,%202011&output=csv")
+> 
+> # reverse data rows
+> aapl = aapl[nrow(aapldata):1, ]
+> 
+> print(names(aapldata))
+[1] "Date"   "Open"   "High"   "Low"    "Close"  "Volume"
+> print(names(aapldata)[c(2,5)])
+[1] "Open"  "Close"
+> print(googdata)
+        Date   Open   High    Low  Close   Volume
+1  30-Nov-11 381.29 382.28 378.30 382.20 14502386
+2  29-Nov-11 375.84 378.83 370.20 373.20 13429694
+3  28-Nov-11 372.35 376.72 370.33 376.12 12380122
+4  25-Nov-11 368.42 371.15 363.32 363.57  9098543
+5  23-Nov-11 374.51 375.84 366.88 366.99 15308635
+6  22-Nov-11 371.02 377.93 370.94 376.51 14617763
+7  21-Nov-11 370.40 371.68 365.91 369.01 16007227
+8  18-Nov-11 378.92 379.99 374.88 374.94 13288395
+9  17-Nov-11 383.98 384.58 375.50 377.41 17147164
+10 16-Nov-11 389.25 391.14 384.32 384.77 12471716
+11 15-Nov-11 380.80 389.50 379.45 388.83 15392116
+12 14-Nov-11 383.52 385.25 378.20 379.26 15466501
+13 11-Nov-11 386.61 388.70 380.26 384.62 23349431
+14 10-Nov-11 397.03 397.21 382.15 385.22 26606467
+15  9-Nov-11 396.97 400.89 394.23 395.28 19952990
+16  8-Nov-11 402.21 408.00 401.56 406.23 14301406
+17  7-Nov-11 399.91 400.00 396.13 399.73  9652257
+18  4-Nov-11 402.03 403.44 399.16 400.24 10793856
+19  3-Nov-11 399.07 403.40 395.36 403.07 15768725
+20  2-Nov-11 400.09 400.44 395.11 397.41 11723381
+21  1-Nov-11 397.41 399.50 393.22 396.51 18992411
+> #print(aapl[, 1])
+> 
+> #write.csv(aapl, file = "appl.csv")
+> #write.table(aapl, file = "appl.tab")
+> 
+> #axis = (1, lab = aapl[2])
+> #axis = (2, aapl[2])
+> #box()
+> 
+> # close value
+> #plot(aapl[,5], type = "l", col="blue")
+> #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
+> plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+> 
+> # open value
+> lines(aapl[,2], type = "l", col="red")
+> 
+> #legend("topleft", names(aapldata)[c(2,5)], fill = heat.colors(2))
+> legend("topleft", names(aapldata)[c(2,5)], lty = 1, col = c('red', 'blue'))
+> 
+> #matplot(aapl[,1], aapl[,5], type = "l", col="red")
+> #plot(aapl[c(1:40), 1], aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
+> #plot(aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
+> #plot(aapl[,1], aapl[,5], type = "l", col="blue")
+> 
+> # simple example
+> #x <- c(1,3,6,9,12)
+> #y <- c(1.5,2,7,8,15)
+> #plot(x,y, pch=15, col="blue")
+> 
+> # Example 2. Draw a plot, set a bunch of parameters.
+> #plot(x,y, xlab="x axis", ylab="y axis", main="my plot", ylim=c(0,20), xlim=c(0,20), pch=15, col="blue")
+> # fit a line to the points
+> #myline.fit <- lm(y ~ x)
+> 
+> # get information about the fit
+> #summary(myline.fit)
+> 
+> # draw the fit line on the plot
+> #abline(myline.fit)
+> 
+> # add some more points to the graph
+> #x2 <- c(0.5, 3, 5, 8, 12)
+> #y2 <- c(0.8, 1, 2, 4, 6)
+> 
+> #points(x2, y2, pch=16, col="green")
+> 
+> # header = TRUE ignores the first line, check.names = FALSE allows '+' in 'C++'
+> #benchmark <- read.table("", header = TRUE, row.names = "vwnd", check.names = FALSE)
+> 
+> # 't()' is matrix tranposition, 'beside = TRUE' separates the benchmarks, 'heat' provides nice colors
+> #barplot(t(as.matrix(benchmark)), beside = TRUE, col = heat.colors(6))
+> #barplot(t(as.matrix(benchmark)), beside = TRUE, col = heat.colors(6), xlab = "DAY", ylab = "STOCK VALUE ($)")
+> 
+> # 'cex' stands for 'character expansion', 'bty' for 'box type' (we don't want borders)
+> #legend("topright", names(benchmark), cex = 0.9, bty = "n", fill = heat.colors(6))
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  0.935   0.046   1.129 

@@ -47,7 +47,7 @@ require(devEMF)
 $cmd
 
 aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
-googdata <- read.csv("http://www.google.com/finance?chdnp=1&chdd=1&chds=1&chdv=1&chvs=maximized&chdeh=0&chfdeh=0&chdet=1395603818611&chddm=939573&chls=IntervalBasedLine&q=NASDAQ:GOOG&ntsp=0&ei=hzkvU-CwD--ssQeqtgE")
+googdata <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Nov%201,%202011&enddate=Nov%2030,%202011&output=csv")
 
 # reverse data rows
 aapl = aapl[nrow(aapldata):1, ]
