@@ -25,50 +25,50 @@ Type 'q()' to quit R.
 Loading required package: devEMF
 > emf('aapl.emf')
 > 
-> aapl <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
+> aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
 > 
 > # reverse data rows
-> aapl = aapl[nrow(aapl):1, ]
+> aapl = aapl[nrow(aapldata):1, ]
 > 
 > #print(aapl)
 > #print(aapl.google)
 > print(aapl[, 1])
-  [1] 25-Mar-13 26-Mar-13 27-Mar-13 28-Mar-13 1-Apr-13  2-Apr-13  3-Apr-13 
-  [8] 4-Apr-13  5-Apr-13  8-Apr-13  9-Apr-13  10-Apr-13 11-Apr-13 12-Apr-13
- [15] 15-Apr-13 16-Apr-13 17-Apr-13 18-Apr-13 19-Apr-13 22-Apr-13 23-Apr-13
- [22] 24-Apr-13 25-Apr-13 26-Apr-13 29-Apr-13 30-Apr-13 1-May-13  2-May-13 
- [29] 3-May-13  6-May-13  7-May-13  8-May-13  9-May-13  10-May-13 13-May-13
- [36] 14-May-13 15-May-13 16-May-13 17-May-13 20-May-13 21-May-13 22-May-13
- [43] 23-May-13 24-May-13 28-May-13 29-May-13 30-May-13 31-May-13 3-Jun-13 
- [50] 4-Jun-13  5-Jun-13  6-Jun-13  7-Jun-13  10-Jun-13 11-Jun-13 12-Jun-13
- [57] 13-Jun-13 14-Jun-13 17-Jun-13 18-Jun-13 19-Jun-13 20-Jun-13 21-Jun-13
- [64] 24-Jun-13 25-Jun-13 26-Jun-13 27-Jun-13 28-Jun-13 1-Jul-13  2-Jul-13 
- [71] 3-Jul-13  5-Jul-13  8-Jul-13  9-Jul-13  10-Jul-13 11-Jul-13 12-Jul-13
- [78] 15-Jul-13 16-Jul-13 17-Jul-13 18-Jul-13 19-Jul-13 22-Jul-13 23-Jul-13
- [85] 24-Jul-13 25-Jul-13 26-Jul-13 29-Jul-13 30-Jul-13 31-Jul-13 1-Aug-13 
- [92] 2-Aug-13  5-Aug-13  6-Aug-13  7-Aug-13  8-Aug-13  9-Aug-13  12-Aug-13
- [99] 13-Aug-13 14-Aug-13 15-Aug-13 16-Aug-13 19-Aug-13 20-Aug-13 21-Aug-13
-[106] 22-Aug-13 23-Aug-13 26-Aug-13 27-Aug-13 28-Aug-13 29-Aug-13 30-Aug-13
-[113] 3-Sep-13  4-Sep-13  5-Sep-13  6-Sep-13  9-Sep-13  10-Sep-13 11-Sep-13
-[120] 12-Sep-13 13-Sep-13 16-Sep-13 17-Sep-13 18-Sep-13 19-Sep-13 20-Sep-13
-[127] 23-Sep-13 24-Sep-13 25-Sep-13 26-Sep-13 27-Sep-13 30-Sep-13 1-Oct-13 
-[134] 2-Oct-13  3-Oct-13  4-Oct-13  7-Oct-13  8-Oct-13  9-Oct-13  10-Oct-13
-[141] 11-Oct-13 14-Oct-13 15-Oct-13 16-Oct-13 17-Oct-13 18-Oct-13 21-Oct-13
-[148] 22-Oct-13 23-Oct-13 24-Oct-13 25-Oct-13 28-Oct-13 29-Oct-13 30-Oct-13
-[155] 31-Oct-13 1-Nov-13  4-Nov-13  5-Nov-13  6-Nov-13  7-Nov-13  8-Nov-13 
-[162] 11-Nov-13 12-Nov-13 13-Nov-13 14-Nov-13 15-Nov-13 18-Nov-13 19-Nov-13
-[169] 20-Nov-13 21-Nov-13 22-Nov-13 25-Nov-13 26-Nov-13 27-Nov-13 29-Nov-13
-[176] 2-Dec-13  3-Dec-13  4-Dec-13  5-Dec-13  6-Dec-13  9-Dec-13  10-Dec-13
-[183] 11-Dec-13 12-Dec-13 13-Dec-13 16-Dec-13 17-Dec-13 18-Dec-13 19-Dec-13
-[190] 20-Dec-13 23-Dec-13 24-Dec-13 26-Dec-13 27-Dec-13 30-Dec-13 31-Dec-13
-[197] 2-Jan-14  3-Jan-14  6-Jan-14  7-Jan-14  8-Jan-14  9-Jan-14  10-Jan-14
-[204] 13-Jan-14 14-Jan-14 15-Jan-14 16-Jan-14 17-Jan-14 21-Jan-14 22-Jan-14
-[211] 23-Jan-14 24-Jan-14 27-Jan-14 28-Jan-14 29-Jan-14 30-Jan-14 31-Jan-14
-[218] 3-Feb-14  4-Feb-14  5-Feb-14  6-Feb-14  7-Feb-14  10-Feb-14 11-Feb-14
-[225] 12-Feb-14 13-Feb-14 14-Feb-14 18-Feb-14 19-Feb-14 20-Feb-14 21-Feb-14
-[232] 24-Feb-14 25-Feb-14 26-Feb-14 27-Feb-14 28-Feb-14 3-Mar-14  4-Mar-14 
-[239] 5-Mar-14  6-Mar-14  7-Mar-14  10-Mar-14 11-Mar-14 12-Mar-14 13-Mar-14
-[246] 14-Mar-14 17-Mar-14 18-Mar-14 19-Mar-14 20-Mar-14 21-Mar-14
+  [1] 21-Mar-14 20-Mar-14 19-Mar-14 18-Mar-14 17-Mar-14 14-Mar-14 13-Mar-14
+  [8] 12-Mar-14 11-Mar-14 10-Mar-14 7-Mar-14  6-Mar-14  5-Mar-14  4-Mar-14 
+ [15] 3-Mar-14  28-Feb-14 27-Feb-14 26-Feb-14 25-Feb-14 24-Feb-14 21-Feb-14
+ [22] 20-Feb-14 19-Feb-14 18-Feb-14 14-Feb-14 13-Feb-14 12-Feb-14 11-Feb-14
+ [29] 10-Feb-14 7-Feb-14  6-Feb-14  5-Feb-14  4-Feb-14  3-Feb-14  31-Jan-14
+ [36] 30-Jan-14 29-Jan-14 28-Jan-14 27-Jan-14 24-Jan-14 23-Jan-14 22-Jan-14
+ [43] 21-Jan-14 17-Jan-14 16-Jan-14 15-Jan-14 14-Jan-14 13-Jan-14 10-Jan-14
+ [50] 9-Jan-14  8-Jan-14  7-Jan-14  6-Jan-14  3-Jan-14  2-Jan-14  31-Dec-13
+ [57] 30-Dec-13 27-Dec-13 26-Dec-13 24-Dec-13 23-Dec-13 20-Dec-13 19-Dec-13
+ [64] 18-Dec-13 17-Dec-13 16-Dec-13 13-Dec-13 12-Dec-13 11-Dec-13 10-Dec-13
+ [71] 9-Dec-13  6-Dec-13  5-Dec-13  4-Dec-13  3-Dec-13  2-Dec-13  29-Nov-13
+ [78] 27-Nov-13 26-Nov-13 25-Nov-13 22-Nov-13 21-Nov-13 20-Nov-13 19-Nov-13
+ [85] 18-Nov-13 15-Nov-13 14-Nov-13 13-Nov-13 12-Nov-13 11-Nov-13 8-Nov-13 
+ [92] 7-Nov-13  6-Nov-13  5-Nov-13  4-Nov-13  1-Nov-13  31-Oct-13 30-Oct-13
+ [99] 29-Oct-13 28-Oct-13 25-Oct-13 24-Oct-13 23-Oct-13 22-Oct-13 21-Oct-13
+[106] 18-Oct-13 17-Oct-13 16-Oct-13 15-Oct-13 14-Oct-13 11-Oct-13 10-Oct-13
+[113] 9-Oct-13  8-Oct-13  7-Oct-13  4-Oct-13  3-Oct-13  2-Oct-13  1-Oct-13 
+[120] 30-Sep-13 27-Sep-13 26-Sep-13 25-Sep-13 24-Sep-13 23-Sep-13 20-Sep-13
+[127] 19-Sep-13 18-Sep-13 17-Sep-13 16-Sep-13 13-Sep-13 12-Sep-13 11-Sep-13
+[134] 10-Sep-13 9-Sep-13  6-Sep-13  5-Sep-13  4-Sep-13  3-Sep-13  30-Aug-13
+[141] 29-Aug-13 28-Aug-13 27-Aug-13 26-Aug-13 23-Aug-13 22-Aug-13 21-Aug-13
+[148] 20-Aug-13 19-Aug-13 16-Aug-13 15-Aug-13 14-Aug-13 13-Aug-13 12-Aug-13
+[155] 9-Aug-13  8-Aug-13  7-Aug-13  6-Aug-13  5-Aug-13  2-Aug-13  1-Aug-13 
+[162] 31-Jul-13 30-Jul-13 29-Jul-13 26-Jul-13 25-Jul-13 24-Jul-13 23-Jul-13
+[169] 22-Jul-13 19-Jul-13 18-Jul-13 17-Jul-13 16-Jul-13 15-Jul-13 12-Jul-13
+[176] 11-Jul-13 10-Jul-13 9-Jul-13  8-Jul-13  5-Jul-13  3-Jul-13  2-Jul-13 
+[183] 1-Jul-13  28-Jun-13 27-Jun-13 26-Jun-13 25-Jun-13 24-Jun-13 21-Jun-13
+[190] 20-Jun-13 19-Jun-13 18-Jun-13 17-Jun-13 14-Jun-13 13-Jun-13 12-Jun-13
+[197] 11-Jun-13 10-Jun-13 7-Jun-13  6-Jun-13  5-Jun-13  4-Jun-13  3-Jun-13 
+[204] 31-May-13 30-May-13 29-May-13 28-May-13 24-May-13 23-May-13 22-May-13
+[211] 21-May-13 20-May-13 17-May-13 16-May-13 15-May-13 14-May-13 13-May-13
+[218] 10-May-13 9-May-13  8-May-13  7-May-13  6-May-13  3-May-13  2-May-13 
+[225] 1-May-13  30-Apr-13 29-Apr-13 26-Apr-13 25-Apr-13 24-Apr-13 23-Apr-13
+[232] 22-Apr-13 19-Apr-13 18-Apr-13 17-Apr-13 16-Apr-13 15-Apr-13 12-Apr-13
+[239] 11-Apr-13 10-Apr-13 9-Apr-13  8-Apr-13  5-Apr-13  4-Apr-13  3-Apr-13 
+[246] 2-Apr-13  1-Apr-13  28-Mar-13 27-Mar-13 26-Mar-13 25-Mar-13
 251 Levels: 1-Apr-13 1-Aug-13 1-Jul-13 1-May-13 1-Nov-13 1-Oct-13 ... 9-Sep-13
 > 
 > #write.csv(aapl, file = "appl.csv")
@@ -88,7 +88,7 @@ Loading required package: devEMF
 > # open value
 > lines(aapl[,2], type = "l", col="red")
 > 
-> legend("topleft", c("Open", "Close"))
+> legend("topleft", names(aapldata))
 > 
 > #plot(aapl[c(1:40), 1], aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 > #plot(aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
@@ -129,4 +129,4 @@ Loading required package: devEMF
 > 
 > proc.time()
    user  system elapsed 
-  0.971   0.041   1.094 
+  0.937   0.039   1.064 

@@ -48,10 +48,10 @@ library(ggplot2)
 require(devEMF)
 $cmd
 
-aapl <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
+aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
 
 # reverse data rows
-aapl = aapl[nrow(aapl):1, ]
+aapl = aapl[nrow(aapldata):1, ]
 
 #print(aapl)
 #print(aapl.google)
@@ -74,7 +74,7 @@ plot(aapl[,5], xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
 # open value
 lines(aapl[,2], type = "l", col="red")
 
-legend("topleft", c("Open", "Close"))
+legend("topleft", names(aapldata))
 
 #plot(aapl[c(1:40), 1], aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
