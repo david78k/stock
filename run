@@ -24,8 +24,8 @@ xlabel="DAY"
 ylabel="STOCK VALUE ($)"
 #ylabel="CLOSE VALUE"
 
-#url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2008&enddate=Mar+1%2C+2013&output=csv"
-url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2008&enddate=Mar+1%2C+2012&output=csv"
+url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2008&enddate=Mar+1%2C+2013&output=csv"
+#url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2008&enddate=Mar+1%2C+2012&output=csv"
 
 colors=6
 
@@ -61,8 +61,8 @@ print(names(aapldata)[c(2,5)])
 print(aapl)
 #print(googdata)
 
-write.csv(aapldata, file = "appl.csv")
-write.table(aapldata, file = "appl.tab")
+write.csv(aapldata, file = "aapl.csv")
+write.table(aapldata, file = "aapl.tab")
 
 #axis = (1, lab = aapl[2])
 #axis = (2, aapl[2])
