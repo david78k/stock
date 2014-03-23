@@ -3,15 +3,17 @@ library(ggplot2)
 require(devEMF)
 emf('aapl1.emf')
 
-aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
+#aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
+aapldata <- read.csv(" ", sep=",", header=1)
+googdata <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Nov%201,%202011&enddate=Nov%2030,%202011&output=csv")
 
 # reverse data rows
 aapl = aapl[nrow(aapldata):1, ]
 
 print(names(aapldata))
 print(names(aapldata)[c(2,5)])
-#print(aapl.google)
-print(aapl[, 1])
+print(googdata)
+#print(aapl[, 1])
 
 #write.csv(aapl, file = "appl.csv")
 #write.table(aapl, file = "appl.tab")
@@ -21,7 +23,6 @@ print(aapl[, 1])
 #box()
 
 # close value
-#matplot(aapl[,1], aapl[,5], type = "l", col="red")
 #plot(aapl[,5], type = "l", col="blue")
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
@@ -29,8 +30,10 @@ plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 # open value
 lines(aapl[,2], type = "l", col="red")
 
-legend("topleft", names(aapldata)[c(2,5)], fill = heat.colors(2))
+#legend("topleft", names(aapldata)[c(2,5)], fill = heat.colors(2))
+legend("topleft", names(aapldata)[c(2,5)], lty = 1, col = c('red', 'blue'))
 
+#matplot(aapl[,1], aapl[,5], type = "l", col="red")
 #plot(aapl[c(1:40), 1], aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(aapl[,1], aapl[,5], type = "l", col="blue")

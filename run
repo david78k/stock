@@ -6,9 +6,9 @@ if [ $# -lt 0 ]; then
 fi
 
 #name=$1
-#name=aapl1
+name=aapl1
 #name=aapl2
-name=aapl
+#name=aapl
 
 #data=${name}.dat
 #data=$1
@@ -23,6 +23,8 @@ eps=${name}.eps
 xlabel="DAY"
 ylabel="STOCK VALUE ($)"
 #ylabel="CLOSE VALUE"
+
+url=http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2008&enddate=Mar+1%2C+2013&output=csv
 
 colors=6
 
@@ -46,7 +48,8 @@ library(ggplot2)
 require(devEMF)
 $cmd
 
-aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
+#aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
+aapldata <- read.csv("$url ", sep=",", header=1)
 googdata <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Nov%201,%202011&enddate=Nov%2030,%202011&output=csv")
 
 # reverse data rows
