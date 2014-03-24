@@ -23,18 +23,18 @@ Type 'q()' to quit R.
 > 
 > require(devEMF)
 Loading required package: devEMF
-> emf('aapl1.emf')
+> emf('aapl2.emf')
 > 
 > data <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv ", sep=",", header=1)
 > 
 > # reverse data rows
-> aapl1 = data[nrow(data):1, ]
+> aapl2 = data[nrow(data):1, ]
 > 
 > print(names(data))
 [1] "Date"   "Open"   "High"   "Low"    "Close"  "Volume"
 > print(names(data)[c(2,5)])
 [1] "Open"  "Close"
-> print(aapl1[, 2])
+> print(aapl2[, 2])
    [1] 26.22  27.06  25.94  26.53  24.12  25.50  23.98  23.75  23.62  25.00 
   [11] 25.25  26.41  28.88  28.56  27.11  26.25  27.50  27.20  27.05  25.25 
   [21] 26.00  25.19  25.08  25.98  27.00  28.50  28.53  28.22  28.41  27.33 
@@ -369,10 +369,10 @@ Loading required package: devEMF
 [3311] 476.50 479.51 467.21 464.52 468.85 461.10 457.69 446.00 449.25 453.85
 [3321] 443.82 448.43 444.05 438.00
 2721 Levels: - 0.00 10.00 10.01 10.02 10.03 10.04 10.05 10.06 10.07 ... 99.91
-> #print(aapl1)
+> #print(aapl2)
 > 
-> write.csv(aapl1, file = "aapl1.csv")
-> write.table(aapl1, file = "aapl1.tab")
+> write.csv(aapl2, file = "aapl2.csv")
+> write.table(aapl2, file = "aapl2.tab")
 > 
 > #axis = (1, lab = aapl[2])
 > #axis = (2, aapl[2])
@@ -380,12 +380,13 @@ Loading required package: devEMF
 > 
 > # open value
 > #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-> #plot(as.numeric(aapl1[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
-> plot(as.numeric(aapl1[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+> #plot(as.numeric(aapl2[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
+> plot(as.numeric(aapl2[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 > 
 > # close value
-> lines(aapl1[,5], col="red")
-> #lines(aapl1[,5], type = "l", col="red")
+> lines(as.numeric(aapl2[,5]), col="red")
+> #lines(aapl2[,5], col="red")
+> #lines(aapl2[,5], type = "l", col="red")
 > 
 > #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
 > legend("topleft", names(data)[c(2,5)], lty = 1:2, col = c('blue', 'red'))
@@ -430,4 +431,4 @@ Loading required package: devEMF
 > 
 > proc.time()
    user  system elapsed 
-  1.093   0.055   1.680 
+  1.139   0.052   1.447 
