@@ -8,8 +8,8 @@ fi
 #name=$1
 #name=aapl1
 #name=aapl2
-#name=aapl
-name=goog
+name=aapl
+#name=goog
 
 #data=${name}.dat
 #data=$1
@@ -27,10 +27,9 @@ eps=${name}.eps
 # 33 years: 1980-2013 (actually 16 years of 1997-2013)
 #url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+1980&enddate=Mar+1%2C+2013&output=csv"
 # AAPL 13 years: 2000-2013 (open value available)
-#url="http://www.google.com/finance/historical?q=AAPL&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv"
-#url="http://www.google.com/finance/historical?q=$name&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv"
+url="http://www.google.com/finance/historical?q=$name&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv"
 # Google 9 years: 2004-2013
-url="http://www.google.com/finance/historical?q=$name&startdate=Aug+19%2C+2004&enddate=Mar+1%2C+2013&output=csv"
+#url="http://www.google.com/finance/historical?q=$name&startdate=Aug+19%2C+2004&enddate=Mar+1%2C+2013&output=csv"
 
 #xlabel="DATE"
 xlabel="DAY"

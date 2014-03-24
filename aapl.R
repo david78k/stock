@@ -4,7 +4,7 @@ require(devEMF)
 emf('aapl.emf')
 
 #aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
-data <- read.csv("http://www.google.com/finance/historical?q=aapl&startdate=Aug+19%2C+2004&enddate=Mar+1%2C+2013&output=csv ", sep=",", header=1)
+data <- read.csv("http://www.google.com/finance/historical?q=aapl&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv ", sep=",", header=1)
 #googdata <- read.csv("http://www.google.com/finance/historical?q=GOOG&startdate=Aug%201,%202004&enddate=Mar%2001,%202013&output=csv")
 
 # reverse data rows
