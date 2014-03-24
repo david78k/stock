@@ -7,10 +7,11 @@ fi
 
 #name=$1
 #name=aapl1
-name=aapl2
+#name=aapl2
 #name=aapl
 #name=goog
 #name=goog1
+name=goog2
 
 #data=${name}.dat
 #data=$1
