@@ -24,7 +24,8 @@ write.table(goog, file = "goog.tab")
 
 # close value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-plot(goog[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+plot(goog[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", col="blue")
+#plot(goog[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # open value
 lines(goog[,5], type = "l", col="red")
