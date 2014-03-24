@@ -7,9 +7,9 @@ fi
 
 #name=$1
 #name=aapl6
-#name=aapl
+name=aapl
 #name=goog
-name=goog5
+#name=goog5
 
 #data=${name}.dat
 #data=$1
