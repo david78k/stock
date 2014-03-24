@@ -4,14 +4,14 @@ require(devEMF)
 emf('aapl.emf')
 
 #aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
-aapldata <- read.csv("http://www.google.com/finance/historical?q=aapl&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv ", sep=",", header=1)
+data <- read.csv("http://www.google.com/finance/historical?q=aapl&startdate=Aug+19%2C+2004&enddate=Mar+1%2C+2013&output=csv ", sep=",", header=1)
 #googdata <- read.csv("http://www.google.com/finance/historical?q=GOOG&startdate=Aug%201,%202004&enddate=Mar%2001,%202013&output=csv")
 
 # reverse data rows
-aapl = aapldata[nrow(aapldata):1, ]
+aapl = data[nrow(data):1, ]
 
-print(names(aapldata))
-print(names(aapldata)[c(2,5)])
+print(names(data))
+print(names(data)[c(2,5)])
 print(aapl[, 2])
 #print(aapl)
 
@@ -24,19 +24,19 @@ write.table(aapl, file = "aapl.tab")
 
 # close value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+plot(aapl[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", col="blue")
+#plot(aapl[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # open value
-lines(aapl[,2], type = "l", col="red")
+lines(aapl[,5], type = "l", col="red")
 
-#legend("topleft", names(aapldata)[c(2,5)], fill = heat.colors(2))
-legend("topleft", names(aapldata)[c(2,5)], lty = 1:2, col = c('red', 'blue'))
-#legend("topleft", names(aapldata)[c(2,5)], lty = 1, col = c('red', 'blue'))
+#legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
+legend("topleft", names(data)[c(2,5)], lty = 1:2, col = c('red', 'blue'))
+#legend("topleft", names(data)[c(2,5)], lty = 1, col = c('red', 'blue'))
 
 #matplot(aapl[,1], aapl[,5], type = "l", col="red")
 #plot(aapl[c(1:40), 1], aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-#plot(aapl[,1], aapl[,5], type = "l", col="blue")
 
 # simple example
 #x <- c(1,3,6,9,12)
