@@ -266,8 +266,8 @@ Loading required package: devEMF
 > 
 > # open value
 > #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-> plot(as.numeric(goog1[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
-> #plot(goog1[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+> #plot(as.numeric(goog1[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
+> plot(as.numeric(goog1[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 > 
 > # close value
 > lines(goog1[,5], col="red")
@@ -316,4 +316,4 @@ Loading required package: devEMF
 > 
 > proc.time()
    user  system elapsed 
-  1.079   0.055   1.307 
+  1.079   0.049   1.481 
