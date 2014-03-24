@@ -273,7 +273,7 @@ Loading required package: devEMF
 > lines(goog[,5], lty = 1, col="red")
 > 
 > #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
-> legend("topleft", names(data)[c(2,5)], lty = 1:2, col = c('red', 'blue'))
+> legend("topleft", names(data)[c(2,5)], lty = 1:2, col = c('blue', 'red'))
 > #legend("topleft", names(data)[c(2,5)], lty = 1, col = c('red', 'blue'))
 > 
 > #matplot(aapl[,1], aapl[,5], type = "l", col="red")
@@ -315,4 +315,4 @@ Loading required package: devEMF
 > 
 > proc.time()
    user  system elapsed 
-  1.103   0.046   1.596 
+  1.075   0.055   1.305 
