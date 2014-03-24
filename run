@@ -6,8 +6,8 @@ if [ $# -lt 0 ]; then
 fi
 
 #name=$1
-#name=aapl4
-name=aapl
+name=aapl5
+#name=aapl
 #name=goog
 #name=goog3
 #name=goog4
