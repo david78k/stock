@@ -13,7 +13,7 @@ hm_model <- HMMFit(obs = AAPL_Train, nStates = 5)
 VitPath <- viterbi (hm_model, AAPL_Train)
 
 # scatter plot
-AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath)
+AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 chartSeries(AAPL_Predict[,1])
 addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
 addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
