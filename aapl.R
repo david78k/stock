@@ -12,7 +12,7 @@ aapl = aapldata[nrow(aapldata):1, ]
 
 print(names(aapldata))
 print(names(aapldata)[c(2,5)])
-print(aapl[, c(2, 3, 5, 6)])
+print(aapl[, 2])
 #print(aapl)
 
 write.csv(aapl, file = "aapl.csv")
