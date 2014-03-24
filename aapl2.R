@@ -8,11 +8,11 @@ aapldata <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=
 googdata <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Nov%201,%202011&enddate=Nov%2030,%202011&output=csv")
 
 # reverse data rows
-aapl = aapl[nrow(aapldata):1, ]
+aapl = aapldata[nrow(aapldata):1, ]
 
 print(names(aapldata))
 print(names(aapldata)[c(2,5)])
-print(aapldata)
+print(aapl)
 #print(googdata)
 
 write.csv(aapldata, file = "aapl.csv")
