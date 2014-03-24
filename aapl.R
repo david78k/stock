@@ -10,7 +10,8 @@ aapl = data[nrow(data):1, ]
 
 print(names(data))
 print(names(data)[c(2,5)])
-print(aapl[, c(2, 5)])
+#print(aapl[, c(2, 5)])
+print(as.numeric(aapl[, 2]))
 #print(aapl)
 
 write.csv(aapl, file = "aapl.csv")

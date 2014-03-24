@@ -69,7 +69,8 @@ $name = data[nrow(data):1, ]
 
 print(names(data))
 print(names(data)[c(2,5)])
-print($name[, c(2, 5)])
+#print($name[, c(2, 5)])
+print(as.numeric($name[, 2]))
 #print($name)
 
 write.csv($name, file = "$name.csv")
