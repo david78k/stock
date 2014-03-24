@@ -7,8 +7,8 @@ fi
 
 #name=$1
 #name=aapl4
-#name=aapl
-name=goog
+name=aapl
+#name=goog
 #name=goog3
 #name=goog4
 
@@ -88,7 +88,6 @@ plot(as.numeric($name[,2]), xlab = "$xlabel", ylab = "$ylabel", type = "l", col=
 #lines(as.numeric($name[,5]), col="red")
 #lines($name[,5], col="red")
 lines($name[,5], type = "l", col="red")
-#lines($name[,2], type = "l", col="red")
 #lines($name[,3], type = "l", col="green")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
