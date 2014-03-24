@@ -64,13 +64,28 @@ Loading required package: nlme
 > # scatter plot
 > AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 > chartSeries(AAPL_Predict[,1])
-> addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="l",col=5,pch=25)
+> addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="l",col=5,pch=25, theme = "white")
+Warning message:
+In plot.xy(xy.coords(x, y), type = type, ...) :
+  "theme" is not a graphical parameter
 > addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="l",col=6,pch=24)
+Warning message:
+In plot.xy(xy.coords(x, y), type = type, ...) :
+  "theme" is not a graphical parameter
 > addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type="l",col=7,pch=23)
+Warning message:
+In plot.xy(xy.coords(x, y), type = type, ...) :
+  "theme" is not a graphical parameter
 > addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type="l",col=8,pch=22)
+Warning message:
+In plot.xy(xy.coords(x, y), type = type, ...) :
+  "theme" is not a graphical parameter
 > addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type="l",col=10,pch=21)
+Warning message:
+In plot.xy(xy.coords(x, y), type = type, ...) :
+  "theme" is not a graphical parameter
 > 
 > 
 > proc.time()
    user  system elapsed 
-  1.415   0.056   1.702 
+  1.435   0.072   1.658 
