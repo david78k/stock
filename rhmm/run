@@ -53,7 +53,7 @@ cat >$script << EOF
 library(quantmod)
 
 require(devEMF)
-$cmd
+#$cmd
 
 getSymbols("${name}")
 chartSeries(${name}, theme="white")

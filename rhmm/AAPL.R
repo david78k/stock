@@ -1,7 +1,7 @@
 library(quantmod)
 
 require(devEMF)
-postscript('AAPL.eps')
+#postscript('AAPL.eps')
 
 getSymbols("AAPL")
 chartSeries(AAPL, theme="white")

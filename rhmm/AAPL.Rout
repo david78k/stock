@@ -35,7 +35,7 @@ Version 0.4-0 included new data defaults. See ?getSymbols.
 > 
 > require(devEMF)
 Loading required package: devEMF
-> postscript('AAPL.eps')
+> #postscript('AAPL.eps')
 > 
 > getSymbols("AAPL")
     As of 0.4-0, ‘getSymbols’ uses env=parent.frame() and
@@ -73,4 +73,4 @@ Loading required package: nlme
 > 
 > proc.time()
    user  system elapsed 
-  1.367   0.056   1.629 
+  1.568   0.057   1.761 
