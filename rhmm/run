@@ -52,6 +52,7 @@ function genplot() {
 cat >$script << EOF
 library(quantmod)
 
+require(devEMF)
 $cmd
 
 getSymbols("${name}")

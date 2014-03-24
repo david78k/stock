@@ -1,5 +1,6 @@
 library(quantmod)
 
+require(devEMF)
 emf('AAPL.emf')
 
 getSymbols("AAPL")
