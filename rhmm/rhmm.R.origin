@@ -1,9 +1,8 @@
 library(quantmod)
-
-getSymbols("AAPL")
-chartSeries(AAPL)
-TWII_Subset <- window(AAPL, start = as.Date("2012-01-01"))
-TWII_Train <- cbind(TWII_Subset$TWII.Close - TWII_Subset$AAPL.Open, TWII_Subset$AAPL.Volume)
+getSymbols("^TWII")
+chartSeries(TWII)
+TWII_Subset <- window(TWII, start = as.Date("2012-01-01"))
+TWII_Train <- cbind(TWII_Subset$TWII.Close - TWII_Subset$TWII.Open, TWII_Subset$TWII.Volume)
 
 library(RHmm)
 # Baum-Welch Algorithm

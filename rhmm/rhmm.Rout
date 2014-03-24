@@ -32,7 +32,8 @@ The following objects are masked from ‘package:base’:
 
 Loading required package: TTR
 Version 0.4-0 included new data defaults. See ?getSymbols.
-> getSymbols("^TWII")
+> 
+> getSymbols("AAPL")
     As of 0.4-0, ‘getSymbols’ uses env=parent.frame() and
  auto.assign=TRUE by default.
 
@@ -42,29 +43,11 @@ Version 0.4-0 included new data defaults. See ?getSymbols.
 
  This message is shown once per session and may be disabled by setting 
  options("getSymbols.warning4.0"=FALSE). See ?getSymbol for more details
-[1] "TWII"
-> chartSeries(TWII)
-> TWII_Subset <- window(TWII, start = as.Date("2012-01-01"))
-> TWII_Train <- cbind(TWII_Subset$TWII.Close - TWII_Subset$TWII.Open, TWII_Subset$TWII.Volume)
-> 
-> library(RHmm)
-Loading required package: MASS
-Loading required package: nlme
-> # Baum-Welch Algorithm
-> hm_model <- HMMFit(obs = TWII_Train, nStates = 5)
-> 
-> # Viterbi Algorithm
-> VitPath <- viterbi (hm_model, TWII_Train)
-> 
-> # scatter plot
-> TWII_Predict <- cbind(TWII_Subset$TWII.Close, VitPath$states)
-> chartSeries(TWII_Predict[,1])
-> addTA(TWII_Predict[TWII_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
-> addTA(TWII_Predict[TWII_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
-> addTA(TWII_Predict[TWII_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
-> addTA(TWII_Predict[TWII_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
-> addTA(TWII_Predict[TWII_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
-> 
-> proc.time()
-   user  system elapsed 
-  1.367   0.065   1.605 
+[1] "AAPL"
+> chartSeries(AAPL)
+> TWII_Subset <- window(AAPL, start = as.Date("2012-01-01"))
+> TWII_Train <- cbind(TWII_Subset$TWII.Close - TWII_Subset$AAPL.Open, TWII_Subset$AAPL.Volume)
+Error in NextMethod(.Generic) : 
+  dims [product 557] do not match the length of object [0]
+Calls: cbind -> Ops.xts -> NextMethod
+Execution halted
