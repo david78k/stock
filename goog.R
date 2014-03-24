@@ -10,7 +10,7 @@ goog = data[nrow(data):1, ]
 
 print(names(data))
 print(names(data)[c(2,5)])
-print(goog[, 2])
+print(goog[, c(2, 5)])
 #print(goog)
 
 write.csv(goog, file = "goog.csv")
