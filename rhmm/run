@@ -56,7 +56,7 @@ require(devEMF)
 $cmd
 
 getSymbols("${name}")
-chartSeries(${name})
+chartSeries(${name}, theme="white")
 ${name}_Subset <- window(${name}, start = as.Date("$startdate"))
 ${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open, ${name}_Subset\$${name}.Volume)
 

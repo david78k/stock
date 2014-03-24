@@ -48,7 +48,7 @@ Loading required package: devEMF
  This message is shown once per session and may be disabled by setting 
  options("getSymbols.warning4.0"=FALSE). See ?getSymbol for more details
 [1] "AAPL"
-> chartSeries(AAPL)
+> chartSeries(AAPL, theme="white")
 > AAPL_Subset <- window(AAPL, start = as.Date("2012-01-01"))
 > AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open, AAPL_Subset$AAPL.Volume)
 > 
@@ -73,4 +73,4 @@ Loading required package: nlme
 > 
 > proc.time()
    user  system elapsed 
-  1.369   0.060   1.648 
+  1.367   0.056   1.629 
