@@ -1,20 +1,21 @@
 library(ggplot2)
 
 require(devEMF)
-emf('aapl2.emf')
+emf('aapl6.emf')
 
 data <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv ", sep=",", header=1)
 
 # reverse data rows
-aapl2 = data[nrow(data):1, ]
+aapl6 = data[nrow(data):1, ]
 
 print(names(data))
 print(names(data)[c(2,5)])
-print(aapl2[, c(2, 5)])
-#print(aapl2)
+#print(aapl6[, c(2, 5)])
+print(as.numeric(aapl6[, 2]))
+#print(aapl6)
 
-write.csv(aapl2, file = "aapl2.csv")
-write.table(aapl2, file = "aapl2.tab")
+write.csv(aapl6, file = "aapl6.csv")
+write.table(aapl6, file = "aapl6.tab")
 
 #axis = (1, lab = aapl[2])
 #axis = (2, aapl[2])
@@ -22,15 +23,16 @@ write.table(aapl2, file = "aapl2.tab")
 
 # open value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-plot(as.numeric(aapl2[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
-#plot(aapl2[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+#plot(as.numeric(aapl6[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
+#plot(data[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+plot(aapl6[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+#plot(as.numeric(aapl6[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # close value
-#lines(as.numeric(aapl2[,5]), col="red")
-#lines(aapl2[,5], col="red")
-lines(aapl2[,5], type = "l", col="red")
-#lines(aapl2[,2], type = "l", col="red")
-#lines(aapl2[,3], type = "l", col="green")
+#lines(as.numeric(aapl6[,5]), col="red")
+#lines(aapl6[,5], col="red")
+lines(aapl6[,5], type = "l", col="red")
+#lines(aapl6[,3], type = "l", col="green")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
 #legend("topleft", names(data)[c(2,3,5)], lty = 1:3, col = c('blue', 'red', 'green'))
