@@ -35,7 +35,7 @@ Version 0.4-0 included new data defaults. See ?getSymbols.
 > 
 > require(devEMF)
 Loading required package: devEMF
-> emf('AAPL.emf')
+> postscript('AAPL.eps')
 > 
 > getSymbols("AAPL")
     As of 0.4-0, ‘getSymbols’ uses env=parent.frame() and
@@ -64,25 +64,13 @@ Loading required package: nlme
 > # scatter plot
 > AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 > chartSeries(AAPL_Predict[,1])
-Warning message:
-In plot.new() : Multiple pages not available for EMF device
 > addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
-Warning message:
-In plot.new() : Multiple pages not available for EMF device
 > addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
-Warning message:
-In plot.new() : Multiple pages not available for EMF device
 > addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
-Warning message:
-In plot.new() : Multiple pages not available for EMF device
 > addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
-Warning message:
-In plot.new() : Multiple pages not available for EMF device
 > addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
-Warning message:
-In plot.new() : Multiple pages not available for EMF device
 > 
 > 
 > proc.time()
    user  system elapsed 
-  1.380   0.053   1.583 
+  1.369   0.060   1.648 

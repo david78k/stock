@@ -85,7 +85,7 @@ genplot png
 
 genplot eps
 
-genplot emf
+#genplot emf
 
 git add .
 git commit -a -m $script
