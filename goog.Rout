@@ -2224,7 +2224,8 @@ Warning messages:
 > # close value
 > #lines(as.numeric(goog[,5]), col="red")
 > #lines(goog[,5], col="red")
-> lines(goog[,2], type = "l", col="red")
+> lines(goog[,5], type = "l", col="red")
+> #lines(goog[,2], type = "l", col="red")
 > #lines(goog[,3], type = "l", col="green")
 > 
 > #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
@@ -2271,4 +2272,4 @@ Warning messages:
 > 
 > proc.time()
    user  system elapsed 
-  1.091   0.052   1.305 
+  1.094   0.047   1.376 

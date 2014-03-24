@@ -28,7 +28,8 @@ plot(goog[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 # close value
 #lines(as.numeric(goog[,5]), col="red")
 #lines(goog[,5], col="red")
-lines(goog[,2], type = "l", col="red")
+lines(goog[,5], type = "l", col="red")
+#lines(goog[,2], type = "l", col="red")
 #lines(goog[,3], type = "l", col="green")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
