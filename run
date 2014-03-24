@@ -8,8 +8,8 @@ fi
 #name=$1
 #name=aapl1
 #name=aapl2
-name=aapl
-#name=goog
+#name=aapl
+name=goog
 #name=goog1
 #name=goog2
 
@@ -83,12 +83,13 @@ write.table($name, file = "$name.tab")
 # open value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(as.numeric($name[,2]), xlab = "$xlabel", ylab = "$ylabel", lty = 1, col="blue")
-plot($name[,5], xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
+plot($name[,2], xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
 
 # close value
 #lines(as.numeric($name[,5]), col="red")
 #lines($name[,5], col="red")
 lines($name[,5], type = "l", col="red")
+lines($name[,3], type = "l", col="green")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
 legend("topleft", names(data)[c(2,5)], lty = 1:2, col = c('blue', 'red'))
