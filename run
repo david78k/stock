@@ -85,7 +85,8 @@ write.table($name, file = "$name.tab")
 plot(as.numeric($name[,2]), xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
 
 # close value
-lines($name[,5], col="red")
+lines(as.numeric($name[,5]), col="red")
+#lines($name[,5], col="red")
 #lines($name[,5], type = "l", col="red")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))

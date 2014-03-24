@@ -26,7 +26,8 @@ write.table(aapl, file = "aapl.tab")
 plot(as.numeric(aapl[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # close value
-lines(aapl[,5], col="red")
+lines(as.numeric(aapl[,5]), col="red")
+#lines(aapl[,5], col="red")
 #lines(aapl[,5], type = "l", col="red")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
