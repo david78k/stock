@@ -316,4 +316,4 @@ Loading required package: devEMF
 > 
 > proc.time()
    user  system elapsed 
-  1.079   0.049   1.481 
+  1.099   0.051   1.336 
