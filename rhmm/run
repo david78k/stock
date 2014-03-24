@@ -70,11 +70,11 @@ VitPath <- viterbi (hm_model, ${name}_Train)
 # scatter plot
 ${name}_Predict <- cbind(${name}_Subset\$${name}.Close, VitPath\$states)
 chartSeries(${name}_Predict[,1], theme="white")
-addTA(${name}_Predict[${name}_Predict[,2]==1,1],on=1,type="l",col=5,pch=25)
-addTA(${name}_Predict[${name}_Predict[,2]==2,1],on=1,type="l",col=6,pch=24)
-addTA(${name}_Predict[${name}_Predict[,2]==3,1],on=1,type="l",col=7,pch=23)
-addTA(${name}_Predict[${name}_Predict[,2]==4,1],on=1,type="l",col=8,pch=22)
-addTA(${name}_Predict[${name}_Predict[,2]==5,1],on=1,type="l",col=10,pch=21)
+addTA(${name}_Predict[${name}_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
+addTA(${name}_Predict[${name}_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
+addTA(${name}_Predict[${name}_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
+addTA(${name}_Predict[${name}_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
+addTA(${name}_Predict[${name}_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
 
 EOF
 
