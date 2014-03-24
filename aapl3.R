@@ -23,7 +23,8 @@ write.table(aapl3, file = "aapl3.tab")
 # open value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(as.numeric(aapl3[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
-plot(aapl3[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+plot(as.numeric(aapl3[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
+#plot(aapl3[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # close value
 #lines(as.numeric(aapl3[,5]), col="red")
