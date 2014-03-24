@@ -64,13 +64,13 @@ Loading required package: nlme
 > # scatter plot
 > AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 > chartSeries(AAPL_Predict[,1])
-> addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=0,type="p",col=5,pch=25)
-> addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=0,type="p",col=6,pch=24)
-> addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=0,type="p",col=7,pch=23)
-> addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=0,type="p",col=8,pch=22)
-> addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=0,type="p",col=10,pch=21)
+> addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
+> addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
+> addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
+> addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type="h",col=8,pch=22)
+> addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type="h",col=10,pch=21)
 > 
 > 
 > proc.time()
    user  system elapsed 
-  1.361   0.062   1.596 
+  1.659   0.065   1.896 
