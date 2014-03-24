@@ -4,8 +4,8 @@ require(devEMF)
 emf('aapl.emf')
 
 #aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
-aapldata <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2012&output=csv ", sep=",", header=1)
-googdata <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Nov%201,%202011&enddate=Nov%2030,%202011&output=csv")
+aapldata <- read.csv("http://www.google.com/finance/historical?q=aapl&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv ", sep=",", header=1)
+#googdata <- read.csv("http://www.google.com/finance/historical?q=GOOG&startdate=Aug%201,%202004&enddate=Mar%2001,%202013&output=csv")
 
 # reverse data rows
 aapl = aapldata[nrow(aapldata):1, ]
@@ -13,7 +13,6 @@ aapl = aapldata[nrow(aapldata):1, ]
 print(names(aapldata))
 print(names(aapldata)[c(2,5)])
 print(aapl)
-#print(googdata)
 
 write.csv(aapl, file = "aapl.csv")
 write.table(aapl, file = "aapl.tab")
