@@ -1,22 +1,20 @@
 library(ggplot2)
 
 require(devEMF)
-emf('aapl.emf')
+emf('aapl1.emf')
 
-#aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
-data <- read.csv("http://www.google.com/finance/historical?q=aapl&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv ", sep=",", header=1)
-#googdata <- read.csv("http://www.google.com/finance/historical?q=GOOG&startdate=Aug%201,%202004&enddate=Mar%2001,%202013&output=csv")
+data <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv ", sep=",", header=1)
 
 # reverse data rows
-aapl = data[nrow(data):1, ]
+aapl1 = data[nrow(data):1, ]
 
 print(names(data))
 print(names(data)[c(2,5)])
-print(aapl[, 2])
-#print(aapl)
+print(aapl1[, 2])
+#print(aapl1)
 
-write.csv(aapl, file = "aapl.csv")
-write.table(aapl, file = "aapl.tab")
+write.csv(aapl1, file = "aapl1.csv")
+write.table(aapl1, file = "aapl1.tab")
 
 #axis = (1, lab = aapl[2])
 #axis = (2, aapl[2])
@@ -24,11 +22,12 @@ write.table(aapl, file = "aapl.tab")
 
 # open value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-plot(as.numeric(aapl[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
-#plot(aapl[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+#plot(as.numeric(aapl1[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
+plot(as.numeric(aapl1[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # close value
-lines(aapl[,5], lty = 1, col="red")
+lines(aapl1[,5], col="red")
+#lines(aapl1[,5], type = "l", col="red")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
 legend("topleft", names(data)[c(2,5)], lty = 1:2, col = c('blue', 'red'))
