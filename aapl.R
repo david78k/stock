@@ -23,14 +23,12 @@ write.table(aapl, file = "aapl.tab")
 # open value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(as.numeric(aapl[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
-#plot(as.numeric(aapl[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
-plot(as.numeric(data[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # close value
 #lines(as.numeric(aapl[,5]), col="red")
 #lines(aapl[,5], col="red")
-#lines(aapl[,5], type = "l", col="red")
-lines(data[,5], type = "l", col="red")
+lines(aapl[,5], type = "l", col="red")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
 legend("topleft", names(data)[c(2,5)], lty = 1:2, col = c('blue', 'red'))
