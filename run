@@ -9,8 +9,8 @@ fi
 #name=aapl1
 #name=aapl2
 #name=aapl
-#name=goog
-name=goog1
+name=goog
+#name=goog1
 
 #data=${name}.dat
 #data=$1
@@ -62,9 +62,7 @@ library(ggplot2)
 require(devEMF)
 $cmd
 
-#aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
 data <- read.csv("$url ", sep=",", header=1)
-#googdata <- read.csv("http://www.google.com/finance/historical?q=GOOG&startdate=Aug%201,%202004&enddate=Mar%2001,%202013&output=csv")
 
 # reverse data rows
 $name = data[nrow(data):1, ]
