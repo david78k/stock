@@ -33,6 +33,8 @@ The following objects are masked from ‘package:base’:
 Loading required package: TTR
 Version 0.4-0 included new data defaults. See ?getSymbols.
 > 
+> png('AAPL.png')
+> 
 > getSymbols("AAPL")
     As of 0.4-0, ‘getSymbols’ uses env=parent.frame() and
  auto.assign=TRUE by default.
@@ -60,13 +62,13 @@ Loading required package: nlme
 > # scatter plot
 > AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 > chartSeries(AAPL_Predict[,1])
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
+> addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
+> addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
+> addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
+> addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
 > addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
 > 
 > 
 > proc.time()
    user  system elapsed 
-  1.628   0.058   1.841 
+  1.714   0.075   2.350 
