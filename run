@@ -8,8 +8,8 @@ fi
 #name=$1
 #name=aapl1
 #name=aapl2
-#name=aapl
-name=goog
+name=aapl
+#name=goog
 #name=goog1
 #name=goog2
 
@@ -70,7 +70,7 @@ $name = data[nrow(data):1, ]
 
 print(names(data))
 print(names(data)[c(2,5)])
-print($name[, 2])
+print($name[, c(2, 5)])
 #print($name)
 
 write.csv($name, file = "$name.csv")

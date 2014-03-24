@@ -10,7 +10,7 @@ aapl = data[nrow(data):1, ]
 
 print(names(data))
 print(names(data)[c(2,5)])
-print(aapl[, 2])
+print(aapl[, c(2, 5)])
 #print(aapl)
 
 write.csv(aapl, file = "aapl.csv")
@@ -23,14 +23,16 @@ write.table(aapl, file = "aapl.tab")
 # open value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(as.numeric(aapl[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
-plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+plot(aapl[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # close value
 #lines(as.numeric(aapl[,5]), col="red")
 #lines(aapl[,5], col="red")
-lines(aapl[,5], type = "l", col="red")
+lines(aapl[,2], type = "l", col="red")
+#lines(aapl[,3], type = "l", col="green")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
+#legend("topleft", names(data)[c(2,3,5)], lty = 1:3, col = c('blue', 'red', 'green'))
 legend("topleft", names(data)[c(2,5)], lty = 1:2, col = c('blue', 'red'))
 #legend("topleft", names(data)[c(2,5)], lty = 1, col = c('red', 'blue'))
 
