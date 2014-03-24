@@ -9,9 +9,9 @@ fi
 #name=aapl1
 #name=aapl2
 #name=aapl
-name=goog
+#name=goog
 #name=goog3
-#name=goog2
+name=goog4
 
 #data=${name}.dat
 #data=$1
