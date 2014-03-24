@@ -1,1 +1,90 @@
-R CMD BATCH rhmm.R
+#!/bin/bash
+
+if [ $# -lt 0 ]; then
+	echo "usage: $0 data"	
+	exit
+fi
+
+#name=$1
+#name=aapl6
+name=AAPL
+#name=goog
+#name=goog5
+
+startdate=2012-01-01
+
+#data=${name}.dat
+#data=$1
+#prefix=${data%\.*}
+#name=$prefix
+script=${name}.R
+png=${name}.png
+emf=${name}.emf
+eps=${name}.eps
+
+if [[ $name == aapl* ]]; then
+	# AAPL 13 years: 2000-2013 (open value available)
+	url="http://www.google.com/finance/historical?q=AAPL&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv"
+elif [[ $name == goog* ]]; then
+	# Google 9 years: 2004-2013
+	url="http://www.google.com/finance/historical?q=GOOG&startdate=Aug+19%2C+2004&enddate=Mar+1%2C+2013&output=csv"
+fi
+
+#xlabel="DATE"
+xlabel="DAY"
+ylabel="STOCK VALUE ($)"
+#ylabel="CLOSE VALUE"
+
+function genplot() {
+	cmd="emf($emf)"
+
+	if [ $1 == "png" ]; then
+		figure=$png
+		cmd="png('$figure')"
+	elif [ $1 == "eps" ]; then
+		figure=$eps
+		cmd="postscript('$figure')"
+	elif [ $1 == "emf" ]; then
+		figure=$emf
+		cmd="emf('$figure')"
+	fi
+
+cat >$script << EOF
+library(quantmod)
+
+getSymbols("$name")
+chartSeries($name)
+$name_Subset <- window($name, start = as.Date("$startdate"))
+$name_Train <- cbind($name_Subset\$$name.Close - $name_Subset\$$name.Open, $name_Subset\$$name.Volume)
+
+library(RHmm)
+# Baum-Welch Algorithm
+hm_model <- HMMFit(obs = $name_Train, nStates = 5)
+
+# Viterbi Algorithm
+VitPath <- viterbi (hm_model, $name_Train)
+
+# scatter plot
+$name_Predict <- cbind($name_Subset\$$name.Close, VitPath$states)
+chartSeries($name_Predict[,1])
+addTA($name_Predict[$name_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
+addTA($name_Predict[$name_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
+addTA($name_Predict[$name_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
+addTA($name_Predict[$name_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
+addTA($name_Predict[$name_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
+
+EOF
+
+	R CMD BATCH $script
+}
+
+genplot png
+
+#genplot eps
+
+#genplot emf
+
+git add .
+git commit -a -m $script
+git push
+
