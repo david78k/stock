@@ -83,7 +83,8 @@ write.table($name, file = "$name.tab")
 # open value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(as.numeric($name[,2]), xlab = "$xlabel", ylab = "$ylabel", lty = 1, col="blue")
-plot(as.numeric($name[,2]), xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
+plot($name[,2], xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
+#plot(as.numeric($name[,2]), xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
 
 # close value
 #lines(as.numeric($name[,5]), col="red")

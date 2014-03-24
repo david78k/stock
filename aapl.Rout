@@ -286,7 +286,17 @@ Loading required package: devEMF
 > # open value
 > #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 > #plot(as.numeric(aapl[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
-> plot(as.numeric(aapl[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+> plot(aapl[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+Warning messages:
+1: In plot.window(xlim, ylim, log = log, ...) :
+  graphical parameter "type" is obsolete
+2: In axis(if (horiz) 2 else 1, at = at.l, labels = names.arg, lty = axis.lty,  :
+  graphical parameter "type" is obsolete
+3: In title(main = main, sub = sub, xlab = xlab, ylab = ylab, ...) :
+  graphical parameter "type" is obsolete
+4: In axis(if (horiz) 1 else 2, cex.axis = cex.axis, ...) :
+  graphical parameter "type" is obsolete
+> #plot(as.numeric(aapl[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 > 
 > # close value
 > #lines(as.numeric(aapl[,5]), col="red")
@@ -338,4 +348,4 @@ Loading required package: devEMF
 > 
 > proc.time()
    user  system elapsed 
-  1.133   0.056   1.746 
+  1.133   0.053   1.405 
