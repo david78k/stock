@@ -69,4 +69,4 @@ Loading required package: nlme
 > 
 > proc.time()
    user  system elapsed 
-  1.460   0.049   1.654 
+  1.414   0.072   1.672 
