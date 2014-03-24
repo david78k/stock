@@ -1,6 +1,6 @@
 library(quantmod)
 
-png('AAPL.png')
+emf('AAPL.emf')
 
 getSymbols("AAPL")
 chartSeries(AAPL)
