@@ -3114,8 +3114,8 @@ Loading required package: devEMF
 1     1-Mar-12 548.17 548.21 538.77 544.47  24401884
 > #print(googdata)
 > 
-> write.csv(aapldata, file = "aapl.csv")
-> write.table(aapldata, file = "aapl.tab")
+> write.csv(aapl, file = "aapl.csv")
+> write.table(aapl, file = "aapl.tab")
 > 
 > #axis = (1, lab = aapl[2])
 > #axis = (2, aapl[2])
@@ -3172,4 +3172,4 @@ Loading required package: devEMF
 > 
 > proc.time()
    user  system elapsed 
-  1.171   0.088   1.895 
+  1.187   0.090   1.619 

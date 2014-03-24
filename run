@@ -67,8 +67,8 @@ print(names(aapldata)[c(2,5)])
 print(aapl)
 #print(googdata)
 
-write.csv(aapldata, file = "aapl.csv")
-write.table(aapldata, file = "aapl.tab")
+write.csv(aapl, file = "aapl.csv")
+write.table(aapl, file = "aapl.tab")
 
 #axis = (1, lab = aapl[2])
 #axis = (2, aapl[2])
