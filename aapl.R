@@ -22,12 +22,12 @@ write.table(aapl, file = "aapl.tab")
 #axis = (2, aapl[2])
 #box()
 
-# close value
+# open value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-plot(aapl[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", col="blue")
+plot(as.numeric(aapl[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", col="blue")
 #plot(aapl[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
-# open value
+# close value
 lines(aapl[,5], type = "l", col="red")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))

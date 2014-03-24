@@ -78,12 +78,12 @@ write.table($name, file = "$name.tab")
 #axis = (2, aapl[2])
 #box()
 
-# close value
+# open value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-plot($name[,2], xlab = "$xlabel", ylab = "$ylabel", col="blue")
+plot(as.numeric($name[,2]), xlab = "$xlabel", ylab = "$ylabel", col="blue")
 #plot($name[,2], xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
 
-# open value
+# close value
 lines($name[,5], type = "l", col="red")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
