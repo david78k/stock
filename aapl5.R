@@ -24,9 +24,9 @@ write.table(aapl5, file = "aapl5.tab")
 # open value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(as.numeric(aapl5[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
-plot(data[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
-#plot(aapl5[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
-#plot(as.numeric(aapl5[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+#plot(data[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+plot(aapl5[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+plot(as.numeric(aapl5[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # close value
 #lines(as.numeric(aapl5[,5]), col="red")

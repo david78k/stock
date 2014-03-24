@@ -286,18 +286,11 @@ Loading required package: devEMF
 > # open value
 > #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 > #plot(as.numeric(aapl5[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
-> plot(data[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
-Warning messages:
-1: In plot.window(xlim, ylim, log = log, ...) :
-  graphical parameter "type" is obsolete
-2: In axis(if (horiz) 2 else 1, at = at.l, labels = names.arg, lty = axis.lty,  :
-  graphical parameter "type" is obsolete
-3: In title(main = main, sub = sub, xlab = xlab, ylab = ylab, ...) :
-  graphical parameter "type" is obsolete
-4: In axis(if (horiz) 1 else 2, cex.axis = cex.axis, ...) :
-  graphical parameter "type" is obsolete
-> #plot(aapl5[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
-> #plot(as.numeric(aapl5[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+> #plot(data[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+> plot(aapl5[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+> plot(as.numeric(aapl5[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+Warning message:
+In plot.new() : Multiple pages not available for EMF device
 > 
 > # close value
 > #lines(as.numeric(aapl5[,5]), col="red")
@@ -349,4 +342,4 @@ Warning messages:
 > 
 > proc.time()
    user  system elapsed 
-  1.122   0.055   1.544 
+  1.185   0.044   1.704 
