@@ -3,26 +3,26 @@ library(ggplot2)
 require(devEMF)
 emf('aapl.emf')
 
-aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
+#aapldata <- read.csv("http://www.google.com/finance/historical?q=NASDAQ:AAPL&authuser=0&output=csv ", sep=",", header=1)
+aapldata <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2012&output=csv ", sep=",", header=1)
 googdata <- read.csv("http://www.google.com/finance/historical?q=AAPL&startdate=Nov%201,%202011&enddate=Nov%2030,%202011&output=csv")
 
 # reverse data rows
-aapl = aapl[nrow(aapldata):1, ]
+aapl = aapldata[nrow(aapldata):1, ]
 
 print(names(aapldata))
 print(names(aapldata)[c(2,5)])
-print(googdata)
-#print(aapl[, 1])
+print(aapl)
+#print(googdata)
 
-#write.csv(aapl, file = "appl.csv")
-#write.table(aapl, file = "appl.tab")
+write.csv(aapldata, file = "aapl.csv")
+write.table(aapldata, file = "aapl.tab")
 
 #axis = (1, lab = aapl[2])
 #axis = (2, aapl[2])
 #box()
 
 # close value
-#plot(aapl[,5], type = "l", col="blue")
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
@@ -30,7 +30,8 @@ plot(aapl[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 lines(aapl[,2], type = "l", col="red")
 
 #legend("topleft", names(aapldata)[c(2,5)], fill = heat.colors(2))
-legend("topleft", names(aapldata)[c(2,5)], lty = 1, col = c('red', 'blue'))
+legend("topleft", names(aapldata)[c(2,5)], lty = 1:2, col = c('red', 'blue'))
+#legend("topleft", names(aapldata)[c(2,5)], lty = 1, col = c('red', 'blue'))
 
 #matplot(aapl[,1], aapl[,5], type = "l", col="red")
 #plot(aapl[c(1:40), 1], aapl[c(1:40),5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")

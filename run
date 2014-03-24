@@ -7,8 +7,8 @@ fi
 
 #name=$1
 #name=aapl1
-name=aapl2
-#name=aapl
+#name=aapl2
+name=aapl
 
 #data=${name}.dat
 #data=$1
@@ -29,8 +29,9 @@ ylabel="STOCK VALUE ($)"
 # 10 years: 2003-2013
 #url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2003&enddate=Mar+1%2C+2013&output=csv"
 # 33 years: 1980-2013 (actually 16 years of 1997-2013)
-url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+1980&enddate=Mar+1%2C+2013&output=csv"
-#url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+2008&enddate=Mar+1%2C+2012&output=csv"
+#url="http://www.google.com/finance/historical?q=AAPL&startdate=Mar+1%2C+1980&enddate=Mar+1%2C+2013&output=csv"
+# 13 years: 2000-2013 (open value available)
+url="http://www.google.com/finance/historical?q=AAPL&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2012&output=csv"
 
 colors=6
 
