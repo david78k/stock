@@ -10,7 +10,8 @@ goog = data[nrow(data):1, ]
 
 print(names(data))
 print(names(data)[c(2,5)])
-print(goog[, c(2, 5)])
+#print(goog[, c(2, 5)])
+print(as.numeric(goog[, 2]))
 #print(goog)
 
 write.csv(goog, file = "goog.csv")
@@ -23,13 +24,14 @@ write.table(goog, file = "goog.tab")
 # open value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
 #plot(as.numeric(goog[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
-plot(as.numeric(goog[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+#plot(data[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+plot(goog[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+#plot(as.numeric(goog[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # close value
 #lines(as.numeric(goog[,5]), col="red")
 #lines(goog[,5], col="red")
 lines(goog[,5], type = "l", col="red")
-#lines(goog[,2], type = "l", col="red")
 #lines(goog[,3], type = "l", col="green")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
