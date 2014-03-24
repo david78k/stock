@@ -270,7 +270,7 @@ Loading required package: devEMF
 > #plot(goog[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 > 
 > # close value
-> lines(goog[,5], lty = 2, col="red")
+> lines(goog[,5], lty = 1, col="red")
 > 
 > #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
 > legend("topleft", names(data)[c(2,5)], lty = 1:2, col = c('red', 'blue'))
@@ -315,4 +315,4 @@ Loading required package: devEMF
 > 
 > proc.time()
    user  system elapsed 
-  1.086   0.064   1.318 
+  1.098   0.049   1.360 
