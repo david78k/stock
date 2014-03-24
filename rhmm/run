@@ -22,10 +22,10 @@ png=${name}.png
 emf=${name}.emf
 eps=${name}.eps
 
-if [[ $name == aapl* ]]; then
+if [[ ${name} == aapl* ]]; then
 	# AAPL 13 years: 2000-2013 (open value available)
 	url="http://www.google.com/finance/historical?q=AAPL&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv"
-elif [[ $name == goog* ]]; then
+elif [[ ${name} == goog* ]]; then
 	# Google 9 years: 2004-2013
 	url="http://www.google.com/finance/historical?q=GOOG&startdate=Aug+19%2C+2004&enddate=Mar+1%2C+2013&output=csv"
 fi
@@ -52,26 +52,26 @@ function genplot() {
 cat >$script << EOF
 library(quantmod)
 
-getSymbols("$name")
-chartSeries($name)
-$name_Subset <- window($name, start = as.Date("$startdate"))
-$name_Train <- cbind($name_Subset\$$name.Close - $name_Subset\$$name.Open, $name_Subset\$$name.Volume)
+getSymbols("${name}")
+chartSeries(${name})
+${name}_Subset <- window(${name}, start = as.Date("$startdate"))
+${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open, ${name}_Subset\$${name}.Volume)
 
 library(RHmm)
 # Baum-Welch Algorithm
-hm_model <- HMMFit(obs = $name_Train, nStates = 5)
+hm_model <- HMMFit(obs = ${name}_Train, nStates = 5)
 
 # Viterbi Algorithm
-VitPath <- viterbi (hm_model, $name_Train)
+VitPath <- viterbi (hm_model, ${name}_Train)
 
 # scatter plot
-$name_Predict <- cbind($name_Subset\$$name.Close, VitPath$states)
-chartSeries($name_Predict[,1])
-addTA($name_Predict[$name_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
-addTA($name_Predict[$name_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
-addTA($name_Predict[$name_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
-addTA($name_Predict[$name_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
-addTA($name_Predict[$name_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
+${name}_Predict <- cbind(${name}_Subset\$${name}.Close, VitPath$states)
+chartSeries(${name}_Predict[,1])
+addTA(${name}_Predict[${name}_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
+addTA(${name}_Predict[${name}_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
+addTA(${name}_Predict[${name}_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
+addTA(${name}_Predict[${name}_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
+addTA(${name}_Predict[${name}_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
 
 EOF
 

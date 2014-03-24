@@ -45,6 +45,21 @@ Version 0.4-0 included new data defaults. See ?getSymbols.
  options("getSymbols.warning4.0"=FALSE). See ?getSymbol for more details
 [1] "AAPL"
 > chartSeries(AAPL)
->  <- window(AAPL, start = as.Date("2012-01-01"))
-Error: unexpected assignment in " <-"
+> AAPL_Subset <- window(AAPL, start = as.Date("2012-01-01"))
+> AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open, AAPL_Subset$AAPL.Volume)
+> 
+> library(RHmm)
+Loading required package: MASS
+Loading required package: nlme
+> # Baum-Welch Algorithm
+> hm_model <- HMMFit(obs = AAPL_Train, nStates = 5)
+> 
+> # Viterbi Algorithm
+> VitPath <- viterbi (hm_model, AAPL_Train)
+> 
+> # scatter plot
+> AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath)
+Error in error(x, ...) : 
+  improper length of one or more arguments to merge.xts
+Calls: cbind ... cbind -> merge.xts -> .External -> try.xts -> error
 Execution halted
