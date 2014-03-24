@@ -85,7 +85,7 @@ write.table($name, file = "$name.tab")
 #plot(as.numeric($name[,2]), xlab = "$xlabel", ylab = "$ylabel", lty = 1, col="blue")
 #plot(data[,2], xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
 plot($name[,5], xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
-plot(as.numeric($name[,2]), xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
+#plot(as.numeric($name[,2]), xlab = "$xlabel", ylab = "$ylabel", type = "l", col="blue")
 
 # close value
 #lines(as.numeric($name[,5]), col="red")

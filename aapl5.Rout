@@ -288,9 +288,7 @@ Loading required package: devEMF
 > #plot(as.numeric(aapl5[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", lty = 1, col="blue")
 > #plot(data[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 > plot(aapl5[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
-> plot(as.numeric(aapl5[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
-Warning message:
-In plot.new() : Multiple pages not available for EMF device
+> #plot(as.numeric(aapl5[,2]), xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 > 
 > # close value
 > #lines(as.numeric(aapl5[,5]), col="red")
@@ -342,4 +340,4 @@ In plot.new() : Multiple pages not available for EMF device
 > 
 > proc.time()
    user  system elapsed 
-  1.185   0.044   1.704 
+  1.163   0.053   1.708 
