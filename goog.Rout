@@ -266,10 +266,19 @@ Loading required package: devEMF
 > 
 > # close value
 > #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-> plot(goog[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+> plot(goog[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+Warning messages:
+1: In plot.window(xlim, ylim, log = log, ...) :
+  graphical parameter "type" is obsolete
+2: In axis(if (horiz) 2 else 1, at = at.l, labels = names.arg, lty = axis.lty,  :
+  graphical parameter "type" is obsolete
+3: In title(main = main, sub = sub, xlab = xlab, ylab = ylab, ...) :
+  graphical parameter "type" is obsolete
+4: In axis(if (horiz) 1 else 2, cex.axis = cex.axis, ...) :
+  graphical parameter "type" is obsolete
 > 
 > # open value
-> lines(goog[,2], type = "l", col="red")
+> lines(goog[,5], type = "l", col="red")
 > 
 > #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
 > legend("topleft", names(data)[c(2,5)], lty = 1:2, col = c('red', 'blue'))
@@ -314,4 +323,4 @@ Loading required package: devEMF
 > 
 > proc.time()
    user  system elapsed 
-  1.104   0.050   1.504 
+  1.114   0.040   1.512 

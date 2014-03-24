@@ -24,10 +24,10 @@ write.table(goog, file = "goog.tab")
 
 # close value
 #plot(aapl[,1], aapl[,5], xlab = "TIME", ylab = "PRICE ($)", type = "l", col="blue")
-plot(goog[,5], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
+plot(goog[,2], xlab = "DAY", ylab = "STOCK VALUE ($)", type = "l", col="blue")
 
 # open value
-lines(goog[,2], type = "l", col="red")
+lines(goog[,5], type = "l", col="red")
 
 #legend("topleft", names(data)[c(2,5)], fill = heat.colors(2))
 legend("topleft", names(data)[c(2,5)], lty = 1:2, col = c('red', 'blue'))
