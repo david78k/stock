@@ -20,7 +20,7 @@ startdate=2012-01-01
 script=${name}.R
 png=${name}.png
 emf=${name}.emf
-eps=${name}.eps
+eps=${name}%03d.eps
 
 if [[ ${name} == aapl* ]]; then
 	# AAPL 13 years: 2000-2013 (open value available)
