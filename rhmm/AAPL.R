@@ -18,7 +18,7 @@ VitPath <- viterbi (hm_model, AAPL_Train)
 # scatter plot
 AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 chartSeries(AAPL_Predict[,1], theme="white.mono", 
-TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25;
++ TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25;
 addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="p",col=6,pch=24;
 addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type="p",col=7,pch=23;
 addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type="p",col=8,pch=22;
