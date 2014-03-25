@@ -35,7 +35,7 @@ Version 0.4-0 included new data defaults. See ?getSymbols.
 > 
 > require(devEMF)
 Loading required package: devEMF
-> postscript('AAPL.eps')
+> #postscript('AAPL.eps')
 > 
 > getSymbols("AAPL")
     As of 0.4-0, ‘getSymbols’ uses env=parent.frame() and
@@ -62,6 +62,7 @@ Loading required package: nlme
 > VitPath <- viterbi (hm_model, AAPL_Train)
 > 
 > # scatter plot
+> postscript('AAPL.eps')
 > AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 > chartSeries(AAPL_Predict[,1], theme="white.mono", 
 + TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1, col=5,pch=25);
@@ -79,4 +80,4 @@ Loading required package: nlme
 > 
 > proc.time()
    user  system elapsed 
-  1.428   0.057   1.610 
+  1.435   0.059   1.720 
