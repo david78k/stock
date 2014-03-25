@@ -1,7 +1,7 @@
 library(quantmod)
 
 require(devEMF)
-#postscript('AAPL.eps')
+postscript('AAPL.eps')
 
 getSymbols("AAPL")
 chartSeries(AAPL, theme="white")
@@ -18,9 +18,14 @@ VitPath <- viterbi (hm_model, AAPL_Train)
 # scatter plot
 AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 chartSeries(AAPL_Predict[,1], theme="white.mono")
+postscript('AAPL.eps')
 addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
+postscript('AAPL.eps')
 addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
+postscript('AAPL.eps')
 addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
+postscript('AAPL.eps')
 addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
+postscript('AAPL.eps')
 addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
 

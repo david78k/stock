@@ -35,7 +35,7 @@ Version 0.4-0 included new data defaults. See ?getSymbols.
 > 
 > require(devEMF)
 Loading required package: devEMF
-> #postscript('AAPL.eps')
+> postscript('AAPL.eps')
 > 
 > getSymbols("AAPL")
     As of 0.4-0, ‘getSymbols’ uses env=parent.frame() and
@@ -64,13 +64,8 @@ Loading required package: nlme
 > # scatter plot
 > AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 > chartSeries(AAPL_Predict[,1], theme="white.mono")
+> postscript('AAPL.eps')
 > addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
-> addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
-> addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
-> addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
-> addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
-> 
-> 
-> proc.time()
-   user  system elapsed 
-  1.569   0.058   1.878 
+Error in get.current.chob() : improperly set or missing graphics device
+Calls: addTA -> get.current.chob
+Execution halted
