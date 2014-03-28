@@ -11,7 +11,8 @@ name=AAPL
 #name=goog
 #name=goog5
 
-startdate=2012-01-01
+#startdate=2012-01-01
+startdate=2000-01-01
 
 #data=${name}.dat
 #data=$1

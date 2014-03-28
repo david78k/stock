@@ -5,7 +5,7 @@ require(devEMF)
 
 getSymbols("AAPL")
 chartSeries(AAPL, theme="white")
-AAPL_Subset <- window(AAPL, start = as.Date("2012-01-01"))
+AAPL_Subset <- window(AAPL, start = as.Date("2000-01-01"))
 AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open, AAPL_Subset$AAPL.Volume)
 
 library(RHmm)
