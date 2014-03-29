@@ -93,7 +93,10 @@ ${name}_Predict <- cbind(${name}_Subset\$${name}.Close, VitPath\$states)
 
 # Forward-backward 
 fb <- forwardBackward(hm_model, testset, FALSE)
+print(fb)
 #print(${name}_Subset[,4] - ${name}_Predict [,1])
+
+chartSeries(fb, theme="white")
 
 #layout(matrix(1:2, nrow=2))
 layout(matrix(2:1, ncol=2))

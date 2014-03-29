@@ -28,7 +28,10 @@ AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 
 # Forward-backward 
 fb <- forwardBackward(hm_model, testset, FALSE)
+print(fb)
 #print(AAPL_Subset[,4] - AAPL_Predict [,1])
+
+chartSeries(fb, theme="white")
 
 #layout(matrix(1:2, nrow=2))
 layout(matrix(2:1, ncol=2))
