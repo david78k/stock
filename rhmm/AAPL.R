@@ -8,6 +8,9 @@ chartSeries(AAPL, theme="white")
 AAPL_Subset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
 AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open, AAPL_Subset$AAPL.Volume)
 
+testset <- window(AAPL, start = as.Date("2013-03-02"), end = as.Date("2014-03-01"))
+test <- cbind(testset$AAPL.Close - testset$AAPL.Open, testset$AAPL.Volume)
+
 library(RHmm)
 # Baum-Welch Algorithm to find the model for the given observations
 hm_model <- HMMFit(obs = AAPL_Train, nStates = 5)
@@ -20,8 +23,12 @@ VitPath <- viterbi (hm_model, AAPL_Train)
 postscript('AAPL.eps')
 AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 #print(AAPL_Subset)
-print(AAPL_Subset[,4] - AAPL_Predict [,1])
+#print(AAPL_Subset[,4] - AAPL_Predict [,1])
 #print(AAPL_Predict)
+
+# Forward-backward 
+fb <- forwardBackward(hm_model, testset, FALSE)
+#print(AAPL_Subset[,4] - AAPL_Predict [,1])
 
 #layout(matrix(1:2, nrow=2))
 layout(matrix(2:1, ncol=2))
