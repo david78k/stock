@@ -84,8 +84,8 @@ VitPath <- viterbi (hm_model, ${name}_Train)
 # scatter plot
 $cmd
 ${name}_Predict <- cbind(${name}_Subset\$${name}.Close, VitPath\$states)
-print(${name}_Subset)
-print(${name}_Subset - ${name}_Predict [,1])
+#print(${name}_Subset)
+print(${name}_Subset[,4] - ${name}_Predict [,1])
 #print(${name}_Predict)
 
 #layout(matrix(1:2, nrow=2))

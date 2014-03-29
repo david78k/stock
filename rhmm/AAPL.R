@@ -19,8 +19,8 @@ VitPath <- viterbi (hm_model, AAPL_Train)
 # scatter plot
 postscript('AAPL.eps')
 AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
-print(AAPL_Subset)
-print(AAPL_Subset - AAPL_Predict [,1])
+#print(AAPL_Subset)
+print(AAPL_Subset[,4] - AAPL_Predict [,1])
 #print(AAPL_Predict)
 
 #layout(matrix(1:2, nrow=2))
