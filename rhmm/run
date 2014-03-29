@@ -8,8 +8,9 @@ fi
 #name=$1
 #name=aapl6
 #name=AAPL
-name=GOOG
+#name=GOOG
 #name=goog5
+name=FB
 
 # training period
 #startdate=2012-01-01
