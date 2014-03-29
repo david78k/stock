@@ -26,12 +26,15 @@ AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 #print(AAPL_Subset[,4] - AAPL_Predict [,1])
 #print(AAPL_Predict)
 
-# Forward-backward 
-fb <- forwardBackward(hm_model, test, FALSE)
-print(fb)
-#print(AAPL_Subset[,4] - AAPL_Predict [,1])
+# predict next stock value m = nMixt, n = nStates
+#sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
+sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
+chartSeries(nextobs, theme="white")
 
-chartSeries(fb, theme="white")
+# Forward-backward 
+#fb <- forwardBackward(hm_model, test, FALSE)
+#print(fb)
+#print(AAPL_Subset[,4] - AAPL_Predict [,1])
 
 #layout(matrix(1:2, nrow=2))
 layout(matrix(2:1, ncol=2))
