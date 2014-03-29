@@ -27,7 +27,7 @@ AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 #print(AAPL_Predict)
 
 # Forward-backward 
-fb <- forwardBackward(hm_model, testset, FALSE)
+fb <- forwardBackward(hm_model, test, FALSE)
 print(fb)
 #print(AAPL_Subset[,4] - AAPL_Predict [,1])
 
