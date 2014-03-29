@@ -97,7 +97,8 @@ ${name}_Predict <- cbind(${name}_Subset\$${name}.Close, VitPath\$states)
 sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=4,ncol=5)), m=4,n=5))
 # single HMM
 #sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=1,ncol=5)), m=1,n=5))
-chartSeries(nextobs, theme="white")
+
+chartSeries(test, theme="white")
 
 # Forward-backward 
 #fb <- forwardBackward(hm_model, test, FALSE)
