@@ -65,6 +65,6 @@ Loading required package: nlme
 > postscript('GOOG.eps')
 > GOOG_Predict <- cbind(GOOG_Subset$GOOG.Close, VitPath$states)
 > #chartSeries(GOOG_Predict[,1], #theme="white.mono", 
-> chartSeries(GOOG_Predict[,1], layout = (matrix(c(1, 1), 1, 2, byrow = TRUE), respect = TRUE), #theme="white.mono", 
+> chartSeries(GOOG_Predict[,1], layout = (matrix(c(1, 1), 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
 Error: unexpected ',' in "chartSeries(GOOG_Predict[,1], layout = (matrix(c(1, 1), 1, 2, byrow = TRUE),"
 Execution halted
