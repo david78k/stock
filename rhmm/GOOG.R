@@ -23,7 +23,7 @@ layout(matrix(2:1, ncol=2))
 print(matrix(2:1, ncol=2))
 #chartSeries(GOOG_Predict[,1], #theme="white.mono", 
 chartSeries(GOOG_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
-TA="addTA(GOOG_Predict[GOOG_Predict[,2]==1,1],on=1, col=5,pch=25);
+TA="addTA(GOOG_Predict[GOOG_Predict[,2]==1,1], legend = "1", on=1, col=5,pch=25);
 addTA(GOOG_Predict[GOOG_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
 addTA(GOOG_Predict[GOOG_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
 addTA(GOOG_Predict[GOOG_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
