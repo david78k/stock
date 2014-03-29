@@ -98,7 +98,8 @@ sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm
 # single HMM
 #sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=1,ncol=5)), m=1,n=5))
 
-chartSeries(test, theme="white")
+chartSeries(testset, theme="white")
+#chartSeries(test, theme="white")
 
 # Forward-backward 
 #fb <- forwardBackward(hm_model, test, FALSE)
