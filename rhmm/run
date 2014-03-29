@@ -13,8 +13,8 @@ symbol=AAPL
 #symbol=GOOG
 #symbol=FB # 2012-05-18
 
-#name=$symbol
-name=$symbol-gaus # Gaussian mixture
+name=$symbol
+out=$symbol-gaus # Gaussian mixture
 
 # training period
 #startdate=2012-01-01
@@ -29,10 +29,10 @@ testend=2014-03-01
 #data=$1
 #prefix=${data%\.*}
 #name=$prefix
-script=${name}.R
-png=${name}.png
-emf=${name}.emf
-eps=${name}.eps
+script=${out}.R
+png=${out}.png
+emf=${out}.emf
+eps=${out}.eps
 
 if [[ ${name} == aapl* ]]; then
 	# AAPL 13 years: 2000-2013 (open value available)
