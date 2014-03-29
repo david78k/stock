@@ -81,7 +81,7 @@ ${name}_Predict <- cbind(${name}_Subset\$${name}.Close, VitPath\$states)
 layout(matrix(2:1, ncol=2))
 print(matrix(2:1, ncol=2))
 #chartSeries(${name}_Predict[,1], #theme="white.mono", 
-chartSeries(${name}_Predict[,1], #layout = layout(matrix(c(1, 1), 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
+chartSeries(${name}_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
 TA="addTA(${name}_Predict[${name}_Predict[,2]==1,1],on=1, col=5,pch=25);
 addTA(${name}_Predict[${name}_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
 addTA(${name}_Predict[${name}_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
