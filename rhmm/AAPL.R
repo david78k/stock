@@ -14,7 +14,7 @@ test <- cbind(testset$AAPL.Close - testset$AAPL.Open, testset$AAPL.Volume)
 library(RHmm)
 # Baum-Welch Algorithm to find the model for the given observations
 hm_model <- HMMFit(obs = AAPL_Train, nStates = 5)
-#hm_model <- HMMFit(obs = AAPL_Train, nStates = 5, nMixt = 6, dis = "MIXTURE")
+#hm_model <- HMMFit(obs = AAPL_Train, nStates = 5, nMixt = 4, dis = "MIXTURE")
 
 # Viterbi Algorithm to find the most probable state sequence
 VitPath <- viterbi (hm_model, AAPL_Train)
@@ -28,7 +28,10 @@ AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 
 # predict next stock value m = nMixt, n = nStates
 #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
-sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
+# gaussian mixture HMM
+sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
+# single HMM
+#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
 chartSeries(nextobs, theme="white")
 
 # Forward-backward 
