@@ -9,22 +9,34 @@ AAPL_Subset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-0
 AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open, AAPL_Subset$AAPL.Volume)
 
 library(RHmm)
-# Baum-Welch Algorithm
+# Baum-Welch Algorithm to find the model for the given observations
 hm_model <- HMMFit(obs = AAPL_Train, nStates = 5)
+#hm_model <- HMMFit(obs = AAPL_Train, nStates = 5, nMixt = 6, dis = "MIXTURE")
 
-# Viterbi Algorithm
+# Viterbi Algorithm to find the most probable state sequence
 VitPath <- viterbi (hm_model, AAPL_Train)
 
 # scatter plot
 postscript('AAPL.eps')
 AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
-chartSeries(AAPL_Predict[,1], #theme="white.mono", 
-TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1, col=5,pch=25);
+print(AAPL_Subset)
+print(AAPL_Subset - AAPL_Predict [,1])
+#print(AAPL_Predict)
+
+#layout(matrix(1:2, nrow=2))
+layout(matrix(2:1, ncol=2))
+print(matrix(2:1, ncol=2))
+
+# show the states with predicted closing value
+#chartSeries(AAPL_Predict[,1], #theme="white.mono", 
+chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
+TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
 addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
 addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
 addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
 addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
 ")
+
 #addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
 #addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
 #addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
