@@ -50,7 +50,8 @@ actual <- head(testset$AAPL.Close)
 print(actual)
 # MAPE = sum(|pred - actual|/|actual|)*100/n
 #MAPE <- pred$AAPL.Close - actual$AAPL.Close
-MAPE <- abs((pred$AAPL.Close - actual$AAPL.Close)/actual$AAPL.Close)
+#MAPE <- abs((pred$AAPL.Close - actual$AAPL.Close)/actual$AAPL.Close)
+MAPE <- abs((pred$AAPL.Close - 420.05)/420.05)
 print(MAPE)
 
 # single HMM
