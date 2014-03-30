@@ -28,7 +28,9 @@ AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 
 # predict next stock value m = nMixt, n = nStates
 #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
-# gaussian mixture HMM
+# gaussian mixture HMM: nrow = nMixture, ncol = nStates
+print(hm_model$HMM$transMat[last(VitPath$states),])
+print(hm_model$HMM$distribution)
 sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 # single HMM
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
