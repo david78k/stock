@@ -111,10 +111,10 @@ print(change)
 print(tail(${name}_Subset\$${name}.Close))
 pred <- (tail(${name}_Subset\$${name}.Close) + change)
 print(pred)
-actual <- head(test\$${name}.Close)
+actual <- head(testset\$${name}.Close)
 print(actual)
 # MAPE = sum(|pred - actual|/|actual|)*100/n
-MAPE <- pred - actual
+MAPE <- pred\$${name}.Close - actual\$${name}.Close
 print(MAPE)
 
 # single HMM
