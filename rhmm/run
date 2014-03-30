@@ -116,7 +116,7 @@ print(actual)
 # MAPE = sum(|pred - actual|/|actual|)*100/n
 #MAPE <- pred\$${name}.Close - actual\$${name}.Close
 #MAPE <- abs((pred\$${name}.Close - actual\$${name}.Close)/actual\$${name}.Close)
-MAPE <- abs((pred\$${name}.Close - 420.05)/420.05)
+MAPE <- abs((pred\$${name}.Close - 420.05)/420.05) * 100
 print(MAPE)
 
 # single HMM
