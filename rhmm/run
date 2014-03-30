@@ -111,7 +111,8 @@ print(change)
 print(tail(${name}_Subset\$${name}.Close))
 pred <- (tail(${name}_Subset\$${name}.Close) + change)
 print(pred)
-actual <- (head(test\$${name}.Close)
+actual <- head(test\$${name}.Close)
+print(actual)
 # MAPE = sum(|pred - actual|/|actual|)*100/n
 MAPE <- pred - actual
 print(MAPE)
