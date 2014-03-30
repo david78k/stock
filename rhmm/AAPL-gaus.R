@@ -43,9 +43,9 @@ print(unlist(hm_model$HMM$distribution$mean))
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
 change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 print(change)
-print(AAPL_Subset$AAPL.Close)
-#last[AAPL_Subset$AAPL.Close] + change
-#first[test$21203AAPL.Close]
+print(tail(AAPL_Subset$AAPL.Close))
+print(tail(AAPL_Subset$AAPL.Close) + change)
+print(head(test$21252AAPL.Close)
 
 # single HMM
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
