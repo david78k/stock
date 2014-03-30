@@ -59,8 +59,8 @@ chartSeries(testset, theme="white")
 #chartSeries(test, theme="white")
 
 # Forward-backward 
-#fb <- forwardBackward(hm_model, test, FALSE)
-#print(fb)
+fb <- forwardBackward(hm_model, test, FALSE)
+print(fb)
 #print(AAPL_Subset[,4] - AAPL_Predict [,1])
 
 #layout(matrix(1:2, nrow=2))
