@@ -72,6 +72,7 @@ getSymbols("${name}")
 chartSeries(${name}, theme="white")
 ${name}_Subset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 ${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open, ${name}_Subset\$${name}.Volume)
+print(${name}_Train)
 
 testset <- window(${name}, start = as.Date("$teststart"), end = as.Date("$testend"))
 test <- cbind(testset\$${name}.Close - testset\$${name}.Open, testset\$${name}.Volume)
