@@ -72,7 +72,7 @@ getSymbols("${name}")
 chartSeries(${name}, theme="white")
 ${name}_Subset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 ${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open, ${name}_Subset\$${name}.Volume)
-print(${name}_Train)
+#print(${name}_Train)
 
 testset <- window(${name}, start = as.Date("$teststart"), end = as.Date("$testend"))
 test <- cbind(testset\$${name}.Close - testset\$${name}.Open, testset\$${name}.Volume)
@@ -97,6 +97,11 @@ ${name}_Predict <- cbind(${name}_Subset\$${name}.Close, VitPath\$states)
 # gaussian mixture HMM: nrow = nMixture, ncol = nStates
 print(hm_model\$HMM\$transMat[last(VitPath\$states),])
 print(hm_model\$HMM\$distribution)
+print(hm_model\$HMM\$distribution\$mean)
+print(unlist(hm_model\$HMM\$distribution\$mean))
+print(maxtrix(unlist(hm_model\$HMM\$distribution\$mean)))
+print(maxtrix(unlist(hm_model\$HMM\$distribution\$proportion)))
+
 sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean[1,1]), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,1]), nrow=4,ncol=5)), m=4,n=5))
 #sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=4,ncol=5)), m=4,n=5))
 # single HMM

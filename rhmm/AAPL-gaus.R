@@ -7,7 +7,7 @@ getSymbols("AAPL")
 chartSeries(AAPL, theme="white")
 AAPL_Subset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
 AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open, AAPL_Subset$AAPL.Volume)
-print(AAPL_Train)
+#print(AAPL_Train)
 
 testset <- window(AAPL, start = as.Date("2013-03-02"), end = as.Date("2014-03-01"))
 test <- cbind(testset$AAPL.Close - testset$AAPL.Open, testset$AAPL.Volume)
@@ -32,6 +32,11 @@ AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 # gaussian mixture HMM: nrow = nMixture, ncol = nStates
 print(hm_model$HMM$transMat[last(VitPath$states),])
 print(hm_model$HMM$distribution)
+print(hm_model$HMM$distribution$mean)
+print(unlist(hm_model$HMM$distribution$mean))
+print(maxtrix(unlist(hm_model$HMM$distribution$mean)))
+print(maxtrix(unlist(hm_model$HMM$distribution$proportion)))
+
 sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,1]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,1]), nrow=4,ncol=5)), m=4,n=5))
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 # single HMM
