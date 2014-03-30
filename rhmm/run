@@ -102,11 +102,11 @@ print(hm_model\$HMM\$distribution\$mean)
 #print(hm_model\$HMM\$distribution\$mean[, seq(1, ncol(hm_model\$HMM\$distribution\$mean), by = 2)])
 print(unlist(hm_model\$HMM\$distribution\$mean))
 #print(unlist(hm_model\$HMM\$distribution\$mean[1,]))
-print(matrix(unlist(hm_model\$HMM\$distribution\$mean[1,])))
-print(matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,])))
+#print(matrix(unlist(hm_model\$HMM\$distribution\$mean[1,])))
+#print(matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,])))
 
-sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
-#sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=4,ncol=5)), m=4,n=5))
+#sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
+sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=4,ncol=5)), m=4,n=5))
 # single HMM
 #sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=1,ncol=5)), m=1,n=5))
 
