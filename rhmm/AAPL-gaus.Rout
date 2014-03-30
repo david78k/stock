@@ -158,7 +158,8 @@ mixt.  4  1.17453076 3.5416284 0.4006467
 2013-02-27     444.57
 2013-02-28     441.40
 2013-03-01     430.47
-> print(tail(AAPL_Subset$AAPL.Close) + change)
+> pred <- (tail(AAPL_Subset$AAPL.Close) + change)
+> print(pred)
            AAPL.Close
 2013-02-22   449.9179
 2013-02-25   441.9079
@@ -166,6 +167,10 @@ mixt.  4  1.17453076 3.5416284 0.4006467
 2013-02-27   443.6779
 2013-02-28   440.5079
 2013-03-01   429.5779
-> print(head(test$21252AAPL.Close)
-Error: unexpected numeric constant in "print(head(test$21252"
+> actual <- (head(test$AAPL.Close)
++ # MAPE = sum(|pred - actual|/|actual|)*100/n
++ MAPE <- pred - actual
+Error: unexpected symbol in:
+"# MAPE = sum(|pred - actual|/|actual|)*100/n
+MAPE"
 Execution halted
