@@ -140,7 +140,9 @@ layout(1:2)
 print(matrix(2:1, ncol=2))
 
 # show the states with predicted closing value
-chartSeries(pred)
+#chartSeries(pred)
+chartSeries(pred, TA = "addTA(pred - change)")
+
 #chartSeries(${name}_Predict[,1], #theme="white.mono", 
 #chartSeries(${name}_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
 #TA="addTA(${name}_Predict[${name}_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
