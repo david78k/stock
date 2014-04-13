@@ -40,14 +40,17 @@ print(unlist(hm_model$HMM$distribution$mean))
 #print(matrix(unlist(hm_model$HMM$distribution$mean[1,])))
 #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 
+# predict 
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
 change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 print(change)
 print(tail(AAPL_Subset$AAPL.Close))
 pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 print(pred)
+
 actual <- head(testset$AAPL.Close)
 print(actual)
+
 # MAPE = sum(|pred - actual|/|actual|)*100/n
 #MAPE <- pred$AAPL.Close - actual$AAPL.Close
 #MAPE <- abs((pred$AAPL.Close - actual$AAPL.Close)/actual$AAPL.Close)
@@ -71,6 +74,7 @@ layout(1:2)
 print(matrix(2:1, ncol=2))
 
 # show the states with predicted closing value
+chartSeries(pred)
 #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
 #chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
 #TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);

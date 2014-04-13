@@ -78,7 +78,7 @@ Loading required package: nlme
 > #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
 > # gaussian mixture HMM: nrow = nMixture, ncol = nStates
 > print(hm_model$HMM$transMat[last(VitPath$states),])
-[1]  0.000000e+00  1.547490e-02  9.845251e-01  5.381296e-10 1.893254e-283
+[1]  8.778333e-01  1.221667e-01  6.659115e-53  4.600856e-58 1.434550e-151
 > print(hm_model$HMM$distribution)
 
 Model:
@@ -86,70 +86,71 @@ Model:
 
 Distribution parameters:
   State 1
-               mean        var        prop
-mixt.  1 1.21659095 1.14723083 0.001463345
-mixt.  2 1.47249862 0.05940067 0.104225828
-mixt.  3 1.69573895 1.03374892 0.349411496
-mixt.  4 0.04897893 0.34123354 0.544899331
+              mean          var       prop
+mixt.  1  1.660939   0.01036198 0.02034015
+mixt.  2  4.316445  21.45755771 0.27906856
+mixt.  3 -1.303234 128.38271515 0.27958447
+mixt.  4 -1.831079  14.31016140 0.42100682
 
   State 2
-                 mean       var       prop
-mixt.  1 -0.007549422 11.203663 0.02246624
-mixt.  2  1.884831202  2.928767 0.19990411
-mixt.  3 -1.626191862  6.268966 0.22035940
-mixt.  4 -0.504508900 19.754293 0.55727025
+               mean         var      prop
+mixt.  1   2.806775 0.003667137 0.1302546
+mixt.  2  -4.777410 0.129084765 0.1840795
+mixt.  3 -11.513074 0.198372801 0.2708536
+mixt.  4  -8.218117 0.453215621 0.4148122
 
   State 3
-              mean       var       prop
-mixt.  1 24.889840 15.453737 0.02569394
-mixt.  2  1.672290  4.111559 0.20156041
-mixt.  3  6.957987 25.814267 0.37983423
-mixt.  4 -4.658767 32.111603 0.39291142
+              mean      var       prop
+mixt.  1  2.361224 4.485665 0.06222790
+mixt.  2 -5.378609 7.466536 0.08586168
+mixt.  3  1.073019 1.450923 0.36324857
+mixt.  4  2.945220 4.403002 0.48866185
 
   State 4
-                mean      var      prop
-mixt.  1 -11.1979993 83.60997 0.1611609
-mixt.  2   3.9921644 31.15290 0.2104510
-mixt.  3  -8.3775042 14.63427 0.2442730
-mixt.  4  -0.5744568 12.34716 0.3841150
+                mean        var       prop
+mixt.  1 -0.92275326 2.95829115 0.06399896
+mixt.  2 -0.01946494 0.03537303 0.10608859
+mixt.  3 -2.17184476 1.11370277 0.31443916
+mixt.  4 -3.00404436 4.57902148 0.51547330
 
   State 5
                mean       var      prop
-mixt.  1 -0.7134304 3.1177451 0.1063289
-mixt.  2 -1.9201922 2.6809030 0.2742799
-mixt.  3 -0.9814346 0.5053797 0.3079295
-mixt.  4  2.5165928 2.6139775 0.3114617
+mixt.  1  1.6930449 2.8175781 0.1582646
+mixt.  2 -0.4497420 4.6599348 0.2189699
+mixt.  3 -0.4184269 0.5722242 0.2198830
+mixt.  4  0.4486712 4.2258270 0.4028825
 
 > print(hm_model$HMM$distribution$mean)
 [[1]]
-[1] 1.21659095 1.47249862 1.69573895 0.04897893
+[1]  1.660939  4.316445 -1.303234 -1.831079
 
 [[2]]
-[1] -0.007549422  1.884831202 -1.626191862 -0.504508900
+[1]   2.806775  -4.777410 -11.513074  -8.218117
 
 [[3]]
-[1] 24.889840  1.672290  6.957987 -4.658767
+[1]  2.361224 -5.378609  1.073019  2.945220
 
 [[4]]
-[1] -11.1979993   3.9921644  -8.3775042  -0.5744568
+[1] -0.92275326 -0.01946494 -2.17184476 -3.00404436
 
 [[5]]
-[1] -0.7134304 -1.9201922 -0.9814346  2.5165928
+[1]  1.6930449 -0.4497420 -0.4184269  0.4486712
 
 > #print(hm_model$HMM$distribution$mean[, seq(1, ncol(hm_model$HMM$distribution$mean), by = 2)])
 > print(unlist(hm_model$HMM$distribution$mean))
- [1]   1.216590950   1.472498622   1.695738952   0.048978932  -0.007549422
- [6]   1.884831202  -1.626191862  -0.504508900  24.889839617   1.672289557
-[11]   6.957987117  -4.658767326 -11.197999332   3.992164430  -8.377504193
-[16]  -0.574456774  -0.713430442  -1.920192227  -0.981434619   2.516592759
+ [1]   1.66093853   4.31644487  -1.30323407  -1.83107941   2.80677517
+ [6]  -4.77740980 -11.51307396  -8.21811689   2.36122371  -5.37860919
+[11]   1.07301931   2.94521973  -0.92275326  -0.01946494  -2.17184476
+[16]  -3.00404436   1.69304486  -0.44974196  -0.41842689   0.44867117
 > #print(unlist(hm_model$HMM$distribution$mean[1,]))
 > #print(matrix(unlist(hm_model$HMM$distribution$mean[1,])))
 > #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 > 
+> # predict 
 > #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
 > change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 > print(change)
-[1] 1.757232
+[1] -0.7696849
 > print(tail(AAPL_Subset$AAPL.Close))
            AAPL.Close
 2013-02-22     450.81
@@ -161,12 +162,13 @@ mixt.  4  2.5165928 2.6139775 0.3114617
 > pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 > print(pred)
            AAPL.Close
-2013-02-22   452.5672
-2013-02-25   444.5572
-2013-02-26   450.7272
-2013-02-27   446.3272
-2013-02-28   443.1572
-2013-03-01   432.2272
+2013-02-22   450.0403
+2013-02-25   442.0303
+2013-02-26   448.2003
+2013-02-27   443.8003
+2013-02-28   440.6303
+2013-03-01   429.7003
+> 
 > actual <- head(testset$AAPL.Close)
 > print(actual)
            AAPL.Close
@@ -176,18 +178,19 @@ mixt.  4  2.5165928 2.6139775 0.3114617
 2013-03-07     430.58
 2013-03-08     431.72
 2013-03-11     437.87
+> 
 > # MAPE = sum(|pred - actual|/|actual|)*100/n
 > #MAPE <- pred$AAPL.Close - actual$AAPL.Close
 > #MAPE <- abs((pred$AAPL.Close - actual$AAPL.Close)/actual$AAPL.Close)
 > MAPE <- abs((pred$AAPL.Close - 420.05)/420.05) * 100
 > print(MAPE)
            AAPL.Close
-2013-02-22   7.741276
-2013-02-25   5.834361
-2013-02-26   7.303233
-2013-02-27   6.255739
-2013-02-28   5.501067
-2013-03-01   2.898996
+2013-02-22   7.139701
+2013-02-25   5.232785
+2013-02-26   6.701658
+2013-02-27   5.654164
+2013-02-28   4.899492
+2013-03-01   2.297421
 > 
 > # single HMM
 > #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
@@ -208,6 +211,7 @@ mixt.  4  2.5165928 2.6139775 0.3114617
 [1,]    2    1
 > 
 > # show the states with predicted closing value
+> chartSeries(pred)
 > #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
 > #chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
 > #TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
@@ -226,4 +230,4 @@ mixt.  4  2.5165928 2.6139775 0.3114617
 > 
 > proc.time()
    user  system elapsed 
-  5.400   0.057   5.686 
+  4.331   0.059   4.672 
