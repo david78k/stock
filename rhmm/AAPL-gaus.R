@@ -48,7 +48,8 @@ print(tail(AAPL_Subset$AAPL.Close))
 pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 print(pred)
 
-actual <- head(testset$AAPL.Close)
+#actual <- head(testset$AAPL.Close)
+actual <- head(testset$AAPL.Open)
 print(actual)
 
 # MAPE = sum(|pred - actual|/|actual|)*100/n
