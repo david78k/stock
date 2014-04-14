@@ -6,13 +6,15 @@ require(devEMF)
 getSymbols("AAPL")
 chartSeries(AAPL, theme="white")
 trainset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
+#print(trainset)
 #AAPL_Subset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
 #AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open, AAPL_Subset$AAPL.Volume)
 train <- cbind(trainset$AAPL.Close - trainset$AAPL.Open)
-print(train)
+#print(train)
 
 testset <- window(AAPL, start = as.Date("2013-03-01"), end = as.Date("2014-03-01"))
 test <- cbind(testset$AAPL.Close - testset$AAPL.Open)
+print(testset)
 
 library(RHmm)
 # Baum-Welch Algorithm to find the model for the given observations

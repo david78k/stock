@@ -63,13 +63,15 @@ require(devEMF)
 getSymbols("${name}")
 chartSeries(${name}, theme="white")
 trainset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
+#print(trainset)
 #${name}_Subset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 #${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open, ${name}_Subset\$${name}.Volume)
 train <- cbind(trainset\$${name}.Close - trainset\$${name}.Open)
-print(train)
+#print(train)
 
 testset <- window(${name}, start = as.Date("$teststart"), end = as.Date("$testend"))
 test <- cbind(testset\$${name}.Close - testset\$${name}.Open)
+print(testset)
 
 library(RHmm)
 # Baum-Welch Algorithm to find the model for the given observations
