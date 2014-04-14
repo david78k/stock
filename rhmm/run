@@ -20,11 +20,11 @@ out=$symbol-gaus # Gaussian mixture
 # training period
 #startdate=2012-01-01
 startdate=2000-01-01
-enddate=2013-03-01
+enddate=2013-04-01
 
 # test period
-teststart=2013-03-01
-testend=2014-03-01
+teststart=2013-04-01
+testend=2014-04-01
 
 #name=$prefix
 script=${out}.R
