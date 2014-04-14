@@ -40,13 +40,11 @@ AAPL_Predict <- cbind(trainset$AAPL.Close, VitPath$states)
 #print(unlist(hm_model$HMM$distribution$mean))
 #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 
-vec <- 1:length(testset)
-testset <- cbind(testset$AAPL.Close, Pred = 0)
+# add a new colum "Pred"
+testset <- cbind(testset, Pred = 0)
+#testset <- cbind(testset$AAPL.Close, Pred = 0)
 print(testset)
-#testset$Pred <- apply(testset, 1, vec)
-#testset$Pred <- vec
-#testset["Pred"] <- vec
-#testset["Pred"] <- NA
+
 #testopen <- testset$AAPL.Open
 #for (i in 1: length(testopen)) {
 for (i in 1: 3) {
@@ -68,7 +66,9 @@ print(change)
 
 pred <- testclose + change
 #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
+testrow$Pred <- pred
 print(pred)
+print(testset[i, ]$Pred)
 
 #actual <- head(testset$AAPL.Close)
 #actual <- head(testset$AAPL.Open)
