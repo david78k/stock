@@ -79,7 +79,8 @@ print(matrix(2:1, ncol=2))
 
 # show the states with predicted closing value
 #chartSeries(pred)
-chartSeries(pred, TA = "addTA(pred - change, on = 1)")
+chartSeries(pred, TA = "addTA(actual, on = 1)")
+#chartSeries(pred, TA = "addTA(pred - change, on = 1)")
 
 #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
 #chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
