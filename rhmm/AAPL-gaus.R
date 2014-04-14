@@ -90,7 +90,7 @@ print(actual)
 #print(matrix(2:1, ncol=2))
 
 # show the states with predicted closing value
-#chartSeries(pred)
+chartSeries(pred)
 #chartSeries(pred, TA = "addTA(actual, on = 1)")
 #chartSeries(pred, TA = "addTA(pred - change, on = 1)")
 

@@ -136,43 +136,15 @@ Loading required package: nlme
 + #print(matrix(2:1, ncol=2))
 + 
 + # show the states with predicted closing value
-+ #chartSeries(pred)
++ chartSeries(pred)
 + #chartSeries(pred, TA = "addTA(actual, on = 1)")
 + #chartSeries(pred, TA = "addTA(pred - change, on = 1)")
 + 
 + }
-[1] -2.173864
+[1] 0.2199795
      AAPL.Close
            AAPL.Open
 2013-03-01       438
-[1] -2.173864
-           AAPL.Close
-2013-03-01   428.2961
-           AAPL.Open
-2013-03-04     427.8
-[1] -2.173864
-           AAPL.Close
-2013-03-04   417.8761
-           AAPL.Open
-2013-03-05    421.48
-[1] -2.173864
-           AAPL.Close
-2013-03-05   428.9661
-           AAPL.Open
-2013-03-06    434.51
-> 
-> #chartSeries(testset)
-> 
-> #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
-> #chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
-> #TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
-> #")
-> 
-> 
-> proc.time()
-   user  system elapsed 
-  5.659   0.063   6.032 
+Error in `[.xts`(x, xsubset) : subscript out of bounds
+Calls: chartSeries -> [ -> [.xts
+Execution halted
