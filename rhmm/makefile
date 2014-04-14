@@ -1,8 +1,8 @@
-shell := /bin/bash
+SHELL := /bin/bash
 
-default: run 
+default: runhmm
 
-run:
+runhmm:
 	R CMD BATCH run.R
 
 upload:

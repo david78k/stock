@@ -1,0 +1,95 @@
+
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> #if [ $# -lt 0 ]; then
+> #	echo "usage: $0 data"	
+> #	exit
+> #fi
+> 
+> # Apple (NASDAQ:APPL), Google (NASDAQ:GOOG), Microsoft (NASDAQ:MSFT),
+> #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
+> #(NYSE:LNKD), Amazon (NASDAQ:AMZ), Oracle, IBM, Intel
+> #symbol=$1
+> symbol <- "AAPL"
+> #symbol=GOOG
+> #symbol=FB # 2012-05-18
+> 
+> name <- symbol
+> #out=$symbol
+> out <- paste(symbol, "-gaus", sep = "") # Gaussian mixture
+> 
+> # training period
+> #startdate=2012-01-01
+> startdate <- "2000-01-01"
+> enddate <- "2013-03-01"
+> 
+> # test period
+> teststart <- "2013-03-01"
+> testend <- "2014-03-01"
+> 
+> #data=${name}.dat
+> #data=$1
+> #prefix=${data%\.*}
+> #name=$prefix
+> script <- paste(out ,".R", sep = "")
+> png <- paste(out, ".png", sep = "")
+> emf <- paste(out, ".emf", sep = "")
+> eps <- paste(out, ".eps", sep = "")
+> 
+> #xlabel="DATE"
+> xlabel <- "DAY"
+> ylabel <- "STOCK VALUE ($)"
+> #ylabel="CLOSE VALUE"
+> 
+> runhmm <- function () {
++ 
++ 	library(quantmod)
++ 
++ 	require(devEMF)
++ 
++ 	getSymbols(name)
++ 	chartSeries(name, theme="white")
++ 	trainset <- window(name, start = as.Date(startdate), end = as.Date(enddate))
++ 	#print(trainset)
++ 	#${name}_Subset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
++ 	#${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open, ${name}_Subset\$${name}.Volume)
++ 	train <- cbind(paste("trainset$", name, ".Close", sep = "") - paste("trainset$", name, ".Open", sep = ""))
++ 	#print(train)
++ 
++ 	testset <- window(name, start = as.Date(teststart), end = as.Date(testend))
++ 	test <- cbind(paste("testset$", name, ".Close", sep = "") - paste("testset$", name, ".Open", sep = ""))
++ 	#print(testset)
++ 
++ 	library(RHmm)
++ 	# Baum-Welch Algorithm to find the model for the given observations
++ 	#hm_model <- HMMFit(obs = ${name}_Train, nStates = 5)
++ 	hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
++ 
++ 	# Viterbi Algorithm to find the most probable state sequence
++ 	VitPath <- viterbi (hm_model, train)
++ 
++ 	# scatter plot
++ 	#$cmd
++ 	paste(name, "_Predict", setp = "") <- cbind(paste("trainset$", name, ".Close", sep = ""), VitPath\$states)
+Error: unexpected input in:
+"        #$cmd
+        paste(name, "_Predict", setp = "") <- cbind(paste("trainset$", name, ".Close", sep = ""), VitPath\"
+Execution halted
