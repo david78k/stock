@@ -1,6 +1,6 @@
-library(quantmod)
-
 require(devEMF)
+library(quantmod)
+library(RHmm)
 #postscript('AAPL-gaus.eps')
 
 getSymbols("AAPL")
@@ -16,13 +16,12 @@ testset <- window(AAPL, start = as.Date("2013-03-01"), end = as.Date("2014-03-01
 test <- cbind(testset$AAPL.Close - testset$AAPL.Open)
 #print(testset)
 
-library(RHmm)
 # Baum-Welch Algorithm to find the model for the given observations
 #hm_model <- HMMFit(obs = AAPL_Train, nStates = 5)
-hm_model <- HMMFit(obs = AAPL_Train, nStates = 5, nMixt = 4, dis = "MIXTURE")
+hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
 
 # Viterbi Algorithm to find the most probable state sequence
-VitPath <- viterbi (hm_model, AAPL_Train)
+VitPath <- viterbi (hm_model, train)
 
 # scatter plot
 postscript('AAPL-gaus.eps')
@@ -45,19 +44,23 @@ testset <- cbind(testset, Pred = 0)
 #testset <- cbind(testset$AAPL.Close, Pred = 0)
 #print(testset)
 
+# number of rows of test set data
 rows = nrow(testset)
+
+# predict and update HMM model to include the new actual value
 #for (i in 1: 251) {
 for (i in 0: rows) {
-	print(i)
-	print(rows)
+#	print(i)
+#	print(rows)
 	if (i == rows) break
-	#if (i == rows - 1) break
+
 	if(i != 0) {
-	testrow <- testset[i, ]
-	print(testrow)
-	testopen <- testset$AAPL.Open[i, ]
-	testclose <- testset$AAPL.Close[i, ]
+		testrow <- testset[i, ]
+		print(testrow)
+		testopen <- testset$AAPL.Open[i, ]
+		testclose <- testset$AAPL.Close[i, ]
 	}
+
 #	actual <- testset$AAPL.Open[i + 1, ]
 	#print(testset$AAPL.Open[i, ])
 
@@ -65,10 +68,6 @@ for (i in 0: rows) {
 change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
 print(change)
-
-#print(tail(AAPL_Subset$AAPL.Close))
-#head5 <- head(testset$AAPL.Close)
-#print(head5)
 
 pred <- testclose + change
 #pred <- (tail(AAPL_Subset$AAPL.Close) + change)

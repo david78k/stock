@@ -3,7 +3,7 @@ SHELL := /bin/bash
 default: runhmm
 
 runhmm:
-	./script
+	./run
 #	R CMD BATCH run.R
 
 upload:
