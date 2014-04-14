@@ -42,7 +42,7 @@ print(unlist(hm_model$HMM$distribution$mean))
 #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 
 for (i in 1: length(testset)) {
-	print(testset$AAPL.Open)
+	print(testset$AAPL.Open[i, ])
 }
 
 # predict 
