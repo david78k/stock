@@ -67,7 +67,7 @@ print(change)
 pred <- testclose + change
 #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 testrow$Pred <- pred
-print(pred)
+#print(pred)
 testset[i, ]$Pred <- pred
 print(testset[i, ]$Pred)
 

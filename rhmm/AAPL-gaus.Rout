@@ -619,7 +619,7 @@ Loading required package: nlme
 + pred <- testclose + change
 + #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 + testrow$Pred <- pred
-+ print(pred)
++ #print(pred)
 + testset[i, ]$Pred <- pred
 + print(testset[i, ]$Pred)
 + 
@@ -660,29 +660,23 @@ Loading required package: nlme
 2013-03-01       438    438.18   429.98     430.47    19730300        419.86
            Pred
 2013-03-01    0
-[1] 4.316957
-           AAPL.Close
-2013-03-01    434.787
-              Pred
-2013-03-01 434.787
+[1] -0.905078
+               Pred
+2013-03-01 429.5649
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-03-04     427.8     428.2      419     420.05    20812700        409.69
            Pred
 2013-03-04    0
-[1] 4.316957
-           AAPL.Close
-2013-03-04    424.367
-              Pred
-2013-03-04 424.367
+[1] -0.905078
+               Pred
+2013-03-04 419.1449
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-03-05    421.48    435.19   420.75     431.14    22801200        420.51
            Pred
 2013-03-05    0
-[1] 4.316957
-           AAPL.Close
-2013-03-05    435.457
-              Pred
-2013-03-05 435.457
+[1] -0.905078
+               Pred
+2013-03-05 430.2349
 > 
 > #chartSeries(testset)
 > 
@@ -698,4 +692,4 @@ Loading required package: nlme
 > 
 > proc.time()
    user  system elapsed 
-  5.658   0.075   5.977 
+  4.937   0.067   5.180 
