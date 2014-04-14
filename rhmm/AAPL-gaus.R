@@ -50,6 +50,8 @@ testset <- cbind(testset, Pred = 0)
 #for (i in 1: length(testset) - 1) {
 #for (i in 0: length(testset) - 1) {
 for (i in 1: length(testset)) {
+	print(i)
+	print(length(testset))
 	if (i == length(testset)) break
 	testrow <- testset[i, ]
 	print(testrow)
