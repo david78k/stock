@@ -40,7 +40,8 @@ AAPL_Predict <- cbind(trainset$AAPL.Close, VitPath$states)
 #print(unlist(hm_model$HMM$distribution$mean))
 #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 
-testset["Pred"] <- a.vector
+vec <- 1:length(testset)
+testset["Pred"] <- vec
 #testset["Pred"] <- NA
 #testopen <- testset$AAPL.Open
 #for (i in 1: length(testopen)) {
