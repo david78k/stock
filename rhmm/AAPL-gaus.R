@@ -14,7 +14,7 @@ train <- cbind(trainset$AAPL.Close - trainset$AAPL.Open)
 
 testset <- window(AAPL, start = as.Date("2013-03-01"), end = as.Date("2014-03-01"))
 test <- cbind(testset$AAPL.Close - testset$AAPL.Open)
-print(testset)
+#print(testset)
 
 library(RHmm)
 # Baum-Welch Algorithm to find the model for the given observations
@@ -53,7 +53,7 @@ for (i in 0: 3) {
 # predict 
 change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
-#print(change)
+print(change)
 
 #print(tail(AAPL_Subset$AAPL.Close))
 #head5 <- head(testset$AAPL.Close)
@@ -61,11 +61,11 @@ change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(un
 
 pred <- testclose + change
 #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
-#print(pred)
+print(pred)
 
 #actual <- head(testset$AAPL.Close)
 #actual <- head(testset$AAPL.Open)
-#print(actual)
+print(actual)
 
 # MAPE = sum(|pred - actual|/|actual|)*100/n
 #MAPE <- pred$AAPL.Close - actual$AAPL.Close
@@ -90,7 +90,7 @@ pred <- testclose + change
 #print(matrix(2:1, ncol=2))
 
 # show the states with predicted closing value
-chartSeries(pred)
+#chartSeries(pred)
 #chartSeries(pred, TA = "addTA(actual, on = 1)")
 #chartSeries(pred, TA = "addTA(pred - change, on = 1)")
 

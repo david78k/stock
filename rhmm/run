@@ -71,7 +71,7 @@ train <- cbind(trainset\$${name}.Close - trainset\$${name}.Open)
 
 testset <- window(${name}, start = as.Date("$teststart"), end = as.Date("$testend"))
 test <- cbind(testset\$${name}.Close - testset\$${name}.Open)
-print(testset)
+#print(testset)
 
 library(RHmm)
 # Baum-Welch Algorithm to find the model for the given observations
@@ -110,7 +110,7 @@ for (i in 0: 3) {
 # predict 
 change <- sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=4,ncol=5)), m=4,n=5))
 #sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
-#print(change)
+print(change)
 
 #print(tail(${name}_Subset\$${name}.Close))
 #head5 <- head(testset\$${name}.Close)
@@ -118,11 +118,11 @@ change <- sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix
 
 pred <- testclose + change
 #pred <- (tail(${name}_Subset\$${name}.Close) + change)
-#print(pred)
+print(pred)
 
 #actual <- head(testset\$${name}.Close)
 #actual <- head(testset\$${name}.Open)
-#print(actual)
+print(actual)
 
 # MAPE = sum(|pred - actual|/|actual|)*100/n
 #MAPE <- pred\$${name}.Close - actual\$${name}.Close
@@ -147,7 +147,7 @@ pred <- testclose + change
 #print(matrix(2:1, ncol=2))
 
 # show the states with predicted closing value
-chartSeries(pred)
+#chartSeries(pred)
 #chartSeries(pred, TA = "addTA(actual, on = 1)")
 #chartSeries(pred, TA = "addTA(pred - change, on = 1)")
 
