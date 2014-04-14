@@ -98,10 +98,13 @@ testset <- cbind(testset, Pred = 0)
 #testset <- cbind(testset\$${name}.Close, Pred = 0)
 #print(testset)
 
+#chartSeries(testset, theme="white")
+#chartSeries(test, theme="white")
+
 # number of rows of test set data
 rows = nrow(testset)
 
-# predict and update HMM model to include the new actual value
+# predict and update HMM to include the new actual value
 #for (i in 1: 251) {
 for (i in 0: rows) {
 #	print(i)
@@ -118,53 +121,44 @@ for (i in 0: rows) {
 #	actual <- testset\$${name}.Open[i + 1, ]
 	#print(testset\$${name}.Open[i, ])
 
-# predict 
-change <- sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=4,ncol=5)), m=4,n=5))
-#sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
-print(change)
+	# predict 
+	change <- sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=4,ncol=5)), m=4,n=5))
+	#sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
+	print(change)
 
-pred <- testclose + change
-#pred <- (tail(${name}_Subset\$${name}.Close) + change)
-#testrow\$Pred <- pred
-#print(pred)
-# update tomorrow's predicted value
-testset[i + 1, ]\$Pred <- pred
-#print(testset[i + 1, ]\$Pred)
+	pred <- testclose + change
+	#pred <- (tail(${name}_Subset\$${name}.Close) + change)
+	#testrow\$Pred <- pred
+	#print(pred)
+	# update tomorrow's predicted value
+	testset[i + 1, ]\$Pred <- pred
+	#print(testset[i + 1, ]\$Pred)
 
-#actual <- head(testset\$${name}.Close)
-#actual <- head(testset\$${name}.Open)
-#print(actual)
+	# MAPE = sum(|pred - actual|/|actual|)*100/n
+	#MAPE <- pred\$${name}.Close - actual\$${name}.Close
+	#MAPE <- abs((pred\$${name}.Close - actual\$${name}.Close)/actual\$${name}.Close)
+	#MAPE <- abs((pred\$${name}.Close - 420.05)/420.05) * 100
+	#print(MAPE)
 
-# MAPE = sum(|pred - actual|/|actual|)*100/n
-#MAPE <- pred\$${name}.Close - actual\$${name}.Close
-#MAPE <- abs((pred\$${name}.Close - actual\$${name}.Close)/actual\$${name}.Close)
-#MAPE <- abs((pred\$${name}.Close - 420.05)/420.05) * 100
-#print(MAPE)
+	# NRMSE = sqrt(sum((pred - actual)^2) / n)
 
-# [Optional] Returns: sell or buy
-# if stock increased sell, otherwise buy
+	# [Optional] Returns: sell or buy
+	# if stock increased sell, otherwise buy
 
-# single HMM
-#sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=1,ncol=5)), m=1,n=5))
+	# single HMM
+	#sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=1,ncol=5)), m=1,n=5))
 
-#chartSeries(testset, theme="white")
-#chartSeries(test, theme="white")
+	# Forward-backward 
+	#fb <- forwardBackward(hm_model, test, FALSE)
+	#print(fb)
+	#print(${name}_Subset[,4] - ${name}_Predict [,1])
 
-# Forward-backward 
-#fb <- forwardBackward(hm_model, test, FALSE)
-#print(fb)
-#print(${name}_Subset[,4] - ${name}_Predict [,1])
+	# update HMM with the new data
+	# Baum-Welch Algorithm to find the model for the given observations
+	#hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
 
-#layout(matrix(1:2, nrow=2))
-#layout(matrix(2:1, ncol=2))
-#layout(1:2)
-#print(matrix(2:1, ncol=2))
-
-# show the states with predicted closing value
-#chartSeries(pred)
-#chartSeries(actual)
-#chartSeries(pred, TA = "addTA(actual, on = 1)")
-#chartSeries(pred, TA = "addTA(pred - change, on = 1)")
+	# Viterbi Algorithm to find the most probable state sequence
+	#VitPath <- viterbi (hm_model, train)
 
 }
 
@@ -184,7 +178,6 @@ chartSeries(testset[2:rows, 1], theme= chartTheme('white', up.col = 'blue'), nam
 
 #chartSeries(testset)
 
-#chartSeries(${name}_Predict[,1], #theme="white.mono", 
 #chartSeries(${name}_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
 #TA="addTA(${name}_Predict[${name}_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
 #addTA(${name}_Predict[${name}_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
