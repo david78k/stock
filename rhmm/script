@@ -26,17 +26,14 @@ enddate=2013-03-01
 teststart=2013-03-01
 testend=2014-03-01
 
-#data=${name}.dat
-#data=$1
-#prefix=${data%\.*}
 #name=$prefix
 script=${out}.R
 png=${out}.png
 emf=${out}.emf
 eps=${out}.eps
 
-#xlabel="DATE"
-xlabel="DAY"
+xlabel="DATE"
+#xlabel="DAY"
 ylabel="STOCK VALUE ($)"
 #ylabel="CLOSE VALUE"
 
@@ -168,7 +165,8 @@ testset[i + 1, ]\$Pred <- pred
 
 }
 
-chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
+chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legent = \"Predicted\")") #
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
