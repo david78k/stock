@@ -9,8 +9,7 @@ trainset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-03-0
 #AAPL_Subset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
 #AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open, AAPL_Subset$AAPL.Volume)
 train <- cbind(trainset$AAPL.Close - trainset$AAPL.Open)
-#AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open)
-#print(AAPL_Train)
+print(train)
 
 testset <- window(AAPL, start = as.Date("2013-03-01"), end = as.Date("2014-03-01"))
 test <- cbind(testset$AAPL.Close - testset$AAPL.Open)
@@ -32,13 +31,11 @@ AAPL_Predict <- cbind(trainset$AAPL.Close, VitPath$states)
 # predict next stock value m = nMixt, n = nStates
 #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
 # gaussian mixture HMM: nrow = nMixture, ncol = nStates
-print(hm_model$HMM$transMat[last(VitPath$states),])
-print(hm_model$HMM$distribution)
-print(hm_model$HMM$distribution$mean)
+#print(hm_model$HMM$transMat[last(VitPath$states),])
+#print(hm_model$HMM$distribution)
+#print(hm_model$HMM$distribution$mean)
 #print(hm_model$HMM$distribution$mean[, seq(1, ncol(hm_model$HMM$distribution$mean), by = 2)])
-print(unlist(hm_model$HMM$distribution$mean))
-#print(unlist(hm_model$HMM$distribution$mean[1,]))
-#print(matrix(unlist(hm_model$HMM$distribution$mean[1,])))
+#print(unlist(hm_model$HMM$distribution$mean))
 #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 
 #testopen <- testset$AAPL.Open
@@ -54,17 +51,19 @@ for (i in 0: 3) {
 # predict 
 change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
-print(change)
+#print(change)
+
 #print(tail(AAPL_Subset$AAPL.Close))
 #head5 <- head(testset$AAPL.Close)
 #print(head5)
+
 pred <- testclose + change
 #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
-print(pred)
+#print(pred)
 
 #actual <- head(testset$AAPL.Close)
 #actual <- head(testset$AAPL.Open)
-print(actual)
+#print(actual)
 
 # MAPE = sum(|pred - actual|/|actual|)*100/n
 #MAPE <- pred$AAPL.Close - actual$AAPL.Close
