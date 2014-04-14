@@ -105,10 +105,10 @@ for (i in 0: rows) {
 	
 	# update HMM with the new data
 	# Baum-Welch Algorithm to find the model for the given observations
-	#hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
+	hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
 
 	# Viterbi Algorithm to find the most probable state sequence
-	#VitPath <- viterbi (hm_model, train)
+	VitPath <- viterbi (hm_model, train)
 }
 
 # plot actual with predicted values added
