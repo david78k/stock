@@ -35,6 +35,14 @@ png=${out}.png
 emf=${out}.emf
 eps=${out}.eps
 
+if [[ ${name} == aapl* ]]; then
+	# AAPL 13 years: 2000-2013 (open value available)
+	url="http://www.google.com/finance/historical?q=AAPL&startdate=Jan+1%2C+2000&enddate=Mar+1%2C+2013&output=csv"
+elif [[ ${name} == goog* ]]; then
+	# Google 9 years: 2004-2013
+	url="http://www.google.com/finance/historical?q=GOOG&startdate=Aug+19%2C+2004&enddate=Mar+1%2C+2013&output=csv"
+fi
+
 #xlabel="DATE"
 xlabel="DAY"
 ylabel="STOCK VALUE ($)"
@@ -62,11 +70,9 @@ require(devEMF)
 
 getSymbols("${name}")
 chartSeries(${name}, theme="white")
-trainset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
-#${name}_Subset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
+${name}_Subset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 #${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open, ${name}_Subset\$${name}.Volume)
-train <- cbind(trainset\$${name}.Close - trainset\$${name}.Open)
-#${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open)
+${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open)
 #print(${name}_Train)
 
 testset <- window(${name}, start = as.Date("$teststart"), end = as.Date("$testend"))
@@ -82,9 +88,10 @@ VitPath <- viterbi (hm_model, ${name}_Train)
 
 # scatter plot
 $cmd
-${name}_Predict <- cbind(trainset\$${name}.Close, VitPath\$states)
-#${name}_Predict <- cbind(${name}_Subset\$${name}.Close, VitPath\$states)
+${name}_Predict <- cbind(${name}_Subset\$${name}.Close, VitPath\$states)
+#print(${name}_Subset)
 #print(${name}_Subset[,4] - ${name}_Predict [,1])
+#print(${name}_Predict)
 
 # predict next stock value m = nMixt, n = nStates
 #sum(a$HMM$transMat[last(v$states),] * .colSums((matrix(unlist(a$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(a$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
@@ -148,6 +155,12 @@ chartSeries(pred, TA = "addTA(actual, on = 1)")
 #addTA(${name}_Predict[${name}_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
 #addTA(${name}_Predict[${name}_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
 #")
+
+#addTA(${name}_Predict[${name}_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
+#addTA(${name}_Predict[${name}_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
+#addTA(${name}_Predict[${name}_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
+#addTA(${name}_Predict[${name}_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
+#addTA(${name}_Predict[${name}_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
 
 EOF
 

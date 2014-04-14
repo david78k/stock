@@ -5,9 +5,11 @@ require(devEMF)
 
 getSymbols("AAPL")
 chartSeries(AAPL, theme="white")
-AAPL_Subset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
+trainset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
+#AAPL_Subset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
 #AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open, AAPL_Subset$AAPL.Volume)
-AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open)
+train <- cbind(trainset$AAPL.Close - trainset$AAPL.Open)
+#AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open)
 #print(AAPL_Train)
 
 testset <- window(AAPL, start = as.Date("2013-03-01"), end = as.Date("2014-03-01"))
@@ -23,10 +25,9 @@ VitPath <- viterbi (hm_model, AAPL_Train)
 
 # scatter plot
 postscript('AAPL-gaus.eps')
-AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
-#print(AAPL_Subset)
+AAPL_Predict <- cbind(trainset$AAPL.Close, VitPath$states)
+#AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
 #print(AAPL_Subset[,4] - AAPL_Predict [,1])
-#print(AAPL_Predict)
 
 # predict next stock value m = nMixt, n = nStates
 #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
@@ -90,10 +91,4 @@ chartSeries(pred, TA = "addTA(actual, on = 1)")
 #addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
 #addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
 #")
-
-#addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
-#addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
-#addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
-#addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
-#addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
 
