@@ -164,7 +164,7 @@ mixt.  4  1.3533135 3.2554809 0.40866788
 + #print(tail(AAPL_Subset$AAPL.Close))
 + #head5 <- head(testset$AAPL.Close)
 + #print(head5)
-+ pred <- predclose + change
++ pred <- testclose + change
 + #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 + print(pred)
 + 
@@ -175,8 +175,8 @@ mixt.  4  1.3533135 3.2554809 0.40866788
 + # MAPE = sum(|pred - actual|/|actual|)*100/n
 + #MAPE <- pred$AAPL.Close - actual$AAPL.Close
 + #MAPE <- abs((pred$AAPL.Close - actual$AAPL.Close)/actual$AAPL.Close)
-+ MAPE <- abs((pred$AAPL.Close - 420.05)/420.05) * 100
-+ print(MAPE)
++ #MAPE <- abs((pred$AAPL.Close - 420.05)/420.05) * 100
++ #print(MAPE)
 + 
 + # single HMM
 + #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
@@ -201,5 +201,9 @@ mixt.  4  1.3533135 3.2554809 0.40866788
 + 
 + }
 [1] -0.6492589
-Error: object 'predclose' not found
+     AAPL.Close
+           AAPL.Open
+2013-03-01       438
+Error in `[.xts`(x, xsubset) : subscript out of bounds
+Calls: chartSeries -> [ -> [.xts
 Execution halted

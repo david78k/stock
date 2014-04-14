@@ -58,7 +58,7 @@ print(change)
 #print(tail(AAPL_Subset$AAPL.Close))
 #head5 <- head(testset$AAPL.Close)
 #print(head5)
-pred <- predclose + change
+pred <- testclose + change
 #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 print(pred)
 
@@ -69,8 +69,8 @@ print(actual)
 # MAPE = sum(|pred - actual|/|actual|)*100/n
 #MAPE <- pred$AAPL.Close - actual$AAPL.Close
 #MAPE <- abs((pred$AAPL.Close - actual$AAPL.Close)/actual$AAPL.Close)
-MAPE <- abs((pred$AAPL.Close - 420.05)/420.05) * 100
-print(MAPE)
+#MAPE <- abs((pred$AAPL.Close - 420.05)/420.05) * 100
+#print(MAPE)
 
 # single HMM
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
