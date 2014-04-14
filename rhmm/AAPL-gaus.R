@@ -45,10 +45,10 @@ testset <- cbind(testset, Pred = 0)
 #testset <- cbind(testset$AAPL.Close, Pred = 0)
 #print(testset)
 
-#testopen <- testset$AAPL.Open
 #for (i in 1: length(testopen)) {
 #for (i in 1: 3) {
-for (i in 1: length(testset) - 1) {
+#for (i in 1: length(testset) - 1) {
+for (i in 1: length(testset)) {
 	testrow <- testset[i, ]
 	print(testrow)
 	testopen <- testset$AAPL.Open[i, ]
