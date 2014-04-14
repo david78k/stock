@@ -42,7 +42,7 @@ print(unlist(hm_model$HMM$distribution$mean))
 #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 
 testopen <- testset$AAPL.Open
-for (i in 1: length(testset)) {
+for (i in 0: length(testset) - 1) {
 	testrow <- testopen[i, ]
 	print(testrow)
 	#print(testset$AAPL.Open[i, ])
