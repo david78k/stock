@@ -40,14 +40,15 @@ AAPL_Predict <- cbind(trainset$AAPL.Close, VitPath$states)
 #print(unlist(hm_model$HMM$distribution$mean))
 #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 
+testset["Pred"] <- NA
 #testopen <- testset$AAPL.Open
 #for (i in 1: length(testopen)) {
 for (i in 1: 3) {
+	testrow <- testset[i, ]
+	print(testrow)
 	testopen <- testset$AAPL.Open[i, ]
 	testclose <- testset$AAPL.Close[i, ]
 	actual <- testset$AAPL.Open[i + 1, ]
-	#testrow <- testopen[i, ]
-	#print(testrow)
 	#print(testset$AAPL.Open[i, ])
 
 # predict 
@@ -92,7 +93,7 @@ print(actual)
 # show the states with predicted closing value
 #chartSeries(pred)
 #chartSeries(actual)
-chartSeries(pred, TA = "addTA(actual, on = 1)")
+#chartSeries(pred, TA = "addTA(actual, on = 1)")
 #chartSeries(pred, TA = "addTA(pred - change, on = 1)")
 
 }
