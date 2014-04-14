@@ -87,7 +87,8 @@ Loading required package: nlme
 > #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 > 
 > vec <- 1:length(testset)
-> cbind(testset, AAPL.Pred = 0)
+> testset <- cbind(testset, AAPL.Pred = 0)
+> print(testset)
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-03-01    438.00    438.18   429.98     430.47    19730300        419.86
 2013-03-04    427.80    428.20   419.00     420.05    20812700        409.69
@@ -656,23 +657,29 @@ Loading required package: nlme
 + }
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-03-01       438    438.18   429.98     430.47    19730300        419.86
-[1] 0.3057754
+           AAPL.Pred
+2013-03-01         0
+[1] -0.7059718
            AAPL.Close
-2013-03-01   430.7758
+2013-03-01    429.764
            AAPL.Open
 2013-03-04     427.8
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-03-04     427.8     428.2      419     420.05    20812700        409.69
-[1] 0.3057754
+           AAPL.Pred
+2013-03-04         0
+[1] -0.7059718
            AAPL.Close
-2013-03-04   420.3558
+2013-03-04    419.344
            AAPL.Open
 2013-03-05    421.48
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-03-05    421.48    435.19   420.75     431.14    22801200        420.51
-[1] 0.3057754
+           AAPL.Pred
+2013-03-05         0
+[1] -0.7059718
            AAPL.Close
-2013-03-05   431.4458
+2013-03-05    430.434
            AAPL.Open
 2013-03-06    434.51
 > 
@@ -690,4 +697,4 @@ Loading required package: nlme
 > 
 > proc.time()
    user  system elapsed 
-  5.192   0.058   5.539 
+  5.052   0.063   5.423 

@@ -41,7 +41,8 @@ AAPL_Predict <- cbind(trainset$AAPL.Close, VitPath$states)
 #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 
 vec <- 1:length(testset)
-cbind(testset, AAPL.Pred = 0)
+testset <- cbind(testset, AAPL.Pred = 0)
+print(testset)
 #testset$Pred <- apply(testset, 1, vec)
 #testset$Pred <- vec
 #testset["Pred"] <- vec
