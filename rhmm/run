@@ -101,7 +101,7 @@ print(unlist(hm_model\$HMM\$distribution\$mean))
 testopen <- testset\$${name}.Open
 for (i in 0: length(testset) - 1) {
 	testrow <- testopen[i, ]
-	print(testrow)
+#	print(testrow)
 	#print(testset\$${name}.Open[i, ])
 }
 
