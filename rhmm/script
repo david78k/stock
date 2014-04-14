@@ -103,10 +103,10 @@ testset <- cbind(testset, Pred = 0)
 #for (i in 1: 251) {
 #for (i in 1: length(testset) - 1) {
 #for (i in 0: length(testset) - 1) {
-for (i in 1: length(testset)) {
+for (i in 1: nrow(testset)) {
 	print(i)
-	print(length(testset))
-	if (i == length(testset)) break
+	print(nrow(testset))
+	if (i == nrow(testset) - 1) break
 	testrow <- testset[i, ]
 	print(testrow)
 	testopen <- testset\$${name}.Open[i, ]
