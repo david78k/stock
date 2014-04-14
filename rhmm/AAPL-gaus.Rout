@@ -1408,6 +1408,6 @@ Loading required package: nlme
 [1] -0.7323675
 > 
 > # plot actual with predicted values added
-> chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"), legend = \"Predicted\")"), # 
-Error: unexpected symbol in "chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"
+> chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")"), # blue
+Error: unexpected ',' in "chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")"),"
 Execution halted
