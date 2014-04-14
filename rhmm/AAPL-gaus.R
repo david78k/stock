@@ -73,7 +73,6 @@ for (i in 0: rows) {
 	print(change)
 
 	pred <- testclose + change
-	#pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 	#testrow$Pred <- pred
 	#print(pred)
 	# update tomorrow's predicted value
@@ -88,6 +87,8 @@ for (i in 0: rows) {
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
 
+	# ROC
+
 	# [Optional] Returns: sell or buy
 	# if stock increased sell, otherwise buy
 
@@ -99,13 +100,15 @@ for (i in 0: rows) {
 	#print(fb)
 	#print(AAPL_Subset[,4] - AAPL_Predict [,1])
 
+	# update train data
+	train <- rbind (train, testclose - testopen)
+	
 	# update HMM with the new data
 	# Baum-Welch Algorithm to find the model for the given observations
 	#hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
 
 	# Viterbi Algorithm to find the most probable state sequence
 	#VitPath <- viterbi (hm_model, train)
-
 }
 
 # plot actual with predicted values added
