@@ -96,7 +96,7 @@ Loading required package: nlme
 > #for (i in 1: length(testset) - 1) {
 > #for (i in 0: length(testset) - 1) {
 > for (i in 1: length(testset)) {
-+ 	if (i == length(testset) - 1) break
++ 	if (i == length(testset) - 2) break
 + 	testrow <- testset[i, ]
 + 	print(testrow)
 + 	testopen <- testset$AAPL.Open[i, ]
@@ -1123,7 +1123,7 @@ Loading required package: nlme
 2013-12-03 551.4059
 [1] 0.1759185
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
-2013-12-04     565.5    569.19   560.82        565    13493200        561.64
+2013-12-04     565.5    569.19   560.82        565    13478200        561.64
                Pred
 2013-12-04 566.4959
 [1] 0.1759185
@@ -1178,7 +1178,7 @@ Loading required package: nlme
 2013-12-18 555.1659
 [1] 0.1759185
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
-2013-12-19     549.5       550   543.73     544.46    11439600        541.22
+2013-12-19     549.5       550   543.73     544.46    11462800        541.22
                Pred
 2013-12-19 550.9459
 [1] 0.1759185
