@@ -43,7 +43,7 @@ AAPL_Predict <- cbind(trainset$AAPL.Close, VitPath$states)
 # add a new colum "Pred"
 testset <- cbind(testset, Pred = 0)
 #testset <- cbind(testset$AAPL.Close, Pred = 0)
-print(testset)
+#print(testset)
 
 #testopen <- testset$AAPL.Open
 #for (i in 1: length(testopen)) {
@@ -52,7 +52,7 @@ for (i in 1: 3) {
 	print(testrow)
 	testopen <- testset$AAPL.Open[i, ]
 	testclose <- testset$AAPL.Close[i, ]
-	actual <- testset$AAPL.Open[i + 1, ]
+#	actual <- testset$AAPL.Open[i + 1, ]
 	#print(testset$AAPL.Open[i, ])
 
 # predict 
@@ -67,9 +67,9 @@ print(change)
 pred <- testclose + change
 #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 testrow$Pred <- pred
-#print(pred)
-testset[i, ]$Pred <- pred
-print(testset[i, ]$Pred)
+print(pred)
+testset[i + 1, ]$Pred <- pred
+print(testset[i + 1, ]$Pred)
 
 #actual <- head(testset$AAPL.Close)
 #actual <- head(testset$AAPL.Open)
