@@ -113,8 +113,8 @@ Loading required package: nlme
 + 
 + pred <- testclose + change
 + #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
-+ testrow$Pred <- pred
-+ print(pred)
++ #testrow$Pred <- pred
++ #print(pred)
 + # update tomorrow's predicted value
 + testset[i + 1, ]$Pred <- pred
 + print(testset[i + 1, ]$Pred)
@@ -154,7 +154,6 @@ Loading required package: nlme
 + }
      AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted Pred
 [1] -0.7217871
-Error in names(coredata(x)) <- value : 
-  'names' attribute [1] must be the same length as the vector [0]
-Calls: $<- -> $<-.zoo -> setNames -> names<- -> names<-.zoo
+Error in NextMethod(.Generic) : replacement has length zero
+Calls: $<- -> $<-.zoo -> [<- -> [<-.xts -> NextMethod
 Execution halted

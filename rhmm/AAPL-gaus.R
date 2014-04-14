@@ -67,8 +67,8 @@ print(change)
 
 pred <- testclose + change
 #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
-testrow$Pred <- pred
-print(pred)
+#testrow$Pred <- pred
+#print(pred)
 # update tomorrow's predicted value
 testset[i + 1, ]$Pred <- pred
 print(testset[i + 1, ]$Pred)
@@ -107,7 +107,7 @@ print(testset[i + 1, ]$Pred)
 
 }
 
-chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1)")
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1)")
 #chartSeries(testset)
 
 #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
