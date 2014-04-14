@@ -125,11 +125,12 @@ pred <- testclose + change
 #pred <- (tail(${name}_Subset\$${name}.Close) + change)
 testrow\$Pred <- pred
 print(pred)
+testset[i, ]\$Pred <- pred
 print(testset[i, ]\$Pred)
 
 #actual <- head(testset\$${name}.Close)
 #actual <- head(testset\$${name}.Open)
-print(actual)
+#print(actual)
 
 # MAPE = sum(|pred - actual|/|actual|)*100/n
 #MAPE <- pred\$${name}.Close - actual\$${name}.Close
