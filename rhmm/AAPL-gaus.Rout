@@ -79,7 +79,7 @@ Loading required package: nlme
 > #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
 > # gaussian mixture HMM: nrow = nMixture, ncol = nStates
 > print(hm_model$HMM$transMat[last(VitPath$states),])
-[1] 3.335056e-30 1.539063e-99 6.268626e-01 3.731374e-01 1.180409e-84
+[1] 3.531383e-102  1.236293e-34  7.408116e-03  9.925919e-01  0.000000e+00
 > print(hm_model$HMM$distribution)
 
 Model:
@@ -87,662 +87,119 @@ Model:
 
 Distribution parameters:
   State 1
-               mean       var         prop
-mixt.  1  -7.115317 5.8052174 0.0003957506
-mixt.  2 -14.360000 0.0000000 0.0232722868
-mixt.  3 -11.432619 0.1970207 0.2975544769
-mixt.  4  -8.146064 0.4694224 0.6787774857
+               mean       var       prop
+mixt.  1 -1.7157166  9.154799 0.06253418
+mixt.  2  0.6367261 15.641168 0.20491545
+mixt.  3 -2.4689886  8.283564 0.30014440
+mixt.  4  1.5628453  5.251954 0.43240597
 
   State 2
-                mean        var       prop
-mixt.  1 -10.4421502   3.435154 0.03453271
-mixt.  2   0.7569611  10.418099 0.24301511
-mixt.  3  -0.5824660 147.431760 0.33986700
-mixt.  4  -1.4482540  55.891279 0.38258517
+              mean         var       prop
+mixt.  1  8.132739 0.005779492 0.09476729
+mixt.  2  5.039837 0.734380500 0.19064914
+mixt.  3 10.036119 0.872208016 0.21204005
+mixt.  4 -3.935141 1.626779396 0.50254351
 
   State 3
-              mean        var      prop
-mixt.  1  2.476790  0.8926235 0.1126294
-mixt.  2  7.655001 13.3387726 0.1725783
-mixt.  3 -3.744521  4.6165114 0.3427010
-mixt.  4  0.974448 16.1269147 0.3720913
+               mean       var      prop
+mixt.  1  -5.804202 1.6436323 0.1431054
+mixt.  2  -3.550245 2.3529857 0.2620447
+mixt.  3 -11.424932 0.1516448 0.2771290
+mixt.  4  -7.785714 1.0350556 0.3177209
 
   State 4
-               mean      var      prop
-mixt.  1 -0.4550487 8.471514 0.1302959
-mixt.  2 -1.9927293 6.930814 0.1350341
-mixt.  3 -1.7320799 7.279631 0.2761886
-mixt.  4  1.9221830 5.624760 0.4584814
+               mean        var      prop
+mixt.  1  1.1688404   3.862034 0.1450532
+mixt.  2 -0.4176093 155.645358 0.2305202
+mixt.  3 -5.9430172  29.123034 0.2805882
+mixt.  4  2.8949471  32.540869 0.3438385
 
   State 5
-               mean       var      prop
-mixt.  1 -3.1332874 1.4601466 0.0689754
-mixt.  2  1.8588714 2.9259448 0.2668822
-mixt.  3  0.3461189 3.3404614 0.2947020
-mixt.  4 -0.4066869 0.9411723 0.3694403
+               mean       var       prop
+mixt.  1 -2.8938042 1.6723142 0.09393654
+mixt.  2  1.2735433 3.2789040 0.09469567
+mixt.  3 -0.4172222 0.9834346 0.40269992
+mixt.  4  1.3533135 3.2554809 0.40866788
 
 > print(hm_model$HMM$distribution$mean)
 [[1]]
-[1]  -7.115317 -14.360000 -11.432619  -8.146064
+[1] -1.7157166  0.6367261 -2.4689886  1.5628453
 
 [[2]]
-[1] -10.4421502   0.7569611  -0.5824660  -1.4482540
+[1]  8.132739  5.039837 10.036119 -3.935141
 
 [[3]]
-[1]  2.476790  7.655001 -3.744521  0.974448
+[1]  -5.804202  -3.550245 -11.424932  -7.785714
 
 [[4]]
-[1] -0.4550487 -1.9927293 -1.7320799  1.9221830
+[1]  1.1688404 -0.4176093 -5.9430172  2.8949471
 
 [[5]]
-[1] -3.1332874  1.8588714  0.3461189 -0.4066869
+[1] -2.8938042  1.2735433 -0.4172222  1.3533135
 
 > #print(hm_model$HMM$distribution$mean[, seq(1, ncol(hm_model$HMM$distribution$mean), by = 2)])
 > print(unlist(hm_model$HMM$distribution$mean))
- [1]  -7.1153174 -14.3600000 -11.4326191  -8.1460640 -10.4421502   0.7569611
- [7]  -0.5824660  -1.4482540   2.4767898   7.6550014  -3.7445206   0.9744480
-[13]  -0.4550487  -1.9927293  -1.7320799   1.9221830  -3.1332874   1.8588714
-[19]   0.3461189  -0.4066869
+ [1]  -1.7157166   0.6367261  -2.4689886   1.5628453   8.1327392   5.0398367
+ [7]  10.0361188  -3.9351414  -5.8042021  -3.5502446 -11.4249320  -7.7857140
+[13]   1.1688404  -0.4176093  -5.9430172   2.8949471  -2.8938042   1.2735433
+[19]  -0.4172222   1.3533135
 > #print(unlist(hm_model$HMM$distribution$mean[1,]))
 > #print(matrix(unlist(hm_model$HMM$distribution$mean[1,])))
 > #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 > 
-> testopen <- testset$AAPL.Open
-> #for (i in 0: length(testopen) - 1) {
-> for (i in 0: length(testopen)) {
-+ 	testrow <- testopen[i, ]
-+ 	print(testrow)
+> #testopen <- testset$AAPL.Open
+> #for (i in 0: length(testopen)) {
+> for (i in 0: 3) {
++ 	testopen <- testset$AAPL.Open[i, ]
++ 	testclose <- testset$AAPL.Close[i, ]
++ 	actual <- testset$AAPL.Open[i + 1, ]
++ 	#testrow <- testopen[i, ]
++ 	#print(testrow)
 + 	#print(testset$AAPL.Open[i, ])
++ 
++ # predict 
++ change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
++ #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
++ print(change)
++ #print(tail(AAPL_Subset$AAPL.Close))
++ #head5 <- head(testset$AAPL.Close)
++ #print(head5)
++ pred <- predclose + change
++ #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
++ print(pred)
++ 
++ #actual <- head(testset$AAPL.Close)
++ #actual <- head(testset$AAPL.Open)
++ print(actual)
++ 
++ # MAPE = sum(|pred - actual|/|actual|)*100/n
++ #MAPE <- pred$AAPL.Close - actual$AAPL.Close
++ #MAPE <- abs((pred$AAPL.Close - actual$AAPL.Close)/actual$AAPL.Close)
++ MAPE <- abs((pred$AAPL.Close - 420.05)/420.05) * 100
++ print(MAPE)
++ 
++ # single HMM
++ #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
++ 
++ #chartSeries(testset, theme="white")
++ #chartSeries(test, theme="white")
++ 
++ # Forward-backward 
++ #fb <- forwardBackward(hm_model, test, FALSE)
++ #print(fb)
++ #print(AAPL_Subset[,4] - AAPL_Predict [,1])
++ 
++ #layout(matrix(1:2, nrow=2))
++ #layout(matrix(2:1, ncol=2))
++ #layout(1:2)
++ #print(matrix(2:1, ncol=2))
++ 
++ # show the states with predicted closing value
++ #chartSeries(pred)
++ chartSeries(pred, TA = "addTA(actual, on = 1)")
++ #chartSeries(pred, TA = "addTA(pred - change, on = 1)")
++ 
 + }
-     AAPL.Open
-           AAPL.Open
-2013-03-01       438
-           AAPL.Open
-2013-03-04     427.8
-           AAPL.Open
-2013-03-05    421.48
-           AAPL.Open
-2013-03-06    434.51
-           AAPL.Open
-2013-03-07     424.5
-           AAPL.Open
-2013-03-08     429.8
-           AAPL.Open
-2013-03-11    429.75
-           AAPL.Open
-2013-03-12     435.6
-           AAPL.Open
-2013-03-13    428.45
-           AAPL.Open
-2013-03-14    432.83
-           AAPL.Open
-2013-03-15    437.93
-           AAPL.Open
-2013-03-18    441.45
-           AAPL.Open
-2013-03-19     459.5
-           AAPL.Open
-2013-03-20    457.42
-           AAPL.Open
-2013-03-21    450.22
-           AAPL.Open
-2013-03-22    454.58
-           AAPL.Open
-2013-03-25    464.69
-           AAPL.Open
-2013-03-26    465.44
-           AAPL.Open
-2013-03-27    456.46
-           AAPL.Open
-2013-03-28    449.82
-           AAPL.Open
-2013-04-01     441.9
-           AAPL.Open
-2013-04-02     427.6
-           AAPL.Open
-2013-04-03    431.37
-           AAPL.Open
-2013-04-04    433.76
-           AAPL.Open
-2013-04-05     424.5
-           AAPL.Open
-2013-04-08    424.85
-           AAPL.Open
-2013-04-09    426.36
-           AAPL.Open
-2013-04-10     428.1
-           AAPL.Open
-2013-04-11    433.72
-           AAPL.Open
-2013-04-12    434.15
-           AAPL.Open
-2013-04-15       427
-           AAPL.Open
-2013-04-16    421.57
-           AAPL.Open
-2013-04-17    420.27
-           AAPL.Open
-2013-04-18    404.99
-           AAPL.Open
-2013-04-19    387.97
-           AAPL.Open
-2013-04-22    392.64
-           AAPL.Open
-2013-04-23    403.99
-           AAPL.Open
-2013-04-24    393.54
-           AAPL.Open
-2013-04-25    411.23
-           AAPL.Open
-2013-04-26    409.81
-           AAPL.Open
-2013-04-29    420.45
-           AAPL.Open
-2013-04-30     435.1
-           AAPL.Open
-2013-05-01    444.46
-           AAPL.Open
-2013-05-02    441.78
-           AAPL.Open
-2013-05-03    451.31
-           AAPL.Open
-2013-05-06    455.71
-           AAPL.Open
-2013-05-07    464.97
-           AAPL.Open
-2013-05-08    459.04
-           AAPL.Open
-2013-05-09    459.81
-           AAPL.Open
-2013-05-10    457.97
-           AAPL.Open
-2013-05-13    451.51
-           AAPL.Open
-2013-05-14    453.85
-           AAPL.Open
-2013-05-15    439.16
-           AAPL.Open
-2013-05-16    423.24
-           AAPL.Open
-2013-05-17    439.05
-           AAPL.Open
-2013-05-20    431.91
-           AAPL.Open
-2013-05-21    438.15
-           AAPL.Open
-2013-05-22    444.05
-           AAPL.Open
-2013-05-23    435.95
-           AAPL.Open
-2013-05-24    440.85
-           AAPL.Open
-2013-05-28     449.9
-           AAPL.Open
-2013-05-29       440
-           AAPL.Open
-2013-05-30    445.65
-           AAPL.Open
-2013-05-31     452.5
-           AAPL.Open
-2013-06-03    450.73
-           AAPL.Open
-2013-06-04    453.22
-           AAPL.Open
-2013-06-05    445.65
-           AAPL.Open
-2013-06-06    445.47
-           AAPL.Open
-2013-06-07     436.5
-           AAPL.Open
-2013-06-10    444.73
-           AAPL.Open
-2013-06-11    435.74
-           AAPL.Open
-2013-06-12     439.5
-           AAPL.Open
-2013-06-13     432.5
-           AAPL.Open
-2013-06-14     435.4
-           AAPL.Open
-2013-06-17    431.44
-           AAPL.Open
-2013-06-18    431.56
-           AAPL.Open
-2013-06-19     431.4
-           AAPL.Open
-2013-06-20     419.3
-           AAPL.Open
-2013-06-21    418.49
-           AAPL.Open
-2013-06-24     407.4
-           AAPL.Open
-2013-06-25     405.7
-           AAPL.Open
-2013-06-26     403.9
-           AAPL.Open
-2013-06-27    399.25
-           AAPL.Open
-2013-06-28    391.36
-           AAPL.Open
-2013-07-01    402.69
-           AAPL.Open
-2013-07-02    409.96
-           AAPL.Open
-2013-07-03    420.86
-           AAPL.Open
-2013-07-05    420.39
-           AAPL.Open
-2013-07-08    420.11
-           AAPL.Open
-2013-07-09     413.6
-           AAPL.Open
-2013-07-10     419.6
-           AAPL.Open
-2013-07-11    422.95
-           AAPL.Open
-2013-07-12    427.65
-           AAPL.Open
-2013-07-15    425.01
-           AAPL.Open
-2013-07-16    426.52
-           AAPL.Open
-2013-07-17     429.7
-           AAPL.Open
-2013-07-18    433.38
-           AAPL.Open
-2013-07-19     433.1
-           AAPL.Open
-2013-07-22    429.46
-           AAPL.Open
-2013-07-23       426
-           AAPL.Open
-2013-07-24    438.93
-           AAPL.Open
-2013-07-25     440.7
-           AAPL.Open
-2013-07-26     435.3
-           AAPL.Open
-2013-07-29     440.8
-           AAPL.Open
-2013-07-30    449.96
-           AAPL.Open
-2013-07-31    454.99
-           AAPL.Open
-2013-08-01    455.75
-           AAPL.Open
-2013-08-02    458.01
-           AAPL.Open
-2013-08-05    464.69
-           AAPL.Open
-2013-08-06    468.02
-           AAPL.Open
-2013-08-07     463.8
-           AAPL.Open
-2013-08-08    463.86
-           AAPL.Open
-2013-08-09    458.64
-           AAPL.Open
-2013-08-12    456.86
-           AAPL.Open
-2013-08-13    470.94
-           AAPL.Open
-2013-08-14    497.88
-           AAPL.Open
-2013-08-15    496.42
-           AAPL.Open
-2013-08-16    500.15
-           AAPL.Open
-2013-08-19    504.34
-           AAPL.Open
-2013-08-20    509.71
-           AAPL.Open
-2013-08-21    503.59
-           AAPL.Open
-2013-08-22    504.98
-           AAPL.Open
-2013-08-23    503.27
-           AAPL.Open
-2013-08-26    500.75
-           AAPL.Open
-2013-08-27       498
-           AAPL.Open
-2013-08-28       486
-           AAPL.Open
-2013-08-29    491.65
-           AAPL.Open
-2013-08-30       492
-           AAPL.Open
-2013-09-03     493.1
-           AAPL.Open
-2013-09-04    499.56
-           AAPL.Open
-2013-09-05    500.25
-           AAPL.Open
-2013-09-06    498.44
-           AAPL.Open
-2013-09-09       505
-           AAPL.Open
-2013-09-10     506.2
-           AAPL.Open
-2013-09-11    467.01
-           AAPL.Open
-2013-09-12     468.5
-           AAPL.Open
-2013-09-13    469.34
-           AAPL.Open
-2013-09-16       461
-           AAPL.Open
-2013-09-17    447.96
-           AAPL.Open
-2013-09-18    463.18
-           AAPL.Open
-2013-09-19     470.7
-           AAPL.Open
-2013-09-20       478
-           AAPL.Open
-2013-09-23     496.1
-           AAPL.Open
-2013-09-24    494.88
-           AAPL.Open
-2013-09-25     489.2
-           AAPL.Open
-2013-09-26       486
-           AAPL.Open
-2013-09-27    483.78
-           AAPL.Open
-2013-09-30    477.25
-           AAPL.Open
-2013-10-01    478.45
-           AAPL.Open
-2013-10-02    485.63
-           AAPL.Open
-2013-10-03    490.51
-           AAPL.Open
-2013-10-04    483.86
-           AAPL.Open
-2013-10-07    486.56
-           AAPL.Open
-2013-10-08    489.94
-           AAPL.Open
-2013-10-09    484.64
-           AAPL.Open
-2013-10-10    491.32
-           AAPL.Open
-2013-10-11    486.99
-           AAPL.Open
-2013-10-14    489.83
-           AAPL.Open
-2013-10-15    497.51
-           AAPL.Open
-2013-10-16    500.79
-           AAPL.Open
-2013-10-17    499.98
-           AAPL.Open
-2013-10-18    505.99
-           AAPL.Open
-2013-10-21    511.77
-           AAPL.Open
-2013-10-22    526.41
-           AAPL.Open
-2013-10-23       519
-           AAPL.Open
-2013-10-24       525
-           AAPL.Open
-2013-10-25    531.32
-           AAPL.Open
-2013-10-28    529.04
-           AAPL.Open
-2013-10-29    536.27
-           AAPL.Open
-2013-10-30    519.61
-           AAPL.Open
-2013-10-31       525
-           AAPL.Open
-2013-11-01    524.02
-           AAPL.Open
-2013-11-04     521.1
-           AAPL.Open
-2013-11-05    524.58
-           AAPL.Open
-2013-11-06    524.15
-           AAPL.Open
-2013-11-07    519.58
-           AAPL.Open
-2013-11-08    514.58
-           AAPL.Open
-2013-11-11    519.99
-           AAPL.Open
-2013-11-12    517.67
-           AAPL.Open
-2013-11-13       518
-           AAPL.Open
-2013-11-14    522.81
-           AAPL.Open
-2013-11-15    526.58
-           AAPL.Open
-2013-11-18    524.99
-           AAPL.Open
-2013-11-19    519.03
-           AAPL.Open
-2013-11-20    519.23
-           AAPL.Open
-2013-11-21     517.6
-           AAPL.Open
-2013-11-22    519.52
-           AAPL.Open
-2013-11-25    521.02
-           AAPL.Open
-2013-11-26    524.12
-           AAPL.Open
-2013-11-27    536.31
-           AAPL.Open
-2013-11-29    549.48
-           AAPL.Open
-2013-12-02       558
-           AAPL.Open
-2013-12-03     558.3
-           AAPL.Open
-2013-12-04     565.5
-           AAPL.Open
-2013-12-05    572.65
-           AAPL.Open
-2013-12-06    565.79
-           AAPL.Open
-2013-12-09     560.9
-           AAPL.Open
-2013-12-10    563.58
-           AAPL.Open
-2013-12-11       567
-           AAPL.Open
-2013-12-12    562.14
-           AAPL.Open
-2013-12-13    562.85
-           AAPL.Open
-2013-12-16    555.02
-           AAPL.Open
-2013-12-17    555.81
-           AAPL.Open
-2013-12-18     549.7
-           AAPL.Open
-2013-12-19     549.5
-           AAPL.Open
-2013-12-20    545.43
-           AAPL.Open
-2013-12-23       568
-           AAPL.Open
-2013-12-24    569.89
-           AAPL.Open
-2013-12-26     568.1
-           AAPL.Open
-2013-12-27    563.82
-           AAPL.Open
-2013-12-30    557.46
-           AAPL.Open
-2013-12-31    554.17
-           AAPL.Open
-2014-01-02    555.68
-           AAPL.Open
-2014-01-03    552.86
-           AAPL.Open
-2014-01-06    537.45
-           AAPL.Open
-2014-01-07    544.32
-           AAPL.Open
-2014-01-08    538.81
-           AAPL.Open
-2014-01-09     546.8
-           AAPL.Open
-2014-01-10    539.83
-           AAPL.Open
-2014-01-13    529.91
-           AAPL.Open
-2014-01-14    538.22
-           AAPL.Open
-2014-01-15    553.52
-           AAPL.Open
-2014-01-16     554.9
-           AAPL.Open
-2014-01-17    551.48
-           AAPL.Open
-2014-01-21    540.99
-           AAPL.Open
-2014-01-22    550.91
-           AAPL.Open
-2014-01-23    549.94
-           AAPL.Open
-2014-01-24       554
-           AAPL.Open
-2014-01-27    550.07
-           AAPL.Open
-2014-01-28    508.76
-           AAPL.Open
-2014-01-29    503.95
-           AAPL.Open
-2014-01-30    502.54
-           AAPL.Open
-2014-01-31    495.18
-           AAPL.Open
-2014-02-03    502.61
-           AAPL.Open
-2014-02-04    505.85
-           AAPL.Open
-2014-02-05    506.56
-           AAPL.Open
-2014-02-06    510.06
-           AAPL.Open
-2014-02-07    521.38
-           AAPL.Open
-2014-02-10    518.66
-           AAPL.Open
-2014-02-11    530.61
-           AAPL.Open
-2014-02-12    536.95
-           AAPL.Open
-2014-02-13    534.66
-           AAPL.Open
-2014-02-14    542.47
-           AAPL.Open
-2014-02-18       546
-           AAPL.Open
-2014-02-19    544.75
-           AAPL.Open
-2014-02-20    532.99
-           AAPL.Open
-2014-02-21    532.79
-           AAPL.Open
-2014-02-24    523.15
-           AAPL.Open
-2014-02-25    529.38
-           AAPL.Open
-2014-02-26    523.61
-           AAPL.Open
-2014-02-27    517.14
-           AAPL.Open
-2014-02-28    529.08
-> 
-> # predict 
-> change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
-> #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
-> print(change)
-[1] 0.4536862
-> #print(tail(AAPL_Subset$AAPL.Close))
-> head5 <- head(testset$AAPL.Close)
-> print(head5)
-           AAPL.Close
-2013-03-01     430.47
-2013-03-04     420.05
-2013-03-05     431.14
-2013-03-06     425.66
-2013-03-07     430.58
-2013-03-08     431.72
-> pred <- head5 + change
-> #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
-> print(pred)
-           AAPL.Close
-2013-03-01   430.9237
-2013-03-04   420.5037
-2013-03-05   431.5937
-2013-03-06   426.1137
-2013-03-07   431.0337
-2013-03-08   432.1737
-> 
-> #actual <- head(testset$AAPL.Close)
-> actual <- head(testset$AAPL.Open)
-> print(actual)
-           AAPL.Open
-2013-03-01    438.00
-2013-03-04    427.80
-2013-03-05    421.48
-2013-03-06    434.51
-2013-03-07    424.50
-2013-03-08    429.80
-> 
-> # MAPE = sum(|pred - actual|/|actual|)*100/n
-> #MAPE <- pred$AAPL.Close - actual$AAPL.Close
-> #MAPE <- abs((pred$AAPL.Close - actual$AAPL.Close)/actual$AAPL.Close)
-> MAPE <- abs((pred$AAPL.Close - 420.05)/420.05) * 100
-> print(MAPE)
-           AAPL.Close
-2013-03-01  2.5886647
-2013-03-04  0.1080077
-2013-03-05  2.7481696
-2013-03-06  1.4435630
-2013-03-07  2.6148521
-2013-03-08  2.8862484
-> 
-> # single HMM
-> #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
-> 
-> #chartSeries(testset, theme="white")
-> #chartSeries(test, theme="white")
-> 
-> # Forward-backward 
-> fb <- forwardBackward(hm_model, test, FALSE)
-> #print(fb)
-> #print(AAPL_Subset[,4] - AAPL_Predict [,1])
-> 
-> #layout(matrix(1:2, nrow=2))
-> #layout(matrix(2:1, ncol=2))
-> layout(1:2)
-> print(matrix(2:1, ncol=2))
-     [,1] [,2]
-[1,]    2    1
-> 
-> # show the states with predicted closing value
-> #chartSeries(pred)
-> chartSeries(pred, TA = "addTA(actual, on = 1)")
-> #chartSeries(pred, TA = "addTA(pred - change, on = 1)")
-> 
-> #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
-> #chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
-> #TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
-> #")
-> 
-> 
-> proc.time()
-   user  system elapsed 
-  3.830   0.061   4.200 
+[1] -0.6492589
+Error: object 'predclose' not found
+Execution halted

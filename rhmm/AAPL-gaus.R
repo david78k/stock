@@ -41,27 +41,29 @@ print(unlist(hm_model$HMM$distribution$mean))
 #print(matrix(unlist(hm_model$HMM$distribution$mean[1,])))
 #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 
-testopen <- testset$AAPL.Open
-#for (i in 0: length(testopen) - 1) {
-for (i in 0: length(testopen)) {
-	testrow <- testopen[i, ]
-	print(testrow)
+#testopen <- testset$AAPL.Open
+#for (i in 0: length(testopen)) {
+for (i in 0: 3) {
+	testopen <- testset$AAPL.Open[i, ]
+	testclose <- testset$AAPL.Close[i, ]
+	actual <- testset$AAPL.Open[i + 1, ]
+	#testrow <- testopen[i, ]
+	#print(testrow)
 	#print(testset$AAPL.Open[i, ])
-}
 
 # predict 
 change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
 print(change)
 #print(tail(AAPL_Subset$AAPL.Close))
-head5 <- head(testset$AAPL.Close)
-print(head5)
-pred <- head5 + change
+#head5 <- head(testset$AAPL.Close)
+#print(head5)
+pred <- predclose + change
 #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 print(pred)
 
 #actual <- head(testset$AAPL.Close)
-actual <- head(testset$AAPL.Open)
+#actual <- head(testset$AAPL.Open)
 print(actual)
 
 # MAPE = sum(|pred - actual|/|actual|)*100/n
@@ -77,19 +79,21 @@ print(MAPE)
 #chartSeries(test, theme="white")
 
 # Forward-backward 
-fb <- forwardBackward(hm_model, test, FALSE)
+#fb <- forwardBackward(hm_model, test, FALSE)
 #print(fb)
 #print(AAPL_Subset[,4] - AAPL_Predict [,1])
 
 #layout(matrix(1:2, nrow=2))
 #layout(matrix(2:1, ncol=2))
-layout(1:2)
-print(matrix(2:1, ncol=2))
+#layout(1:2)
+#print(matrix(2:1, ncol=2))
 
 # show the states with predicted closing value
 #chartSeries(pred)
 chartSeries(pred, TA = "addTA(actual, on = 1)")
 #chartSeries(pred, TA = "addTA(pred - change, on = 1)")
+
+}
 
 #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
 #chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
