@@ -170,8 +170,7 @@ testset[i + 1, ]\$Pred <- pred
 }
 
 # plot actual with predicted values added
-chartSeries(testset[1:rows, 1], name = 'Actual', TA = "addTA(testset[1:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
-#chartSeries(testset[2:rows, 1], name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
+chartSeries(testset[2:rows, 1], name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"), legend = \"Predicted\")") # 
@@ -181,9 +180,6 @@ chartSeries(testset[1:rows, 1], name = 'Actual', TA = "addTA(testset[1:rows, 7],
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
 
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], legend = \"Predicted\", on = 1, col=10)") # 
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, legend = \"Predicted\", col=8)") #
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, legend = \"Predicted\", col=7)") # grey?
 #chartSeries(testset)
 
 #chartSeries(${name}_Predict[,1], #theme="white.mono", 
