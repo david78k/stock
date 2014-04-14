@@ -1408,6 +1408,6 @@ Loading required package: nlme
 [1] -0.912414
 > 
 > # plot actual with predicted values added
-> chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = 'Predicted')", name = 'Actual'), # yellow
-Error: unexpected ',' in "chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = 'Predicted')", name = 'Actual'),"
+> chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col=7, legend = 'Predicted')"), # yellow
+Error: unexpected ',' in "chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col=7, legend = 'Predicted')"),"
 Execution halted
