@@ -51,36 +51,36 @@ runhmm <- function (command) {
 	print(as.Date(startdate))
 	print(enddate)
 	print(as.Date(enddate))
-	#getSymbols(AAPL)
+	getSymbols(AAPL)
 	#getSymbols(name)
-	#chartSeries(AAPL, theme="white")
+	chartSeries(AAPL, theme="white")
 #	chartSeries(name, theme="white")
 	#startdate <- "2000-01-01"
-	#assign(enddate, "2013-03-01")
-#	trainset <- window("AAPL", start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
+	assign(enddate, "2013-03-01")
+	trainset <- window("AAPL", start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
 	#trainset <- window(name, start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
 	#trainset <- window(name, start = as.Date(startdate), end = as.Date(enddate))
 	#print(trainset)
 	#${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open, ${name}_Subset\$${name}.Volume)
-#	train <- cbind(paste("trainset$", name, ".Close", sep = "") - paste("trainset$", name, ".Open", sep = ""))
+	train <- cbind(paste("trainset$", name, ".Close", sep = "") - paste("trainset$", name, ".Open", sep = ""))
 	#print(train)
 
-#	testset <- window(name, start = as.Date(teststart), end = as.Date(testend))
-	#test <- cbind(paste("testset$", name, ".Close", sep = "") - paste("testset$", name, ".Open", sep = ""))
+	testset <- window(name, start = as.Date(teststart), end = as.Date(testend))
+	test <- cbind(paste("testset$", name, ".Close", sep = "") - paste("testset$", name, ".Open", sep = ""))
 	#print(testset)
 
-	#library(RHmm)
+	library(RHmm)
 	# Baum-Welch Algorithm to find the model for the given observations
 	#hm_model <- HMMFit(obs = ${name}_Train, nStates = 5)
-	#hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
+	hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
 
 	# Viterbi Algorithm to find the most probable state sequence
-	#VitPath <- viterbi (hm_model, train)
+	VitPath <- viterbi (hm_model, train)
 
 	# scatter plot
-	#print(command)
-	#command
-	#paste(name, "_Predict", setp = "") <- cbind(paste("trainset$", name, ".Close", sep = ""), VitPath$states)
+	print(command)
+	command
+	paste(name, "_Predict", setp = "") <- cbind(paste("trainset$", name, ".Close", sep = ""), VitPath$states)
 	#${name}_Predict <- cbind(${name}_Subset\$${name}.Close, VitPath\$states)
 	#print(${name}_Subset[,4] - ${name}_Predict [,1])
 
@@ -95,32 +95,32 @@ runhmm <- function (command) {
 	#print(matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,])))
 
 	# add a new colum "Pred"
-	#testset <- cbind(testset, Pred = 0)
+	testset <- cbind(testset, Pred = 0)
 	#testset <- cbind(testset\$${name}.Close, Pred = 0)
 	#print(testset)
 
 	#for (i in 1: length(testset)) {
 	#for (i in 1: length(testset) - 1) {
 	#for (i in 1: 3) {
-#	for (i in 1: 250) {
-#		testrow <- testset[i, ]
-#		print(testrow)
-#		testopen <- paste("testset$", name, ".Open[i, ]", sep = "")
-#		testclose <- paste("testset$", name, ".Close[i, ]", sep = "")
+	for (i in 1: 250) {
+		testrow <- testset[i, ]
+		print(testrow)
+		testopen <- paste("testset$", name, ".Open[i, ]", sep = "")
+		testclose <- paste("testset$", name, ".Close[i, ]", sep = "")
 	#	actual <- testset\$${name}.Open[i + 1, ]
 		#print(testset\$${name}.Open[i, ])
 
 		# predict 
-#		change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
+		change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 		#sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
-#		print(change)
+		print(change)
 
-#		pred <- testclose + change
+		pred <- testclose + change
 		#pred <- (tail(${name}_Subset\$${name}.Close) + change)
 		#testrow\$Pred <- pred
 		#print(pred)
 		# update tomorrow's predicted value
-#		testset[i + 1, ]$Pred <- pred
+		testset[i + 1, ]$Pred <- pred
 		#print(testset[i + 1, ]\$Pred)
 
 		#actual <- head(testset\$${name}.Close)
@@ -158,7 +158,7 @@ runhmm <- function (command) {
 		#chartSeries(pred, TA = "addTA(actual, on = 1)")
 		#chartSeries(pred, TA = "addTA(pred - change, on = 1)")
 
-#	}
+	}
 
 	#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
 	#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?

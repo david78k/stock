@@ -3,7 +3,8 @@ SHELL := /bin/bash
 default: runhmm
 
 runhmm:
-	R CMD BATCH run.R
+	./script
+#	R CMD BATCH run.R
 
 upload:
 	git add .

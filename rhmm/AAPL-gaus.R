@@ -84,6 +84,9 @@ testset[i + 1, ]$Pred <- pred
 #MAPE <- abs((pred$AAPL.Close - 420.05)/420.05) * 100
 #print(MAPE)
 
+# [Optional] Returns: sell or buy
+# if stock increased sell, otherwise buy
+
 # single HMM
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
 
@@ -108,12 +111,12 @@ testset[i + 1, ]$Pred <- pred
 
 }
 
-chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # 
+chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") #pink
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
 
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], legend = \"Predicted\", on = 1, col=10)") # 
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, legend = \"Predicted\", col=8)") #
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, legend = \"Predicted\", col=7)") # grey?
 #chartSeries(testset)
