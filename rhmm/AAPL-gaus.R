@@ -95,6 +95,8 @@ print(actual)
 
 }
 
+chartSeries(testset)
+
 #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
 #chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
 #TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
