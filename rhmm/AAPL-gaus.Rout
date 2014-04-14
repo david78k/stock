@@ -87,8 +87,8 @@ Loading required package: nlme
 > #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 > 
 > vec <- 1:length(testset)
-> testset["Pred"] <- vec
-Error in init.vec[dur.vec[[2]]] <- dur.vec[[1]] : 
-  NAs are not allowed in subscripted assignments
-Calls: [<- ... as.POSIXct -> structure -> as.list -> mapply -> parse_duration
+> testset$Pred <- vec
+Error in error(x, ...) : 
+  improper length of one or more arguments to merge.xts
+Calls: $<- ... cbind -> merge.xts -> .External -> try.xts -> error
 Execution halted
