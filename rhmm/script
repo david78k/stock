@@ -101,7 +101,7 @@ testset <- cbind(testset, Pred = 0)
 
 rows = nrow(testset)
 #for (i in 1: 251) {
-for (i in 1: rows) {
+for (i in 0: rows) {
 	print(i)
 	print(rows)
 	if (i == rows) break
@@ -168,7 +168,8 @@ testset[i + 1, ]\$Pred <- pred
 }
 
 # plot actual with predicted values added
-chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # blue
+chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
+#chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"), legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = \"Predicted\")") # yellow
