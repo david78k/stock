@@ -42,7 +42,7 @@ AAPL_Predict <- cbind(trainset$AAPL.Close, VitPath$states)
 
 #testopen <- testset$AAPL.Open
 #for (i in 0: length(testopen)) {
-for (i in 0: 1) {
+for (i in 1: 1) {
 	testopen <- testset$AAPL.Open[i, ]
 	testclose <- testset$AAPL.Close[i, ]
 	actual <- testset$AAPL.Open[i + 1, ]

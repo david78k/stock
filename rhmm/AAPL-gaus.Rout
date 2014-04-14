@@ -88,7 +88,7 @@ Loading required package: nlme
 > 
 > #testopen <- testset$AAPL.Open
 > #for (i in 0: length(testopen)) {
-> for (i in 0: 1) {
+> for (i in 1: 1) {
 + 	testopen <- testset$AAPL.Open[i, ]
 + 	testclose <- testset$AAPL.Close[i, ]
 + 	actual <- testset$AAPL.Open[i + 1, ]
@@ -142,13 +142,9 @@ Loading required package: nlme
 + #chartSeries(pred, TA = "addTA(pred - change, on = 1)")
 + 
 + }
-[1] 0.2024877
-     AAPL.Close
-           AAPL.Open
-2013-03-01       438
-[1] 0.2024877
+[1] -0.9323992
            AAPL.Close
-2013-03-01   430.6725
+2013-03-01   429.5376
            AAPL.Open
 2013-03-04     427.8
 > 
@@ -166,4 +162,4 @@ Loading required package: nlme
 > 
 > proc.time()
    user  system elapsed 
-  5.674   0.064   6.034 
+  5.630   0.060   5.965 
