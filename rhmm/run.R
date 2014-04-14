@@ -13,7 +13,7 @@ symbol <- "AAPL"
 
 name <- symbol
 #out=$symbol
-out <- symbol-gaus # Gaussian mixture
+out <- paste(symbol, "-gaus", sep = "") # Gaussian mixture
 
 # training period
 #startdate=2012-01-01
@@ -28,10 +28,10 @@ testend <- "2014-03-01"
 #data=$1
 #prefix=${data%\.*}
 #name=$prefix
-script=${out}.R
-png=${out}.png
-emf=${out}.emf
-eps=${out}.eps
+script <- paste(out ,".R", sep = "")
+png <- paste(out, ".png", sep = "")
+emf <- paste(out, ".emf", sep = "")
+eps <- paste(out, ".eps", sep = "")
 
 #xlabel="DATE"
 xlabel <- "DAY"
@@ -52,6 +52,7 @@ function genplot() {
 		cmd="emf('$figure')"
 	fi
 
+cat >$script << EOF
 library(quantmod)
 
 require(devEMF)
@@ -60,14 +61,15 @@ require(devEMF)
 getSymbols("${name}")
 chartSeries(${name}, theme="white")
 trainset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
+#print(trainset)
 #${name}_Subset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 #${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open, ${name}_Subset\$${name}.Volume)
 train <- cbind(trainset\$${name}.Close - trainset\$${name}.Open)
-#${name}_Train <- cbind(${name}_Subset\$${name}.Close - ${name}_Subset\$${name}.Open)
-#print(${name}_Train)
+#print(train)
 
 testset <- window(${name}, start = as.Date("$teststart"), end = as.Date("$testend"))
 test <- cbind(testset\$${name}.Close - testset\$${name}.Open)
+#print(testset)
 
 library(RHmm)
 # Baum-Welch Algorithm to find the model for the given observations
@@ -86,39 +88,59 @@ ${name}_Predict <- cbind(trainset\$${name}.Close, VitPath\$states)
 # predict next stock value m = nMixt, n = nStates
 #sum(a$HMM$transMat[last(v$states),] * .colSums((matrix(unlist(a$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(a$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 # gaussian mixture HMM: nrow = nMixture, ncol = nStates
-print(hm_model\$HMM\$transMat[last(VitPath\$states),])
-print(hm_model\$HMM\$distribution)
-print(hm_model\$HMM\$distribution\$mean)
+#print(hm_model\$HMM\$transMat[last(VitPath\$states),])
+#print(hm_model\$HMM\$distribution)
+#print(hm_model\$HMM\$distribution\$mean)
 #print(hm_model\$HMM\$distribution\$mean[, seq(1, ncol(hm_model\$HMM\$distribution\$mean), by = 2)])
-print(unlist(hm_model\$HMM\$distribution\$mean))
-#print(unlist(hm_model\$HMM\$distribution\$mean[1,]))
-#print(matrix(unlist(hm_model\$HMM\$distribution\$mean[1,])))
+#print(unlist(hm_model\$HMM\$distribution\$mean))
 #print(matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,])))
 
-for (i in 1: length(testset)) {
-	print(testset\$${name}.Open[i, ])
-}
+# add a new colum "Pred"
+testset <- cbind(testset, Pred = 0)
+#testset <- cbind(testset\$${name}.Close, Pred = 0)
+#print(testset)
+
+#for (i in 1: length(testopen)) {
+#for (i in 1: length(testset)) {
+#for (i in 1: length(testset) - 1) {
+#for (i in 1: 3) {
+for (i in 1: 250) {
+	testrow <- testset[i, ]
+	print(testrow)
+	testopen <- testset\$${name}.Open[i, ]
+	testclose <- testset\$${name}.Close[i, ]
+#	actual <- testset\$${name}.Open[i + 1, ]
+	#print(testset\$${name}.Open[i, ])
 
 # predict 
 change <- sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=4,ncol=5)), m=4,n=5))
 #sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
 print(change)
+
 #print(tail(${name}_Subset\$${name}.Close))
-head5 <- head(testset\$${name}.Close)
-print(head5)
-pred <- head5 + change
+#head5 <- head(testset\$${name}.Close)
+#print(head5)
+
+pred <- testclose + change
 #pred <- (tail(${name}_Subset\$${name}.Close) + change)
-print(pred)
+#testrow\$Pred <- pred
+#print(pred)
+# update tomorrow's predicted value
+testset[i + 1, ]\$Pred <- pred
+#print(testset[i + 1, ]\$Pred)
 
 #actual <- head(testset\$${name}.Close)
-actual <- head(testset\$${name}.Open)
-print(actual)
+#actual <- head(testset\$${name}.Open)
+#print(actual)
 
 # MAPE = sum(|pred - actual|/|actual|)*100/n
 #MAPE <- pred\$${name}.Close - actual\$${name}.Close
 #MAPE <- abs((pred\$${name}.Close - actual\$${name}.Close)/actual\$${name}.Close)
-MAPE <- abs((pred\$${name}.Close - 420.05)/420.05) * 100
-print(MAPE)
+#MAPE <- abs((pred\$${name}.Close - 420.05)/420.05) * 100
+#print(MAPE)
+
+# [Optional] Returns: sell or buy
+# if stock increased sell, otherwise buy
 
 # single HMM
 #sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=1,ncol=5)), m=1,n=5))
@@ -127,19 +149,32 @@ print(MAPE)
 #chartSeries(test, theme="white")
 
 # Forward-backward 
-fb <- forwardBackward(hm_model, test, FALSE)
+#fb <- forwardBackward(hm_model, test, FALSE)
 #print(fb)
 #print(${name}_Subset[,4] - ${name}_Predict [,1])
 
 #layout(matrix(1:2, nrow=2))
 #layout(matrix(2:1, ncol=2))
-layout(1:2)
-print(matrix(2:1, ncol=2))
+#layout(1:2)
+#print(matrix(2:1, ncol=2))
 
 # show the states with predicted closing value
 #chartSeries(pred)
-chartSeries(pred, TA = "addTA(actual, on = 1)")
+#chartSeries(actual)
+#chartSeries(pred, TA = "addTA(actual, on = 1)")
 #chartSeries(pred, TA = "addTA(pred - change, on = 1)")
+
+}
+
+chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
+
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], legend = \"Predicted\", on = 1, col=10)") # 
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, legend = \"Predicted\", col=8)") #
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, legend = \"Predicted\", col=7)") # grey?
+#chartSeries(testset)
 
 #chartSeries(${name}_Predict[,1], #theme="white.mono", 
 #chartSeries(${name}_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
