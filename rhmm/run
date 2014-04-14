@@ -98,7 +98,8 @@ ${name}_Predict <- cbind(trainset\$${name}.Close, VitPath\$states)
 #print(matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,])))
 
 vec <- 1:length(testset)
-testset\$Pred <- vec
+testset\$Pred <- apply(testset, 1, vec)
+#testset\$Pred <- vec
 #testset["Pred"] <- vec
 #testset["Pred"] <- NA
 #testopen <- testset\$${name}.Open

@@ -87,8 +87,8 @@ Loading required package: nlme
 > #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 > 
 > vec <- 1:length(testset)
-> testset$Pred <- vec
-Error in error(x, ...) : 
-  improper length of one or more arguments to merge.xts
-Calls: $<- ... cbind -> merge.xts -> .External -> try.xts -> error
+> testset$Pred <- apply(testset, 1, vec)
+Error in get(as.character(FUN), mode = "function", envir = envir) : 
+  object 'vec' of mode 'function' was not found
+Calls: apply -> match.fun -> get
 Execution halted
