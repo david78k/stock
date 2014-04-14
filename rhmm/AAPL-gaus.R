@@ -45,7 +45,7 @@ testopen <- testset$AAPL.Open
 #for (i in 0: length(testopen) - 1) {
 for (i in 0: length(testopen)) {
 	testrow <- testopen[i, ]
-#	print(testrow)
+	print(testrow)
 	#print(testset$AAPL.Open[i, ])
 }
 
