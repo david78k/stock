@@ -86,8 +86,6 @@ Loading required package: nlme
 > #print(unlist(hm_model$HMM$distribution$mean))
 > #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 > 
-> testset["Pred"] <- ""
-Error in init.vec[dur.vec[[2]]] <- dur.vec[[1]] : 
-  NAs are not allowed in subscripted assignments
-Calls: [<- ... as.POSIXct -> structure -> as.list -> mapply -> parse_duration
+> testset["Pred"] <- a.vector
+Error: object 'a.vector' not found
 Execution halted
