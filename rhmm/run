@@ -97,7 +97,8 @@ ${name}_Predict <- cbind(trainset\$${name}.Close, VitPath\$states)
 #print(unlist(hm_model\$HMM\$distribution\$mean))
 #print(matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,])))
 
-testset["Pred"] <- NA
+testset["Pred"] <- ""
+#testset["Pred"] <- NA
 #testopen <- testset\$${name}.Open
 #for (i in 1: length(testopen)) {
 for (i in 1: 3) {
