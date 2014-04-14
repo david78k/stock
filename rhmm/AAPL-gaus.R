@@ -45,14 +45,13 @@ testset <- cbind(testset, Pred = 0)
 #testset <- cbind(testset$AAPL.Close, Pred = 0)
 #print(testset)
 
-#for (i in 1: 3) {
+rows = nrow(testset)
 #for (i in 1: 251) {
-#for (i in 1: length(testset) - 1) {
-#for (i in 0: length(testset) - 1) {
-for (i in 1: nrow(testset)) {
+for (i in 1: rows) {
 	print(i)
-	print(nrow(testset))
-	if (i == nrow(testset) - 1) break
+	print(rows)
+	if (i == rows) break
+	#if (i == rows - 1) break
 	testrow <- testset[i, ]
 	print(testrow)
 	testopen <- testset$AAPL.Open[i, ]
