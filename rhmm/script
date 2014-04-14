@@ -106,10 +106,12 @@ for (i in 0: rows) {
 	print(rows)
 	if (i == rows) break
 	#if (i == rows - 1) break
+	if(i != 0) {
 	testrow <- testset[i, ]
 	print(testrow)
 	testopen <- testset\$${name}.Open[i, ]
 	testclose <- testset\$${name}.Close[i, ]
+	}
 #	actual <- testset\$${name}.Open[i + 1, ]
 	#print(testset\$${name}.Open[i, ])
 
