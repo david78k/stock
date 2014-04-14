@@ -47,9 +47,9 @@ testset <- cbind(testset, Pred = 0)
 
 #for (i in 1: length(testopen)) {
 #for (i in 1: length(testset)) {
-#for (i in 1: length(testset) - 1) {
 #for (i in 1: 3) {
-for (i in 1: 252) {
+#for (i in 1: 251) {
+for (i in 1: length(testset) - 1) {
 	testrow <- testset[i, ]
 	print(testrow)
 	testopen <- testset$AAPL.Open[i, ]
