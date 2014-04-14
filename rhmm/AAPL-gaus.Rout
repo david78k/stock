@@ -1122,7 +1122,7 @@ Loading required package: nlme
 2013-12-03 550.3176
 [1] -0.912414
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
-2013-12-04     565.5    569.19   560.82        565    13493200        561.64
+2013-12-04     565.5    569.19   560.82        565    13478200        561.64
                Pred
 2013-12-04 565.4076
 [1] -0.912414
@@ -1177,7 +1177,7 @@ Loading required package: nlme
 2013-12-18 554.0776
 [1] -0.912414
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
-2013-12-19     549.5       550   543.73     544.46    11439600        541.22
+2013-12-19     549.5       550   543.73     544.46    11462800        541.22
                Pred
 2013-12-19 549.8576
 [1] -0.912414
@@ -1408,6 +1408,6 @@ Loading required package: nlme
 [1] -0.912414
 > 
 > # plot actual with predicted values added
-> chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col=7, legend = 'Predicted')"), # yellow
-Error: unexpected ',' in "chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col=7, legend = 'Predicted')"),"
+> chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = 'Predicted')"), # yellow
+Error: unexpected ',' in "chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = 'Predicted')"),"
 Execution halted
