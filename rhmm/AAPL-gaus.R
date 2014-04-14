@@ -108,7 +108,7 @@ testset[i + 1, ]$Pred <- pred
 
 }
 
-chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7)") # 
+chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # 
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], legend = \"Predicted\", on = 1, col=10)") # 
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, legend = \"Predicted\", col=8)") #
