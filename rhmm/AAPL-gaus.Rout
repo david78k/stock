@@ -147,8 +147,11 @@ mixt.  4  4.5704367 0.56482749 0.3726157
 > #print(matrix(unlist(hm_model$HMM$distribution$mean[1,])))
 > #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 > 
+> testopen <- testset$AAPL.Open
 > for (i in 1: length(testset)) {
-+ 	print(testset$AAPL.Open[i, ])
++ 	testrow <- testopen[i, ]
++ 	print(testrow)
++ 	#print(testset$AAPL.Open[i, ])
 + }
            AAPL.Open
 2013-03-01       438
@@ -654,6 +657,6 @@ mixt.  4  4.5704367 0.56482749 0.3726157
 2014-02-27    517.14
            AAPL.Open
 2014-02-28    529.08
-Error in `[.xts`(testset$AAPL.Open, i, ) : subscript out of bounds
-Calls: print -> [ -> [.xts
+Error in `[.xts`(testopen, i, ) : subscript out of bounds
+Calls: [ -> [.xts
 Execution halted

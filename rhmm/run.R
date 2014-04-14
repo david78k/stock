@@ -1,30 +1,28 @@
-#!/bin/bash
-
-if [ $# -lt 0 ]; then
-	echo "usage: $0 data"	
-	exit
-fi
+#if [ $# -lt 0 ]; then
+#	echo "usage: $0 data"	
+#	exit
+#fi
 
 # Apple (NASDAQ:APPL), Google (NASDAQ:GOOG), Microsoft (NASDAQ:MSFT),
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
 #(NYSE:LNKD), Amazon (NASDAQ:AMZ), Oracle, IBM, Intel
 #symbol=$1
-symbol=AAPL
+symbol <- "AAPL"
 #symbol=GOOG
 #symbol=FB # 2012-05-18
 
-name=$symbol
+name <- symbol
 #out=$symbol
-out=$symbol-gaus # Gaussian mixture
+out <- symbol-gaus # Gaussian mixture
 
 # training period
 #startdate=2012-01-01
-startdate=2000-01-01
-enddate=2013-03-01
+startdate <- "2000-01-01"
+enddate <- "2013-03-01"
 
 # test period
-teststart=2013-03-01
-testend=2014-03-01
+teststart <- "2013-03-01"
+testend <- "2014-03-01"
 
 #data=${name}.dat
 #data=$1
@@ -36,8 +34,8 @@ emf=${out}.emf
 eps=${out}.eps
 
 #xlabel="DATE"
-xlabel="DAY"
-ylabel="STOCK VALUE ($)"
+xlabel <- "DAY"
+ylabel <- "STOCK VALUE ($)"
 #ylabel="CLOSE VALUE"
 
 function genplot() {
@@ -54,7 +52,6 @@ function genplot() {
 		cmd="emf('$figure')"
 	fi
 
-cat >$script << EOF
 library(quantmod)
 
 require(devEMF)
@@ -98,11 +95,8 @@ print(unlist(hm_model\$HMM\$distribution\$mean))
 #print(matrix(unlist(hm_model\$HMM\$distribution\$mean[1,])))
 #print(matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,])))
 
-testopen <- testset\$${name}.Open
 for (i in 1: length(testset)) {
-	testrow <- testopen[i, ]
-	print(testrow)
-	#print(testset\$${name}.Open[i, ])
+	print(testset\$${name}.Open[i, ])
 }
 
 # predict 
