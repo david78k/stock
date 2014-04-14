@@ -10,7 +10,7 @@ AAPL_Subset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-0
 AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open)
 #print(AAPL_Train)
 
-testset <- window(AAPL, start = as.Date("2013-03-02"), end = as.Date("2014-03-01"))
+testset <- window(AAPL, start = as.Date("2013-03-01"), end = as.Date("2014-03-01"))
 test <- cbind(testset$AAPL.Close - testset$AAPL.Open)
 
 library(RHmm)
@@ -44,8 +44,11 @@ print(unlist(hm_model$HMM$distribution$mean))
 #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
 change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 print(change)
-print(tail(AAPL_Subset$AAPL.Close))
-pred <- (tail(AAPL_Subset$AAPL.Close) + change)
+#print(tail(AAPL_Subset$AAPL.Close))
+head5 <- head(AAPL_Subset$AAPL.Close)
+print(head5)
+pred <- head5 + change
+#pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 print(pred)
 
 #actual <- head(testset$AAPL.Close)
