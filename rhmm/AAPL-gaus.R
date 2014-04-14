@@ -47,7 +47,8 @@ testset <- cbind(testset, Pred = 0)
 
 #testopen <- testset$AAPL.Open
 #for (i in 1: length(testopen)) {
-for (i in 1: 3) {
+#for (i in 1: 3) {
+#for (i in 1: length(testset)) {
 	testrow <- testset[i, ]
 	print(testrow)
 	testopen <- testset$AAPL.Open[i, ]
@@ -68,6 +69,7 @@ pred <- testclose + change
 #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
 testrow$Pred <- pred
 print(pred)
+# update tomorrow's predicted value
 testset[i + 1, ]$Pred <- pred
 print(testset[i + 1, ]$Pred)
 
@@ -105,6 +107,7 @@ print(testset[i + 1, ]$Pred)
 
 }
 
+chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1)")
 #chartSeries(testset)
 
 #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
