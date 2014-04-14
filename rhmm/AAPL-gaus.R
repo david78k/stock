@@ -115,7 +115,7 @@ testset[i + 1, ]$Pred <- pred
 }
 
 # plot actual with predicted values added
-chartSeries(testset[2:rows, 1], theme='white.mono', col = 'green',
+chartSeries(testset[2:rows, 1], theme='white.mono', col = 'green', name = "AAPL", legend = "Actual",
 	TA = "addTA(testset[2:rows, 7], on = 1, col='blue')") # 
 #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
