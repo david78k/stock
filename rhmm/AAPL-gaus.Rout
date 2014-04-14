@@ -117,7 +117,7 @@ Loading required package: nlme
 + #print(pred)
 + # update tomorrow's predicted value
 + testset[i + 1, ]$Pred <- pred
-+ print(testset[i + 1, ]$Pred)
++ #print(testset[i + 1, ]$Pred)
 + 
 + #actual <- head(testset$AAPL.Close)
 + #actual <- head(testset$AAPL.Open)
@@ -156,25 +156,19 @@ Loading required package: nlme
 2013-03-01       438    438.18   429.98     430.47    19730300        419.86
            Pred
 2013-03-01    0
-[1] 0.2421708
-               Pred
-2013-03-04 430.7122
+[1] -0.7671766
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-03-04     427.8     428.2      419     420.05    20812700        409.69
                Pred
-2013-03-04 430.7122
-[1] 0.2421708
-               Pred
-2013-03-05 420.2922
+2013-03-04 429.7028
+[1] -0.7671766
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-03-05    421.48    435.19   420.75     431.14    22801200        420.51
                Pred
-2013-03-05 420.2922
-[1] 0.2421708
-               Pred
-2013-03-06 431.3822
+2013-03-05 419.2828
+[1] -0.7671766
 > 
-> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1)")
+> chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1)")
 > #chartSeries(testset)
 > 
 > #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
@@ -189,4 +183,4 @@ Loading required package: nlme
 > 
 > proc.time()
    user  system elapsed 
-  3.698   0.060   3.945 
+  5.691   0.056   6.028 
