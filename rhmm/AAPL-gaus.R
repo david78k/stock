@@ -108,7 +108,8 @@ testset[i + 1, ]$Pred <- pred
 
 }
 
-chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)")
+chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, legend = \"Predicted\", col=7)") #
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") #pink
 #chartSeries(testset)
 
 #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
