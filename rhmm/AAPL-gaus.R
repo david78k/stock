@@ -45,7 +45,7 @@ print(unlist(hm_model$HMM$distribution$mean))
 change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 print(change)
 #print(tail(AAPL_Subset$AAPL.Close))
-head5 <- head(AAPL_Subset$AAPL.Close)
+head5 <- head(testset$AAPL.Close)
 print(head5)
 pred <- head5 + change
 #pred <- (tail(AAPL_Subset$AAPL.Close) + change)
