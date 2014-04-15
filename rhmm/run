@@ -147,24 +147,17 @@ for (i in 1: 3) {
 	print(testset[i, ])
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-	#MAPE <- pred\$${name}.Close - actual\$${name}.Close
-	#print (pred)
-	#print (todayclose)
-	#print (pred - todayclose)
-	#print ((pred - todayclose)/todayclose)
 	diff = (abs ((pred - todayclose)/ todayclose))[1,]\$${name}.Open
-	print ("diff")
-	print (diff)
-	print("diff.open")
-	print (diff\$${name}.Open)
+	#print ("diff")
+	#print (diff)
 	#MAPEsum <- MAPEsum + diff\$${name}.Open
 	MAPEsum <- sum(MAPEsum, diff[1,1])
 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
-	print ("MAPEsum")
-	print(MAPEsum)
-	MAPE <- MAPEsum*100/rows
-	print("MAPE")
-	print(MAPE)
+	#print ("MAPEsum")
+	#print(MAPEsum)
+	#MAPE <- MAPEsum*100/rows
+	#print("MAPE")
+	#print(MAPE)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
 

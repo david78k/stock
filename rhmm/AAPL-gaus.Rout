@@ -139,24 +139,17 @@ Loading required package: nlme
 + 	print(testset[i, ])
 + 
 + 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-+ 	#MAPE <- pred$AAPL.Close - actual$AAPL.Close
-+ 	#print (pred)
-+ 	#print (todayclose)
-+ 	#print (pred - todayclose)
-+ 	#print ((pred - todayclose)/todayclose)
 + 	diff = (abs ((pred - todayclose)/ todayclose))[1,]$AAPL.Open
-+ 	print ("diff")
-+ 	print (diff)
-+ 	print("diff.open")
-+ 	print (diff$AAPL.Open)
++ 	#print ("diff")
++ 	#print (diff)
 + 	#MAPEsum <- MAPEsum + diff$AAPL.Open
 + 	MAPEsum <- sum(MAPEsum, diff[1,1])
 + 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
-+ 	print ("MAPEsum")
-+ 	print(MAPEsum)
-+ 	MAPE <- MAPEsum*100/rows
-+ 	print("MAPE")
-+ 	print(MAPE)
++ 	#print ("MAPEsum")
++ 	#print(MAPEsum)
++ 	#MAPE <- MAPEsum*100/rows
++ 	#print("MAPE")
++ 	#print(MAPE)
 + 
 + 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
 + 
@@ -183,55 +176,25 @@ Loading required package: nlme
 + 	# Viterbi Algorithm to find the most probable state sequence
 + 	VitPath <- viterbi (hm_model, train)
 + }
-[1] 0.1218695
+[1] 0.1486908
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-01     441.9     443.7   427.74     428.91    13919000        418.33
                Pred
-2013-04-01 442.0219
-[1] "diff"
-            AAPL.Open
-2013-04-01 0.03057021
-[1] "diff.open"
-            AAPL.Open
-2013-04-01 0.03057021
-[1] "MAPEsum"
-[1] 0.03057021
-[1] "MAPE"
-[1] 0.01203552
-[1] -0.9795501
+2013-04-01 442.0487
+[1] -0.6671379
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-02     427.6    438.14    426.4     429.79    18911400        419.19
                Pred
-2013-04-02 426.6204
-[1] "diff"
-             AAPL.Open
-2013-04-02 0.007374648
-[1] "diff.open"
-             AAPL.Open
-2013-04-02 0.007374648
-[1] "MAPEsum"
-[1] 0.03794486
-[1] "MAPE"
-[1] 0.01493892
-[1] -2.64364
+2013-04-02 426.9329
+[1] -0.9055431
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-03    431.37    437.28   430.31     431.99    12972000        421.34
                Pred
-2013-04-03 428.7264
-[1] "diff"
-             AAPL.Open
-2013-04-03 0.007554897
-[1] "diff.open"
-             AAPL.Open
-2013-04-03 0.007554897
-[1] "MAPEsum"
-[1] 0.04549976
-[1] "MAPE"
-[1] 0.01791329
+2013-04-03 430.4645
 > 
 > MAPE <- MAPEsum*100/rows
 > print(MAPE)
-[1] 0.01791329
+[1] 0.01606769
 > 
 > # plot actual with predicted values added
 > # compare actual closing value and predicted closing value
@@ -261,4 +224,4 @@ Loading required package: nlme
 > 
 > proc.time()
    user  system elapsed 
- 15.023   0.071  15.264 
+ 18.857   0.059  19.202 
