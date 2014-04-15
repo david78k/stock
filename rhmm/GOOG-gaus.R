@@ -1,12 +1,13 @@
 require(devEMF)
 library(quantmod)
 library(RHmm)
+library(parallel)
 #postscript('GOOG-gaus.eps')
 
 getSymbols("GOOG")
 chartSeries(GOOG, theme="white")
 trainset <- window(GOOG, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
-#print(trainset)
+print(trainset)
 #GOOG_Subset <- window(GOOG, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
 #GOOG_Train <- cbind(GOOG_Subset$GOOG.Close - GOOG_Subset$GOOG.Open, GOOG_Subset$GOOG.Volume)
 train <- cbind(trainset$GOOG.Close - trainset$GOOG.Open)
@@ -14,7 +15,7 @@ train <- cbind(trainset$GOOG.Close - trainset$GOOG.Open)
 
 testset <- window(GOOG, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
 test <- cbind(testset$GOOG.Close - testset$GOOG.Open)
-#print(testset)
+print(testset)
 
 # Baum-Welch Algorithm to find the model for the given observations
 #hm_model <- HMMFit(obs = GOOG_Train, nStates = 5)
@@ -50,16 +51,8 @@ testset <- cbind(testset, Pred = 0)
 # number of rows of test set data
 rows = nrow(testset)
 
-#MAPEsum = 0
-MAPEsum <- 0
-#MAPEsum <- MAPEsum + 3.35
-#print (MAPEsum)
-
-#MAPEsum <- abs(MAPEsum / 2.71)
-#print(MAPEsum)
-
-#MAPEsum <- MAPEsum + 5.18
-#print(MAPEsum)
+MAPEsum = 0
+#MAPEsum <- 0
 
 # predict and update HMM to include the new actual value
 #for (i in 1: 251) {

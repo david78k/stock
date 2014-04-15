@@ -1,33 +1,33 @@
 require(devEMF)
 library(quantmod)
 library(RHmm)
-#postscript('AMZ-gaus.eps')
+#postscript('LNKD-gaus.eps')
 
-getSymbols("AMZ")
-chartSeries(AMZ, theme="white")
-trainset <- window(AMZ, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+getSymbols("LNKD")
+chartSeries(LNKD, theme="white")
+trainset <- window(LNKD, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
 #print(trainset)
-#AMZ_Subset <- window(AMZ, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
-#AMZ_Train <- cbind(AMZ_Subset$AMZ.Close - AMZ_Subset$AMZ.Open, AMZ_Subset$AMZ.Volume)
-train <- cbind(trainset$AMZ.Close - trainset$AMZ.Open)
+#LNKD_Subset <- window(LNKD, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+#LNKD_Train <- cbind(LNKD_Subset$LNKD.Close - LNKD_Subset$LNKD.Open, LNKD_Subset$LNKD.Volume)
+train <- cbind(trainset$LNKD.Close - trainset$LNKD.Open)
 #print(train)
 
-testset <- window(AMZ, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
-test <- cbind(testset$AMZ.Close - testset$AMZ.Open)
+testset <- window(LNKD, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
+test <- cbind(testset$LNKD.Close - testset$LNKD.Open)
 #print(testset)
 
 # Baum-Welch Algorithm to find the model for the given observations
-#hm_model <- HMMFit(obs = AMZ_Train, nStates = 5)
+#hm_model <- HMMFit(obs = LNKD_Train, nStates = 5)
 hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
 
 # Viterbi Algorithm to find the most probable state sequence
 VitPath <- viterbi (hm_model, train)
 
 # scatter plot
-postscript('AMZ-gaus.eps')
-AMZ_Predict <- cbind(trainset$AMZ.Close, VitPath$states)
-#AMZ_Predict <- cbind(AMZ_Subset$AMZ.Close, VitPath$states)
-#print(AMZ_Subset[,4] - AMZ_Predict [,1])
+postscript('LNKD-gaus.eps')
+LNKD_Predict <- cbind(trainset$LNKD.Close, VitPath$states)
+#LNKD_Predict <- cbind(LNKD_Subset$LNKD.Close, VitPath$states)
+#print(LNKD_Subset[,4] - LNKD_Predict [,1])
 
 # predict next stock value m = nMixt, n = nStates
 #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
@@ -41,7 +41,7 @@ AMZ_Predict <- cbind(trainset$AMZ.Close, VitPath$states)
 
 # add a new colum "Pred"
 testset <- cbind(testset, Pred = 0)
-#testset <- cbind(testset$AMZ.Close, Pred = 0)
+#testset <- cbind(testset$LNKD.Close, Pred = 0)
 #print(testset)
 
 #chartSeries(testset, theme="white")
@@ -70,8 +70,8 @@ for (i in 1: rows) {
 	if(i != 0) {
 		testrow <- testset[i, ]
 		#print(testrow)
-		todayopen <- testset$AMZ.Open[i, ]
-		todayclose <- testset$AMZ.Close[i, ]
+		todayopen <- testset$LNKD.Open[i, ]
+		todayclose <- testset$LNKD.Close[i, ]
 	}
 
 	# predict the closing value of today
@@ -88,10 +88,10 @@ for (i in 1: rows) {
 	print(testset[i, ])
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-	diff = (abs ((pred - todayclose)/ todayclose))[1,]$AMZ.Open
+	diff = (abs ((pred - todayclose)/ todayclose))[1,]$LNKD.Open
 	#print ("diff")
 	#print (diff)
-	#MAPEsum <- MAPEsum + diff$AMZ.Open
+	#MAPEsum <- MAPEsum + diff$LNKD.Open
 	MAPEsum <- sum(MAPEsum, diff[1,1])
 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 	#print ("MAPEsum")
@@ -113,7 +113,7 @@ for (i in 1: rows) {
 	# Forward-backward 
 	#fb <- forwardBackward(hm_model, test, FALSE)
 	#print(fb)
-	#print(AMZ_Subset[,4] - AMZ_Predict [,1])
+	#print(LNKD_Subset[,4] - LNKD_Predict [,1])
 
 	# update train data
 	train <- rbind (train, todayclose - todayopen)
@@ -131,8 +131,8 @@ print(MAPE)
 
 # plot actual with predicted values added
 # compare actual closing value and predicted closing value
-#chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "AMZ", legend = "Actual",
-chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "AMZ", legend = "Actual",
+#chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "LNKD", legend = "Actual",
+chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "LNKD", legend = "Actual",
 	TA = "addTA(testset[1:rows, 7], on = 1, col='red')") # 
 #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
@@ -146,11 +146,11 @@ chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), nam
 
 #chartSeries(testset)
 
-#chartSeries(AMZ_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
-#TA="addTA(AMZ_Predict[AMZ_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
-#addTA(AMZ_Predict[AMZ_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
-#addTA(AMZ_Predict[AMZ_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
-#addTA(AMZ_Predict[AMZ_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
-#addTA(AMZ_Predict[AMZ_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
+#chartSeries(LNKD_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
+#TA="addTA(LNKD_Predict[LNKD_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
+#addTA(LNKD_Predict[LNKD_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
+#addTA(LNKD_Predict[LNKD_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
+#addTA(LNKD_Predict[LNKD_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
+#addTA(LNKD_Predict[LNKD_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
 #")
 
