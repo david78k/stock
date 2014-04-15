@@ -149,7 +149,8 @@ Loading required package: nlme
 + 	print (diff)
 + 	print("diff.open")
 + 	print (diff$AAPL.Open)
-+ 	MAPEsum <- MAPEsum + diff$AAPL.Open
++ 	#MAPEsum <- MAPEsum + diff$AAPL.Open
++ 	MAPEsum <- MAPEsum + diff[1,1]
 + 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 + 	print ("MAPEsum")
 + 	print(MAPEsum)
@@ -182,34 +183,34 @@ Loading required package: nlme
 + 	# Viterbi Algorithm to find the most probable state sequence
 + 	VitPath <- viterbi (hm_model, train)
 + }
-[1] -2.209251
+[1] -0.703883
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-01     441.9     443.7   427.74     428.91    13919000        418.33
                Pred
-2013-04-01 439.6907
+2013-04-01 441.1961
 [1] "diff"
             AAPL.Open
-2013-04-01 0.02513522
+2013-04-01 0.02864498
 [1] "diff.open"
             AAPL.Open
-2013-04-01 0.02513522
+2013-04-01 0.02864498
 [1] "MAPEsum"
             AAPL.Open
-2013-04-01 0.02513522
+2013-04-01 0.02864498
 [1] "MAPE"
-             AAPL.Open
-2013-04-01 0.009895757
-[1] -0.7294452
+            AAPL.Open
+2013-04-01 0.01127755
+[1] 0.2833304
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-02     427.6    438.14    426.4     429.79    18911400        419.19
                Pred
-2013-04-02 426.8706
+2013-04-02 427.8833
 [1] "diff"
              AAPL.Open
-2013-04-02 0.006792725
+2013-04-02 0.004436282
 [1] "diff.open"
              AAPL.Open
-2013-04-02 0.006792725
+2013-04-02 0.004436282
 [1] "MAPEsum"
 Data:
 numeric(0)
@@ -222,17 +223,17 @@ numeric(0)
 
 Index:
 numeric(0)
-[1] -0.5921385
+[1] -0.7341579
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-03    431.37    437.28   430.31     431.99    12972000        421.34
                Pred
-2013-04-03 430.7779
+2013-04-03 430.6358
 [1] "diff"
              AAPL.Open
-2013-04-03 0.002805941
+2013-04-03 0.003134697
 [1] "diff.open"
              AAPL.Open
-2013-04-03 0.002805941
+2013-04-03 0.003134697
 [1] "MAPEsum"
 Data:
 numeric(0)
@@ -282,4 +283,4 @@ numeric(0)
 > 
 > proc.time()
    user  system elapsed 
- 17.436   0.052  17.753 
+ 16.587   0.057  16.907 

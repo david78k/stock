@@ -103,7 +103,8 @@ for (i in 1: 3) {
 	print (diff)
 	print("diff.open")
 	print (diff$AAPL.Open)
-	MAPEsum <- MAPEsum + diff$AAPL.Open
+	#MAPEsum <- MAPEsum + diff$AAPL.Open
+	MAPEsum <- MAPEsum + diff[1,1]
 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 	print ("MAPEsum")
 	print(MAPEsum)
