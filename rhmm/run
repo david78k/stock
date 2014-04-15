@@ -7,7 +7,7 @@ fi
 
 # Apple (NASDAQ:APPL), Google (NASDAQ:GOOG), Microsoft (NASDAQ:MSFT),
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
-#(NYSE:LNKD), Amazon (NASDAQ:AMZ), Oracle, IBM, Intel
+#(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle, IBM, Intel
 #symbol=$1
 #symbol=AAPL
 #symbol=GOOG
@@ -15,7 +15,7 @@ fi
 #symbol=MSFT # 
 #symbol=TWTR # 
 #symbol=LNKD # 
-symbol=AMZ # 
+symbol=AMZN # 
 
 name=$symbol
 #out=$symbol

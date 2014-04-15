@@ -1,0 +1,1477 @@
+
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> require(devEMF)
+Loading required package: devEMF
+> library(quantmod)
+Loading required package: Defaults
+Loading required package: xts
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+Loading required package: TTR
+Version 0.4-0 included new data defaults. See ?getSymbols.
+> library(RHmm)
+Loading required package: MASS
+Loading required package: nlme
+> #postscript('AMZN-gaus.eps')
+> 
+> getSymbols("AMZN")
+    As of 0.4-0, ‘getSymbols’ uses env=parent.frame() and
+ auto.assign=TRUE by default.
+
+ This  behavior  will be  phased out in 0.5-0  when the call  will
+ default to use auto.assign=FALSE. getOption("getSymbols.env") and 
+ getOptions("getSymbols.auto.assign") are now checked for alternate defaults
+
+ This message is shown once per session and may be disabled by setting 
+ options("getSymbols.warning4.0"=FALSE). See ?getSymbol for more details
+[1] "AMZN"
+> chartSeries(AMZN, theme="white")
+> trainset <- window(AMZN, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+> #print(trainset)
+> #AMZN_Subset <- window(AMZN, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+> #AMZN_Train <- cbind(AMZN_Subset$AMZN.Close - AMZN_Subset$AMZN.Open, AMZN_Subset$AMZN.Volume)
+> train <- cbind(trainset$AMZN.Close - trainset$AMZN.Open)
+> #print(train)
+> 
+> testset <- window(AMZN, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
+> test <- cbind(testset$AMZN.Close - testset$AMZN.Open)
+> #print(testset)
+> 
+> # Baum-Welch Algorithm to find the model for the given observations
+> #hm_model <- HMMFit(obs = AMZN_Train, nStates = 5)
+> hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
+> 
+> # Viterbi Algorithm to find the most probable state sequence
+> VitPath <- viterbi (hm_model, train)
+> 
+> # scatter plot
+> postscript('AMZN-gaus.eps')
+> AMZN_Predict <- cbind(trainset$AMZN.Close, VitPath$states)
+> #AMZN_Predict <- cbind(AMZN_Subset$AMZN.Close, VitPath$states)
+> #print(AMZN_Subset[,4] - AMZN_Predict [,1])
+> 
+> # predict next stock value m = nMixt, n = nStates
+> #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
+> # gaussian mixture HMM: nrow = nMixture, ncol = nStates
+> #print(hm_model$HMM$transMat[last(VitPath$states),])
+> #print(hm_model$HMM$distribution)
+> #print(hm_model$HMM$distribution$mean)
+> #print(hm_model$HMM$distribution$mean[, seq(1, ncol(hm_model$HMM$distribution$mean), by = 2)])
+> #print(unlist(hm_model$HMM$distribution$mean))
+> #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
+> 
+> # add a new colum "Pred"
+> testset <- cbind(testset, Pred = 0)
+> #testset <- cbind(testset$AMZN.Close, Pred = 0)
+> #print(testset)
+> 
+> #chartSeries(testset, theme="white")
+> #chartSeries(test, theme="white")
+> 
+> # number of rows of test set data
+> rows = nrow(testset)
+> 
+> #MAPEsum = 0
+> MAPEsum <- 0
+> #MAPEsum <- MAPEsum + 3.35
+> #print (MAPEsum)
+> 
+> #MAPEsum <- abs(MAPEsum / 2.71)
+> #print(MAPEsum)
+> 
+> #MAPEsum <- MAPEsum + 5.18
+> #print(MAPEsum)
+> 
+> # predict and update HMM to include the new actual value
+> #for (i in 1: 251) {
+> #for (i in 1: 3) {
+> for (i in 1: rows) {
++ 	#if (i == rows) break
++ 
++ 	if(i != 0) {
++ 		testrow <- testset[i, ]
++ 		#print(testrow)
++ 		todayopen <- testset$AMZN.Open[i, ]
++ 		todayclose <- testset$AMZN.Close[i, ]
++ 	}
++ 
++ 	# predict the closing value of today
++ 	change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
++ 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
++ 	print(change)
++ 
++ 	pred <- todayopen + change
++ 	#testrow$Pred <- pred
++ 	#print(pred)
++ 
++ 	# update today's predicted value
++ 	testset[i, ]$Pred <- pred
++ 	print(testset[i, ])
++ 
++ 	# MAPE = sum(|pred - actual|/|actual|)*100/n
++ 	diff = (abs ((pred - todayclose)/ todayclose))[1,]$AMZN.Open
++ 	#print ("diff")
++ 	#print (diff)
++ 	#MAPEsum <- MAPEsum + diff$AMZN.Open
++ 	MAPEsum <- sum(MAPEsum, diff[1,1])
++ 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
++ 	#print ("MAPEsum")
++ 	#print(MAPEsum)
++ 	#MAPE <- MAPEsum*100/rows
++ 	#print("MAPE")
++ 	#print(MAPE)
++ 
++ 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
++ 
++ 	# ROC
++ 
++ 	# [Optional] Returns: sell or buy
++ 	# if stock increased sell, otherwise buy
++ 
++ 	# single HMM
++ 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
++ 
++ 	# Forward-backward 
++ 	#fb <- forwardBackward(hm_model, test, FALSE)
++ 	#print(fb)
++ 	#print(AMZN_Subset[,4] - AMZN_Predict [,1])
++ 
++ 	# update train data
++ 	train <- rbind (train, todayclose - todayopen)
++ 	
++ 	# update HMM with the new data
++ 	# Baum-Welch Algorithm to find the model for the given observations
++ 	hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
++ 
++ 	# Viterbi Algorithm to find the most probable state sequence
++ 	VitPath <- viterbi (hm_model, train)
++ }
+[1] -0.6156581
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-01    266.98     267.4   261.01     261.61     2524800        261.61
+               Pred
+2013-04-01 266.3643
+[1] 0.2507487
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-02     262.4    265.89   260.55     263.32     2631100        263.32
+               Pred
+2013-04-02 262.6507
+[1] 0.2456944
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-03    262.12    263.67   257.75     259.03     2413800        259.03
+               Pred
+2013-04-03 262.3657
+[1] -0.6037413
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-04    259.23    260.41   256.12     259.08     1964400        259.08
+               Pred
+2013-04-04 258.6263
+[1] -0.05149845
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-05    255.72    256.18   253.67     255.48     2557400        255.48
+               Pred
+2013-04-05 255.6685
+[1] -0.5471713
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-08    255.92    259.68   255.63     258.95     2295600        258.95
+               Pred
+2013-04-08 255.3728
+[1] -0.5377806
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-09    258.85    262.61      257     261.14     2156600        261.14
+               Pred
+2013-04-09 258.3122
+[1] -0.05852309
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-10    261.78    265.98   259.32     264.77     2322500        264.77
+               Pred
+2013-04-10 261.7215
+[1] -0.06810405
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-11    264.74    270.97   264.74     269.85     3090500        269.85
+               Pred
+2013-04-11 264.6719
+[1] 0.291431
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-12    270.12    273.27   267.02     272.87     2866300        272.87
+               Pred
+2013-04-12 270.4114
+[1] -0.001496582
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-15    271.08    275.12    267.1     267.72     3326000        267.72
+               Pred
+2013-04-15 271.0785
+[1] -0.07025015
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-16    269.31     272.8   268.06     272.34     2137200        272.34
+               Pred
+2013-04-16 269.2397
+[1] -0.2859023
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-17     270.8    270.85   264.25      267.4     3135100         267.4
+               Pred
+2013-04-17 270.5141
+[1] 0.08693596
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-18    266.81    266.99    256.6     259.42     3137600        259.42
+               Pred
+2013-04-18 266.8969
+[1] -0.5495132
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-19    258.16    262.88    257.5     260.32     2602500        260.32
+               Pred
+2013-04-19 257.6105
+[1] -0.03108015
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-22    259.35     264.6   258.03     263.55     2119100        263.55
+               Pred
+2013-04-22 259.3189
+[1] -0.05224124
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-23     264.5    269.87    264.5      268.9     2270600         268.9
+               Pred
+2013-04-23 264.4478
+[1] 0.1192313
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-24     269.5    271.47   266.81     268.78     1852800        268.78
+               Pred
+2013-04-24 269.6192
+[1] -0.2183873
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-25    271.53     275.8    270.5      274.7     6116500         274.7
+               Pred
+2013-04-25 271.3116
+[1] -0.01153251
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-26    269.97    272.02   252.81     254.81    14030000        254.81
+               Pred
+2013-04-26 269.9585
+[1] 2.216199
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-29     254.9    257.01   249.15     249.74     7117000        249.74
+               Pred
+2013-04-29 257.1162
+[1] -0.00401407
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-04-30    249.37    254.68   248.56     253.81     4248800        253.81
+              Pred
+2013-04-30 249.366
+[1] 1.639955
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-01     253.9     254.2   245.75     248.23     4391400        248.23
+             Pred
+2013-05-01 255.54
+[1] -0.3915619
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-02    248.94    252.93   245.78     252.55     3936200        252.55
+               Pred
+2013-05-02 248.5484
+[1] -0.1168916
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-03    256.14    259.25    254.7     258.05     3514000        258.05
+               Pred
+2013-05-03 256.0231
+[1] -0.03962838
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-06    258.09     259.5   253.42     255.72     2347800        255.72
+               Pred
+2013-05-06 258.0504
+[1] -0.07200495
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-07    256.31    259.74   252.91     257.73     3133700        257.73
+              Pred
+2013-05-07 256.238
+[1] -0.01565413
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-08    256.87     260.3   255.33     258.68     2677000        258.68
+               Pred
+2013-05-08 256.8543
+[1] -0.0216574
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-09    258.73    263.55   256.88     260.16     2769300        260.16
+               Pred
+2013-05-09 258.7083
+[1] 1.011489
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-10    260.88    263.65   260.21     263.63     3145300        263.63
+               Pred
+2013-05-10 261.8915
+[1] -0.06387452
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-13    262.77    265.88      262     264.51     2149500        264.51
+               Pred
+2013-05-13 262.7061
+[1] -0.000541344
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-14     264.5     269.4   264.03     268.33     2700000        268.33
+               Pred
+2013-05-14 264.4995
+[1] 0.9555717
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-15    267.07    269.05   264.56     266.56     2720500        266.56
+               Pred
+2013-05-15 268.0256
+[1] -0.00864346
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-16    265.96    268.43   263.85     264.12     1643500        264.12
+               Pred
+2013-05-16 265.9514
+[1] -0.139794
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-17    265.83    269.98      265      269.9     2527300         269.9
+               Pred
+2013-05-17 265.6902
+[1] -0.4085697
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-20       269    271.79    266.5     267.63     2209000        267.63
+               Pred
+2013-05-20 268.5914
+[1] -0.7247001
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-21    268.74    270.77   267.66     268.86     1741200        268.86
+               Pred
+2013-05-21 268.0153
+[1] -0.05948417
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-22    267.39    267.59    260.8     262.96     3332000        262.96
+               Pred
+2013-05-22 267.3305
+[1] 0.363559
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-23    260.49    263.17   259.59      261.8     2000300         261.8
+               Pred
+2013-05-23 260.8536
+[1] -0.04610689
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-24    259.85    261.93   258.34     261.74     1696300        261.74
+               Pred
+2013-05-24 259.8039
+[1] -0.08076283
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-28    266.48     271.1      266     267.29     3471000        267.29
+               Pred
+2013-05-28 266.3992
+[1] 0.05136973
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-29    265.46    268.25   264.84     265.53     1903400        265.53
+               Pred
+2013-05-29 265.5114
+[1] 0.2290991
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-30    265.71    268.57   265.61     266.83     1667500        266.83
+               Pred
+2013-05-30 265.9391
+[1] -0.1486289
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-05-31       266    271.91   265.94      269.2     3374300         269.2
+               Pred
+2013-05-31 265.8514
+[1] -0.04805615
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-03    268.96    269.11   262.95     266.88     2543900        266.88
+               Pred
+2013-06-03 268.9119
+[1] -0.1442015
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-04       267    268.88   263.02      265.7     2088600         265.7
+               Pred
+2013-06-04 266.8558
+[1] 0.2979894
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-05    265.81    271.66   265.02     267.17     3512300        267.17
+              Pred
+2013-06-05 266.108
+[1] 0.2002535
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-06    267.75     270.5   264.21     267.83     2476300        267.83
+               Pred
+2013-06-06 267.9503
+[1] -0.09236321
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-07    269.74     280.1   269.13     276.87     4632600        276.87
+               Pred
+2013-06-07 269.6476
+[1] 0.3204624
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-10    276.68    282.47   275.24     281.07     3086500        281.07
+               Pred
+2013-06-10 277.0005
+[1] 0.2333192
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-11       276    278.41   274.24     274.78     3097800        274.78
+               Pred
+2013-06-11 276.2333
+[1] 0.1758955
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-12     276.6     276.8   270.45     271.67     2238900        271.67
+               Pred
+2013-06-12 276.7759
+[1] -0.06296984
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-13     271.5     276.8   270.29     275.79     2649800        275.79
+              Pred
+2013-06-13 271.437
+[1] 0.2645901
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-14       275    277.07   273.44     273.99     2150800        273.99
+               Pred
+2013-06-14 275.2646
+[1] -0.4270634
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-17    276.35     280.2   275.65     278.06     2884000        278.06
+               Pred
+2013-06-17 275.9229
+[1] 0.1669958
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-18    279.08    282.91   278.11     281.76     2146100        281.76
+              Pred
+2013-06-18 279.247
+[1] -0.0108109
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-19    281.26    283.34   277.87     278.16     2827500        278.16
+               Pred
+2013-06-19 281.2492
+[1] 0.2834894
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-20    275.14     278.6   272.39     273.44     2984000        273.44
+               Pred
+2013-06-20 275.4235
+[1] 0.1187238
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-21    274.57    275.84   269.79     273.36     4201000        273.36
+               Pred
+2013-06-21 274.6887
+[1] -0.2708811
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-24    271.29    273.16      265     270.61     3863800        270.61
+               Pred
+2013-06-24 271.0191
+[1] 0.3003756
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-25     272.3    273.47      269     272.09     2449600        272.09
+               Pred
+2013-06-25 272.6004
+[1] 0.4090006
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-26    273.98    277.98    273.5     277.57     3029500        277.57
+              Pred
+2013-06-26 274.389
+[1] -0.03820272
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-27    279.18     280.2   274.54     277.55     2519500        277.55
+               Pred
+2013-06-27 279.1418
+[1] -0.03506255
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-06-28    276.19    279.83   276.19     277.69     3193300        277.69
+               Pred
+2013-06-28 276.1549
+[1] 0.01449681
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-01       279    283.29   277.16      282.1     2888200         282.1
+               Pred
+2013-07-01 279.0145
+[1] 0.03934946
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-02    281.04    286.58   280.59     283.73     3238200        283.73
+               Pred
+2013-07-02 281.0793
+[1] -0.005636382
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-03       282     285.4      282     284.03     1373000        284.03
+               Pred
+2013-07-03 281.9944
+[1] -0.05914268
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-05       285    286.38   282.07     285.88     1985400        285.88
+               Pred
+2013-07-05 284.9409
+[1] 0.133537
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-08    286.42    291.67   286.14     290.59     3046700        290.59
+               Pred
+2013-07-08 286.5535
+[1] 0.3321303
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-09       291    292.57   288.01     291.53     2775600        291.53
+               Pred
+2013-07-09 291.3321
+[1] 0.2176226
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-10    291.41    293.34    289.4     292.33     1810200        292.33
+               Pred
+2013-07-10 291.6276
+[1] 0.3310422
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-11    294.99    300.69    292.1     299.66     4007300        299.66
+              Pred
+2013-07-11 295.321
+[1] -0.1525837
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-12    298.69    307.55    298.5     307.55     4539300        307.55
+               Pred
+2013-07-12 298.5374
+[1] 0.3401004
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-15    307.27    307.99   304.35     306.57     2245600        306.57
+               Pred
+2013-07-15 307.6101
+[1] 0.3144731
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-16     307.3    309.39   305.51     306.87     2660200        306.87
+               Pred
+2013-07-16 307.6145
+[1] 0.0347963
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-17    306.97     308.8   305.69     308.69     2029700        308.69
+               Pred
+2013-07-17 307.0048
+[1] 0.3804818
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-18    306.27    306.34   301.87     304.11     3063800        304.11
+               Pred
+2013-07-18 306.6505
+[1] 0.04965755
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-19    304.39    305.79   301.91     305.23     2973100        305.23
+               Pred
+2013-07-19 304.4397
+[1] -0.1499684
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-22    309.25    309.25      302     303.48     2520700        303.48
+            Pred
+2013-07-22 309.1
+[1] 0.3228285
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-23    303.16    305.06   300.56     301.06     1999600        301.06
+               Pred
+2013-07-23 303.4828
+[1] 7.762115e-05
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-24    303.02    303.84   298.04     298.94     2000500        298.94
+               Pred
+2013-07-24 303.0201
+[1] 0.2055618
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-25       299     304.5   296.75      303.4     5405800         303.4
+               Pred
+2013-07-25 299.2056
+[1] 0.1448031
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-26    299.55    313.62   295.55     312.01     8817500        312.01
+               Pred
+2013-07-26 299.6948
+[1] 0.07056633
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-29    311.07       313    305.9      306.1     3211800         306.1
+               Pred
+2013-07-29 311.1406
+[1] 0.3410849
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-30    307.72    309.78   301.57     302.41     3053400        302.41
+               Pred
+2013-07-30 308.0611
+[1] -0.4093226
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-07-31    303.91    305.15      301     301.22     1891300        301.22
+               Pred
+2013-07-31 303.5007
+[1] 2.04906
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-01    303.08    306.21    298.9     305.57     2971700        305.57
+               Pred
+2013-08-01 305.1291
+[1] 0.09044682
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-02    304.63    305.33    301.5     304.21     2502600        304.21
+               Pred
+2013-08-02 304.7204
+[1] 0.3006687
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-05     303.4    303.62    298.3     300.99     2233200        300.99
+               Pred
+2013-08-05 303.7007
+[1] 0.2264127
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-06    300.51    301.36   297.52     300.75     1849000        300.75
+               Pred
+2013-08-06 300.7364
+[1] 0.04431211
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-07    300.15    300.99   296.15     296.91     1961000        296.91
+               Pred
+2013-08-07 300.1943
+[1] -0.4492959
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-08    298.52    298.52   292.55     295.74     2343400        295.74
+               Pred
+2013-08-08 298.0707
+[1] 0.3012492
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-09    295.68    299.27    294.3     297.26     1950300        297.26
+               Pred
+2013-08-09 295.9812
+[1] 0.7211556
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-12    295.79    299.08   295.26     296.69     1504500        296.69
+               Pred
+2013-08-12 296.5112
+[1] -0.554426
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-13    295.88    296.37   290.67     293.97     2349900        293.97
+               Pred
+2013-08-13 295.3256
+[1] -0.149176
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-14    294.29    294.29   290.54     291.34     1415000        291.34
+               Pred
+2013-08-14 294.1408
+[1] 0.007200651
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-15    288.79     289.3   285.15     286.47     2261400        286.47
+               Pred
+2013-08-15 288.7972
+[1] -0.001269641
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-16    286.55    288.33    284.5     284.82     2422500        284.82
+               Pred
+2013-08-16 286.5487
+[1] 0.3046062
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-19    285.19    289.56   283.48     285.57     2477400        285.57
+               Pred
+2013-08-19 285.4946
+[1] -0.127427
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-20    285.88    289.51   285.74     287.09     1586300        287.09
+               Pred
+2013-08-20 285.7526
+[1] 0.3053472
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-21    285.09     288.5   283.83     284.57     1815300        284.57
+               Pred
+2013-08-21 285.3953
+[1] 0.2505603
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-22     284.8    289.87    284.8     289.73     1422600        289.73
+               Pred
+2013-08-22 285.0506
+[1] 0.03115195
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-23    291.21     291.5    287.9     290.01     1961900        290.01
+               Pred
+2013-08-23 291.2412
+[1] -0.2262651
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-26    290.43    291.05   285.62     286.21     1711700        286.21
+               Pred
+2013-08-26 290.2037
+[1] -0.005588169
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-27    283.87    285.28   279.74     280.93     2476000        280.93
+               Pred
+2013-08-27 283.8644
+[1] 0.2712931
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-28    280.36       283   279.33     281.58     1457100        281.58
+               Pred
+2013-08-28 280.6313
+[1] -0.1750381
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-29    281.45    285.98      280     283.98     1566400        283.98
+              Pred
+2013-08-29 281.275
+[1] 0.09465824
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-08-30    284.59    284.87      280     280.98     1534700        280.98
+               Pred
+2013-08-30 284.6847
+[1] -0.009898519
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-03    284.73    291.39   284.17      288.8     2897600         288.8
+               Pred
+2013-09-03 284.7201
+[1] 0.2889706
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-04    288.33    295.23   287.58     293.64     2438600        293.64
+              Pred
+2013-09-04 288.619
+[1] -0.001291506
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-05    293.63       297   292.71      294.1     1816600         294.1
+               Pred
+2013-09-05 293.6287
+[1] 0.03482302
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-06    295.33    298.88    290.8     295.86     2292000        295.86
+               Pred
+2013-09-06 295.3648
+[1] 0.3053848
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-09    297.22    299.96    296.6     299.71     1643600        299.71
+               Pred
+2013-09-09 297.5254
+[1] 0.3304472
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-10    300.55       301   297.22     300.36     1778400        300.36
+               Pred
+2013-09-10 300.8804
+[1] 0.3106428
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-11    298.91    301.86   297.84     299.64     1742600        299.64
+               Pred
+2013-09-11 299.2206
+[1] -0.09626028
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-12    299.39       302   297.66     298.86     1606200        298.86
+               Pred
+2013-09-12 299.2937
+[1] 0.09720698
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-13    300.14    300.22    296.2     297.92     1350600        297.92
+               Pred
+2013-09-13 300.2372
+[1] 0.02726227
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-16    299.82       301   295.26     296.06     1808400        296.06
+               Pred
+2013-09-16 299.8473
+[1] 0.02919194
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-17    297.63    304.65   296.01     304.17     2296500        304.17
+               Pred
+2013-09-17 297.6592
+[1] 0.03012024
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-18    304.06    312.74   302.91     312.03     2946400        312.03
+               Pred
+2013-09-18 304.0901
+[1] 0.7251871
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-19    313.77    314.54   311.04     312.06     2350900        312.06
+               Pred
+2013-09-19 314.4952
+[1] 0.05822561
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-20    312.54    320.57   312.41     316.34     5302300        316.34
+               Pred
+2013-09-20 312.5982
+[1] 0.04923582
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-23    314.01     315.9   308.77     311.49     1884900        311.49
+               Pred
+2013-09-23 314.0592
+[1] 0.03283547
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-24    312.43    318.08   311.28     314.13     2033600        314.13
+               Pred
+2013-09-24 312.4628
+[1] 0.02865542
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-25    314.53    316.71   310.75     312.65     2008600        312.65
+               Pred
+2013-09-25 314.5587
+[1] 1.663949
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-26     313.9    319.37   313.26     318.12     1989900        318.12
+               Pred
+2013-09-26 315.5639
+[1] 0.08099455
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-27    316.92    317.21   313.35     316.01     1657500        316.01
+              Pred
+2013-09-27 317.001
+[1] 0.102665
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-09-30    313.41    315.31   311.06     312.64     1623600        312.64
+               Pred
+2013-09-30 313.5127
+[1] 0.03233179
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-01    314.22       321   313.65     320.95     2396400        320.95
+               Pred
+2013-10-01 314.2523
+[1] -0.5362897
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-02    318.04    321.73   317.52     320.51     2217400        320.51
+               Pred
+2013-10-02 317.5037
+[1] 0.07310747
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-03    320.39    322.92   313.02     314.76     2674800        314.76
+               Pred
+2013-10-03 320.4631
+[1] 0.3288235
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-04    315.13     319.2   312.62     319.04     1815000        319.04
+               Pred
+2013-10-04 315.4588
+[1] 0.06333725
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-07    315.24    315.34   309.74     310.03     2083200        310.03
+               Pred
+2013-10-07 315.3033
+[1] 0.05910026
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-08     311.5    311.55   300.27     303.23     3166200        303.23
+               Pred
+2013-10-08 311.5591
+[1] -1.336897
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-09    303.42     303.5    296.5     298.23     3247400        298.23
+               Pred
+2013-10-09 302.0831
+[1] 0.01510459
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-10    304.63     306.7   302.59     305.17     2555100        305.17
+               Pred
+2013-10-10 304.6451
+[1] 0.02643962
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-11    304.77    310.93   303.84     310.89     2163100        310.89
+               Pred
+2013-10-11 304.7964
+[1] -0.04171287
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-14    309.22    311.65      307      310.7     1939100         310.7
+               Pred
+2013-10-14 309.1783
+[1] 0.02631155
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-15    309.87    310.79   305.26      306.4     2261100         306.4
+               Pred
+2013-10-15 309.8963
+[1] 0.1093507
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-16    308.38     310.8   305.55     310.49     2170700        310.49
+               Pred
+2013-10-16 308.4894
+[1] 0.1668499
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-17    307.07       311   305.24     310.77     2648400        310.77
+               Pred
+2013-10-17 307.2368
+[1] 0.04536578
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-18    319.36    331.89   316.75     328.93     5969800        328.93
+               Pred
+2013-10-18 319.4054
+[1] 0.07463488
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-21    329.89       330    323.8     326.44     2522300        326.44
+               Pred
+2013-10-21 329.9646
+[1] -0.008087729
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-22    327.72    337.11   325.68     332.54     3935500        332.54
+               Pred
+2013-10-22 327.7119
+[1] 0.3743998
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-23    330.84    331.72   324.06     326.76     2818200        326.76
+               Pred
+2013-10-23 331.2144
+[1] 0.05263747
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-24    329.63    332.65   326.75     332.21     5884700        332.21
+               Pred
+2013-10-24 329.6826
+[1] 0.04959976
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-25     358.6     368.4   352.62     363.39    12036800        363.39
+               Pred
+2013-10-25 358.6496
+[1] -0.410412
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-28    359.92    362.75    357.2     358.16     3635800        358.16
+               Pred
+2013-10-28 359.5096
+[1] -0.3570839
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-29    358.96    362.89   356.29      362.7     2185400         362.7
+               Pred
+2013-10-29 358.6029
+[1] -0.009978479
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-30    362.62       365   358.65     361.08     4502200        361.08
+             Pred
+2013-10-30 362.61
+[1] 0.05400253
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-10-31    361.73       366      359     364.03     2466800        364.03
+              Pred
+2013-10-31 361.784
+[1] 0.06677404
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-01    365.63    365.77    356.1        359     3331000           359
+               Pred
+2013-11-01 365.6968
+[1] 0.1059716
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-04    360.12       361    354.4     358.74     1938400        358.74
+              Pred
+2013-11-04 360.226
+[1] 0.1265005
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-05    356.78    360.17   354.84     358.89     2007100        358.89
+               Pred
+2013-11-05 356.9065
+[1] -0.600565
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-06    360.45    362.87    354.5     356.18     2282300        356.18
+               Pred
+2013-11-06 359.8494
+[1] -0.3971107
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-07    355.86     357.9   341.88     343.56     4246300        343.56
+               Pred
+2013-11-07 355.4629
+[1] 0.01625748
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-08    345.95    351.05   344.04     350.31     2656900        350.31
+               Pred
+2013-11-08 345.9663
+[1] 0.002254508
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-11    350.59    355.37   348.06     354.38     2261700        354.38
+               Pred
+2013-11-11 350.5923
+[1] 0.1933705
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-12    352.99    355.48   347.28     349.53     2343100        349.53
+               Pred
+2013-11-12 353.1834
+[1] 0.06907455
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-13     347.4    356.22   345.68     356.22     2773300        356.22
+               Pred
+2013-11-13 347.4691
+[1] -0.07195443
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-14    357.39    368.94   356.43      367.4     4159800         367.4
+              Pred
+2013-11-14 357.318
+[1] 0.06003258
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-15    367.63     372.9   365.55     369.17     4491600        369.17
+             Pred
+2013-11-15 367.69
+[1] 0.07684876
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-18    370.28    373.49   364.67     366.18     2737400        366.18
+               Pred
+2013-11-18 370.3568
+[1] 0.3813639
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-19    365.82    368.78    362.5     364.94     1904800        364.94
+               Pred
+2013-11-19 366.2014
+[1] 0.04984797
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-20    367.56    367.56   360.45     362.57     1771500        362.57
+               Pred
+2013-11-20 367.6098
+[1] -0.06472665
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-21    364.05    369.25    363.3     368.92     1964600        368.92
+               Pred
+2013-11-21 363.9853
+[1] -0.01007092
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-22       370     374.5   366.31     372.31     2965500        372.31
+               Pred
+2013-11-22 369.9899
+[1] -0.3810773
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-25    373.82    377.79   373.18     376.64     2972300        376.64
+               Pred
+2013-11-25 373.4389
+[1] 0.05961216
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-26    377.61     382.5   374.82     381.37     2724400        381.37
+               Pred
+2013-11-26 377.6696
+[1] 0.08442446
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-27     383.5       387   382.61     386.71     2269700        386.71
+               Pred
+2013-11-27 383.5844
+[1] 0.002118369
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-11-29     389.1     394.1   388.62     393.62     2406000        393.62
+               Pred
+2013-11-29 389.1021
+[1] 0.08313178
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-02       399       399    389.1      392.3     4714000         392.3
+               Pred
+2013-12-02 399.0831
+[1] -0.3808451
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-03    390.11    390.95    383.1     384.66     3702900        384.66
+               Pred
+2013-12-03 389.7292
+[1] -0.4094544
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-04     383.5    389.69   381.49     385.96     2355300        385.96
+               Pred
+2013-12-04 383.0905
+[1] -0.4654507
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-05    386.65    386.65   381.37     384.49     1906500        384.49
+               Pred
+2013-12-05 386.1845
+[1] -0.4645402
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-06    388.35    388.35   383.83     386.95     1984700        386.95
+               Pred
+2013-12-06 387.8855
+[1] -0.3837449
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-09    388.11    388.21   382.57     384.89     2761800        384.89
+               Pred
+2013-12-09 387.7263
+[1] -0.6409178
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-10    383.74    389.06   383.02     387.78     2736800        387.78
+               Pred
+2013-12-10 383.0991
+[1] 0.1224373
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-11    387.34    388.98      382     382.19     2451300        382.19
+               Pred
+2013-12-11 387.4624
+[1] -0.3814279
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-12    381.26       385    379.5     381.25     2123700        381.25
+               Pred
+2013-12-12 380.8786
+[1] 0.3483811
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-13    385.32    389.42    383.8     384.24     3025000        384.24
+               Pred
+2013-12-13 385.6684
+[1] 0.3071798
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-16    385.03     391.7      385     388.97     2251700        388.97
+               Pred
+2013-12-16 385.3372
+[1] -0.3505363
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-17    390.65    391.36    386.5     387.65     2343900        387.65
+               Pred
+2013-12-17 390.2995
+[1] 0.214474
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-18    389.23     396.3    383.1     395.96     3489100        395.96
+               Pred
+2013-12-18 389.4445
+[1] 0.1773161
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-19    394.27    397.29    392.6     395.19     2427200        395.19
+               Pred
+2013-12-19 394.4473
+[1] 0.03170138
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-20    396.55    404.72   395.78      402.2     5033900         402.2
+               Pred
+2013-12-20 396.5817
+[1] 0.08626058
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-23    403.69       405    399.2     402.92     2659500        402.92
+               Pred
+2013-12-23 403.7763
+[1] 0.3578197
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-24    402.52    403.72   396.37      399.2     1380400         399.2
+               Pred
+2013-12-24 402.8778
+[1] 0.07201048
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-26    401.79    404.52   396.81     404.39     1868500        404.39
+              Pred
+2013-12-26 401.862
+[1] 0.2896513
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-27    404.65    405.63   396.25     398.08     1986900        398.08
+               Pred
+2013-12-27 404.9397
+[1] -0.3324731
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-30    399.41    399.92   392.45     393.37     2487100        393.37
+               Pred
+2013-12-30 399.0775
+[1] -0.3149566
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2013-12-31    394.58    398.83    393.8     398.79     1996500        398.79
+              Pred
+2013-12-31 394.265
+[1] 0.07286679
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-02     398.8    399.36   394.02     397.97     2137800        397.97
+               Pred
+2014-01-02 398.8729
+[1] 0.2265414
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-03    398.29    402.71   396.22     396.44     2210200        396.44
+               Pred
+2014-01-03 398.5165
+[1] -0.108908
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-06    395.85       397   388.42     393.63     3170600        393.63
+               Pred
+2014-01-06 395.7411
+[1] -0.07447655
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-07    395.04    398.47   394.29     398.03     1916000        398.03
+               Pred
+2014-01-07 394.9655
+[1] 0.07688517
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-08    398.47       403   396.04     401.92     2316500        401.92
+               Pred
+2014-01-08 398.5469
+[1] -0.3638827
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-09    403.71    406.89   398.44     401.01     2103000        401.01
+               Pred
+2014-01-09 403.3461
+[1] -0.03288478
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-10    402.53    403.76    393.8     397.66     2679500        397.66
+               Pred
+2014-01-10 402.4971
+[1] -0.0740482
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-13    397.98    399.78   388.45     390.98     2844900        390.98
+              Pred
+2014-01-13 397.906
+[1] -0.127947
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-14    392.13    398.63   391.29     397.54     2340100        397.54
+               Pred
+2014-01-14 392.0021
+[1] -0.05889169
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-15    398.94    399.31   392.53     395.87     2678300        395.87
+               Pred
+2014-01-15 398.8811
+[1] -0.3387082
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-16    393.68    399.29   389.41      395.8     2601200         395.8
+               Pred
+2014-01-16 393.3413
+[1] -0.4238192
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-17    394.26    403.49   393.66     399.61     4505100        399.61
+               Pred
+2014-01-17 393.8362
+[1] 0.04907912
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-21       403     407.8    401.6     407.05     3122100        407.05
+               Pred
+2014-01-21 403.0491
+[1] 0.07091499
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-22       408    408.06      402     404.54     2060500        404.54
+               Pred
+2014-01-22 408.0709
+[1] -0.3462515
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-23       401    406.17   397.79     399.87     3025400        399.87
+               Pred
+2014-01-23 400.6537
+[1] -0.01061315
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-24    398.16     400.2   387.27      387.6     4458400         387.6
+               Pred
+2014-01-24 398.1494
+[1] 0.0378719
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-27     390.5     394.1   380.49     386.28     3936800        386.28
+               Pred
+2014-01-27 390.5379
+[1] -0.3607739
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-28     387.4    394.74   387.12     394.43     2894500        394.43
+               Pred
+2014-01-28 387.0392
+[1] 0.3098114
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-29    392.16    392.85   383.24      384.2     3382300         384.2
+               Pred
+2014-01-29 392.4698
+[1] -0.0843233
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-30    393.77    406.25    387.7     403.01    10473900        403.01
+               Pred
+2014-01-30 393.6857
+[1] 0.1123048
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-01-31    371.76    375.45   357.76     358.69    16154800        358.69
+               Pred
+2014-01-31 371.8723
+[1] -0.4045668
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-03    358.98    360.85    340.1     346.15    10280800        346.15
+               Pred
+2014-02-03 358.5754
+[1] 0.185473
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-04    349.59       354   344.02     347.95     4812900        347.95
+               Pred
+2014-02-04 349.7755
+[1] 0.2260855
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-05       346    349.37   337.73     346.45     4435400        346.45
+               Pred
+2014-02-05 346.2261
+[1] -0.8585689
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-06     347.4    354.82    347.4     354.59     3335700        354.59
+               Pred
+2014-02-06 346.5414
+[1] 0.01197434
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-07    358.98     361.8   352.49     361.08     4330500        361.08
+              Pred
+2014-02-07 358.992
+[1] -0.1032722
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-10    361.61       365   359.35     360.87     3449700        360.87
+               Pred
+2014-02-10 361.5067
+[1] 0.2220928
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-11    361.84    363.61   356.25     361.79     3222100        361.79
+               Pred
+2014-02-11 362.0621
+[1] -0.09243345
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-12    356.43    357.75   346.32     349.25     6587700        349.25
+               Pred
+2014-02-12 356.3376
+[1] -0.1282882
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-13     347.7     357.2    346.5      357.2     4175000         357.2
+               Pred
+2014-02-13 347.5717
+[1] -0.4465222
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-14    359.34    359.34   353.35     357.35     3520200        357.35
+               Pred
+2014-02-14 358.8935
+[1] -0.0958697
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-18    355.28    355.73   349.45     353.65     4998000        353.65
+               Pred
+2014-02-18 355.1841
+[1] -0.1622233
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-19    352.64    354.54    346.1     347.38     4168100        347.38
+               Pred
+2014-02-19 352.4778
+[1] 0.007582313
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-20     348.8    350.46   344.38      349.8     3492800         349.8
+               Pred
+2014-02-20 348.8076
+[1] -0.1454037
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-21    352.44    354.14   346.75     346.76     4210000        346.76
+               Pred
+2014-02-21 352.2946
+[1] -0.08799344
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-24    345.19       353   343.29     351.78     3644700        351.78
+              Pred
+2014-02-24 345.102
+[1] -0.1049527
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-25       353    361.08   351.58     358.32     3736400        358.32
+              Pred
+2014-02-25 352.895
+[1] -0.07947386
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-26    359.86    364.75   357.17      359.8     3622100         359.8
+               Pred
+2014-02-26 359.7805
+[1] -0.3721648
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-27    357.22    360.59    355.5     360.13     3104900        360.13
+               Pred
+2014-02-27 356.8478
+[1] -0.3538301
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-02-28     360.6    365.87   357.08      362.1     3882000         362.1
+               Pred
+2014-02-28 360.2462
+[1] -0.131654
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-03    358.74    360.96   354.48     359.78     2798300        359.78
+               Pred
+2014-03-03 358.6083
+[1] 1.236617
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-04     363.9    365.68   362.46      363.9     2704400         363.9
+               Pred
+2014-03-04 365.1366
+[1] -0.595038
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-05    364.13    372.73    363.9     372.37     3848300        372.37
+              Pred
+2014-03-05 363.535
+[1] -0.1184762
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-06    374.05    375.33    368.9     372.16     2926600        372.16
+               Pred
+2014-03-06 373.9315
+[1] -0.7998139
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-07    374.58    374.99   369.53     372.06     2279800        372.06
+               Pred
+2014-03-07 373.7802
+[1] 0.01827185
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-10    372.69    372.73      367     370.53     2105800        370.53
+               Pred
+2014-03-10 372.7083
+[1] -0.1115381
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-11    370.99     372.8   367.28     368.82     2246100        368.82
+               Pred
+2014-03-11 370.8785
+[1] 0.004843624
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-12     366.4    371.16   363.61     370.64     2216600        370.64
+               Pred
+2014-03-12 366.4048
+[1] -0.08123589
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-13    376.62    383.11   368.08     371.51     6829000        371.51
+               Pred
+2014-03-13 376.5388
+[1] -0.1177517
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-14     372.8    378.57   371.55     373.74     4402200        373.74
+               Pred
+2014-03-14 372.6822
+[1] -0.3727648
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-17    375.72    378.85   374.88     375.04     2303000        375.04
+               Pred
+2014-03-17 375.3472
+[1] -0.07621084
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-18    377.32       379      375     378.77     2483500        378.77
+               Pred
+2014-03-18 377.2438
+[1] -0.1189076
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-19    378.77       379   369.42     373.23     2646700        373.23
+               Pred
+2014-03-19 378.6511
+[1] -0.3783238
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-20    370.64       373   366.22     368.97     2558500        368.97
+               Pred
+2014-03-20 370.2617
+[1] -0.9723478
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-21       371    372.84    358.4     360.62     5414100        360.62
+               Pred
+2014-03-21 370.0277
+[1] 0.1663929
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-24    360.09     361.5    348.6     351.85     4873500        351.85
+               Pred
+2014-03-24 360.2564
+[1] -0.07640292
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-25    354.03    358.97   348.84     354.71     4445700        354.71
+               Pred
+2014-03-25 353.9536
+[1] -0.3906959
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-26    357.13     357.6    343.4     343.41     4120700        343.41
+               Pred
+2014-03-26 356.7393
+[1] -0.1332761
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-27    343.15       344   330.88     338.47     5766400        338.47
+               Pred
+2014-03-27 343.0167
+[1] -1.260348
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-28    340.05       347   336.08     338.29     3986800        338.29
+               Pred
+2014-03-28 338.7897
+[1] -0.2149373
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-03-31     342.4    346.29   334.06     336.37     4297500        336.37
+               Pred
+2014-03-31 342.1851
+[1] -0.2053073
+           AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+2014-04-01    338.09    344.43      338     342.99     3600100        342.99
+               Pred
+2014-04-01 337.8847
+> 
+> MAPE <- MAPEsum*100/rows
+> print(MAPE)
+[1] 1.05936
+> 
+> # plot actual with predicted values added
+> # compare actual closing value and predicted closing value
+> #chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "AMZN", legend = "Actual",
+> chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "AMZN", legend = "Actual",
++ 	TA = "addTA(testset[1:rows, 7], on = 1, col='red')") # 
+> #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"), legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = \"Predicted\")") # yellow
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
+> 
+> #chartSeries(testset)
+> 
+> #chartSeries(AMZN_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
+> #TA="addTA(AMZN_Predict[AMZN_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
+> #addTA(AMZN_Predict[AMZN_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
+> #addTA(AMZN_Predict[AMZN_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
+> #addTA(AMZN_Predict[AMZN_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
+> #addTA(AMZN_Predict[AMZN_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
+> #")
+> 
+> 
+> proc.time()
+    user   system  elapsed 
+1038.862    0.133 1040.347 
