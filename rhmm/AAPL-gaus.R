@@ -50,9 +50,11 @@ testset <- cbind(testset, Pred = 0)
 # number of rows of test set data
 rows = nrow(testset)
 
+MAPEsum = 0
+
 # predict and update HMM to include the new actual value
 #for (i in 1: 251) {
-for (i in 0: rows) {
+for (i in 1: rows) {
 #	print(i)
 #	print(rows)
 	if (i == rows) break
@@ -60,30 +62,30 @@ for (i in 0: rows) {
 	if(i != 0) {
 		testrow <- testset[i, ]
 		print(testrow)
-		testopen <- testset$AAPL.Open[i, ]
-		testclose <- testset$AAPL.Close[i, ]
+		todayopen <- testset$AAPL.Open[i, ]
+		todayclose <- testset$AAPL.Close[i, ]
 	}
 
 #	actual <- testset$AAPL.Open[i + 1, ]
 	#print(testset$AAPL.Open[i, ])
 
-	# predict 
+	# predict the closing value of today
 	change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
 	print(change)
 
-	pred <- testclose + change
+	pred <- todayopen + change
 	#testrow$Pred <- pred
 	#print(pred)
-	# update tomorrow's predicted value
-	testset[i + 1, ]$Pred <- pred
-	#print(testset[i + 1, ]$Pred)
+
+	# update today's predicted value
+	testset[i, ]$Pred <- pred
+	#print(testset[i, ]$Pred)
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
 	#MAPE <- pred$AAPL.Close - actual$AAPL.Close
-	#MAPE <- abs((pred$AAPL.Close - actual$AAPL.Close)/actual$AAPL.Close)
-	#MAPE <- abs((pred$AAPL.Close - 420.05)/420.05) * 100
-	#print(MAPE)
+	MAPEsum <- MAPEsum + abs((pred - todayclose)/todayclose)
+	print(MAPEsum)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
 
@@ -101,7 +103,7 @@ for (i in 0: rows) {
 	#print(AAPL_Subset[,4] - AAPL_Predict [,1])
 
 	# update train data
-	train <- rbind (train, testclose - testopen)
+	train <- rbind (train, todayclose - todayopen)
 	
 	# update HMM with the new data
 	# Baum-Welch Algorithm to find the model for the given observations
@@ -111,10 +113,14 @@ for (i in 0: rows) {
 	VitPath <- viterbi (hm_model, train)
 }
 
+MAPE <- MAPEsum*100/rows
+print(MAPE)
+
 # plot actual with predicted values added
-#chartSeries(testset[2:rows, 1], theme='white', col = 'green', name = "AAPL", legend = "Actual",
-chartSeries(testset[2:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "AAPL", legend = "Actual",
-	TA = "addTA(testset[2:rows, 7], on = 1, col='red')") # 
+# compare actual closing value and predicted closing value
+#chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "AAPL", legend = "Actual",
+chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "AAPL", legend = "Actual",
+	TA = "addTA(testset[1:rows, 7], on = 1, col='red')") # 
 #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
