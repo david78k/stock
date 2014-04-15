@@ -1,6 +1,6 @@
 NMRSE
 
-GOOG, TWTR 
+GOOG, TWTR (no trainset, testset from 2013-11-07)
 - getSymbols("YHOO",src="google")
 
 show train data with volume

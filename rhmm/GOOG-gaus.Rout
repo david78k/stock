@@ -1944,8 +1944,8 @@ Loading required package: nlme
 > 
 > # predict and update HMM to include the new actual value
 > #for (i in 1: 251) {
-> #for (i in 1: 3) {
-> for (i in 1: rows) {
+> #for (i in 1: rows) {
+> for (i in 1: 3) {
 + 	#if (i == rows) break
 + 
 + 	if(i != 0) {
@@ -2015,43 +2015,16 @@ Loading required package: nlme
 [1] NaN
            GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
 2013-04-03    406.32    406.69   399.93      402.7          NA  NaN
+> 
+> MAPE <- MAPEsum*100/rows
+> print(MAPE)
 [1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-04    401.72    402.47   395.25     397.14          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-05    392.64     393.1   387.81     391.13          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-08    388.99    389.39   383.82     387.04          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-09    387.36    391.48   386.17     388.44          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-10    391.07    395.78   387.61     394.69          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-11    396.04    396.15   391.64      394.8          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-12     395.6    395.66   391.07     394.63          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-15    392.58     398.1   388.12     390.57          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-16     392.9     397.6   391.57     396.29          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-17    392.98    395.03   388.66     390.89          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-18    392.28    392.51   380.25     382.57          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-19     384.2    401.32   382.75     399.54          NA  NaN
-Error in if (relVariation > paramAlgo$tol) convergence <- FALSE else convergence <- TRUE : 
-  missing value where TRUE/FALSE needed
-Calls: HMMFit -> BaumWelch
+> 
+> # plot actual with predicted values added
+> # compare actual closing value and predicted closing value
+> #chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "GOOG", legend = "Actual",
+> chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "GOOG", legend = "Actual",
++ 	TA = "addTA(testset[1:rows, 7], on = 1, col='red')") # 
+Error in `[.xts`(testset, 1:rows, 7) : subscript out of bounds
+Calls: chartSeries -> eval -> eval -> addTA -> [ -> [.xts
 Execution halted

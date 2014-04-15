@@ -57,8 +57,8 @@ MAPEsum = 0
 
 # predict and update HMM to include the new actual value
 #for (i in 1: 251) {
-#for (i in 1: 3) {
-for (i in 1: rows) {
+#for (i in 1: rows) {
+for (i in 1: 3) {
 	#if (i == rows) break
 
 	if(i != 0) {
