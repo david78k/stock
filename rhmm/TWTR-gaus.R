@@ -1,12 +1,14 @@
 require(devEMF)
 library(quantmod)
 library(RHmm)
+library(parallel)
 #postscript('TWTR-gaus.eps')
 
-getSymbols("TWTR")
+getSymbols("TWTR", src = "google")
+#getSymbols("TWTR")
 chartSeries(TWTR, theme="white")
 trainset <- window(TWTR, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
-#print(trainset)
+print(trainset)
 #TWTR_Subset <- window(TWTR, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
 #TWTR_Train <- cbind(TWTR_Subset$TWTR.Close - TWTR_Subset$TWTR.Open, TWTR_Subset$TWTR.Volume)
 train <- cbind(trainset$TWTR.Close - trainset$TWTR.Open)
@@ -14,7 +16,7 @@ train <- cbind(trainset$TWTR.Close - trainset$TWTR.Open)
 
 testset <- window(TWTR, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
 test <- cbind(testset$TWTR.Close - testset$TWTR.Open)
-#print(testset)
+print(testset)
 
 # Baum-Welch Algorithm to find the model for the given observations
 #hm_model <- HMMFit(obs = TWTR_Train, nStates = 5)
@@ -50,16 +52,8 @@ testset <- cbind(testset, Pred = 0)
 # number of rows of test set data
 rows = nrow(testset)
 
-#MAPEsum = 0
-MAPEsum <- 0
-#MAPEsum <- MAPEsum + 3.35
-#print (MAPEsum)
-
-#MAPEsum <- abs(MAPEsum / 2.71)
-#print(MAPEsum)
-
-#MAPEsum <- MAPEsum + 5.18
-#print(MAPEsum)
+MAPEsum = 0
+#MAPEsum <- 0
 
 # predict and update HMM to include the new actual value
 #for (i in 1: 251) {

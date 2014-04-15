@@ -10,10 +10,10 @@ fi
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle, IBM, Intel
 #symbol=$1
 #symbol=AAPL
-symbol=GOOG
+#symbol=GOOG
 #symbol=FB # 2012-05-18
 #symbol=MSFT # 
-#symbol=TWTR # 
+symbol=TWTR # 
 #symbol=LNKD # 
 #symbol=AMZN # 
 

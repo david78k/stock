@@ -1,6 +1,7 @@
 NMRSE
 
 GOOG, TWTR 
+- getSymbols("YHOO",src="google")
 
 show train data with volume
 - default plot
