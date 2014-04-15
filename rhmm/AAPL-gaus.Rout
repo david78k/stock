@@ -139,13 +139,14 @@ Loading required package: nlme
 + 
 + 	# MAPE = sum(|pred - actual|/|actual|)*100/n
 + 	#MAPE <- pred$AAPL.Close - actual$AAPL.Close
-+ 	print (pred)
-+ 	print (todayclose)
-+ 	print (pred - todayclose)
-+ 	print ((pred - todayclose)/todayclose)
++ 	#print (pred)
++ 	#print (todayclose)
++ 	#print (pred - todayclose)
++ 	#print ((pred - todayclose)/todayclose)
 + 	diff = abs ((pred - todayclose)/ todayclose)
 + 	print (diff)
-+ 	MAPEsum <- MAPEsum + abs((pred - todayclose)/todayclose)
++ 	#MAPEsum <- MAPEsum + abs((pred - todayclose)/todayclose)
++ 	MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 + 	print(MAPEsum)
 + 
 + 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
@@ -173,38 +174,22 @@ Loading required package: nlme
 + 	# Viterbi Algorithm to find the most probable state sequence
 + 	VitPath <- viterbi (hm_model, train)
 + }
-[1] -0.8818832
+[1] -1.438747
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-01     441.9     443.7   427.74     428.91    13919000        418.33
                Pred
-2013-04-01 441.0181
-           AAPL.Open
-2013-04-01  441.0181
-           AAPL.Close
-2013-04-01     428.91
-           AAPL.Open
-2013-04-01  12.10812
+2013-04-01 440.4613
             AAPL.Open
-2013-04-01 0.02822997
+2013-04-01 0.02693165
             AAPL.Open
-2013-04-01 0.02822997
-            AAPL.Open
-2013-04-01 0.02822997
-[1] -0.9036877
+2013-04-01 0.02693165
+[1] -0.7469343
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-02     427.6    438.14    426.4     429.79    18911400        419.19
                Pred
-2013-04-02 426.6963
-           AAPL.Open
-2013-04-02  426.6963
-           AAPL.Close
-2013-04-02     429.79
-           AAPL.Open
-2013-04-02 -3.093688
-              AAPL.Open
-2013-04-02 -0.007198138
+2013-04-02 426.8531
              AAPL.Open
-2013-04-02 0.007198138
+2013-04-02 0.006833417
 Data:
 numeric(0)
 
@@ -247,4 +232,4 @@ numeric(0)
 > 
 > proc.time()
    user  system elapsed 
- 12.492   0.075  12.761 
+ 14.207   0.058  14.472 

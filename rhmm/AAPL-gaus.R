@@ -93,13 +93,14 @@ for (i in 1: 2) {
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
 	#MAPE <- pred$AAPL.Close - actual$AAPL.Close
-	print (pred)
-	print (todayclose)
-	print (pred - todayclose)
-	print ((pred - todayclose)/todayclose)
+	#print (pred)
+	#print (todayclose)
+	#print (pred - todayclose)
+	#print ((pred - todayclose)/todayclose)
 	diff = abs ((pred - todayclose)/ todayclose)
 	print (diff)
-	MAPEsum <- MAPEsum + abs((pred - todayclose)/todayclose)
+	#MAPEsum <- MAPEsum + abs((pred - todayclose)/todayclose)
+	MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 	print(MAPEsum)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
