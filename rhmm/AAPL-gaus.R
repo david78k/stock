@@ -97,10 +97,10 @@ for (i in 1: 2) {
 	#print (todayclose)
 	#print (pred - todayclose)
 	#print ((pred - todayclose)/todayclose)
-	diff = abs ((pred - todayclose)/ todayclose)
+	diff = (abs ((pred - todayclose)/ todayclose))$AAPL.Open
 	print (diff)
-	#MAPEsum <- MAPEsum + abs((pred - todayclose)/todayclose)
-	MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
+	MAPEsum <- MAPEsum + diff
+	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 	print(MAPEsum)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
