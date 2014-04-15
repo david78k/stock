@@ -152,10 +152,13 @@ for (i in 1: 2) {
 	#print (pred - todayclose)
 	#print ((pred - todayclose)/todayclose)
 	diff = (abs ((pred - todayclose)/ todayclose))[1,]\$${name}.Open
+	print ("diff")
 	print (diff)
+	print("diff.open")
 	print (diff\$${name}.Open)
 	MAPEsum <- MAPEsum + diff\$${name}.Open
 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
+	print ("MAPEsum")
 	print(MAPEsum)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)

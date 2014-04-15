@@ -144,10 +144,13 @@ Loading required package: nlme
 + 	#print (pred - todayclose)
 + 	#print ((pred - todayclose)/todayclose)
 + 	diff = (abs ((pred - todayclose)/ todayclose))[1,]$AAPL.Open
++ 	print ("diff")
 + 	print (diff)
++ 	print("diff.open")
 + 	print (diff$AAPL.Open)
 + 	MAPEsum <- MAPEsum + diff$AAPL.Open
 + 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
++ 	print ("MAPEsum")
 + 	print(MAPEsum)
 + 
 + 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
@@ -175,26 +178,32 @@ Loading required package: nlme
 + 	# Viterbi Algorithm to find the most probable state sequence
 + 	VitPath <- viterbi (hm_model, train)
 + }
-[1] -0.8862802
+[1] -0.1714038
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-01     441.9     443.7   427.74     428.91    13919000        418.33
                Pred
-2013-04-01 441.0137
+2013-04-01 441.7286
+[1] "diff"
             AAPL.Open
-2013-04-01 0.02821972
+2013-04-01 0.02988645
+[1] "diff.open"
             AAPL.Open
-2013-04-01 0.02821972
+2013-04-01 0.02988645
+[1] "MAPEsum"
             AAPL.Open
-2013-04-01 0.02821972
-[1] -0.9452483
+2013-04-01 0.02988645
+[1] 0.101762
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-02     427.6    438.14    426.4     429.79    18911400        419.19
                Pred
-2013-04-02 426.6548
-             AAPL.Open
-2013-04-02 0.007294838
-             AAPL.Open
-2013-04-02 0.007294838
+2013-04-02 427.7018
+[1] "diff"
+            AAPL.Open
+2013-04-02 0.00485874
+[1] "diff.open"
+            AAPL.Open
+2013-04-02 0.00485874
+[1] "MAPEsum"
 Data:
 numeric(0)
 
@@ -237,4 +246,4 @@ numeric(0)
 > 
 > proc.time()
    user  system elapsed 
- 11.968   0.066  12.231 
+ 11.379   0.061  11.627 
