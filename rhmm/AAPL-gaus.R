@@ -50,7 +50,8 @@ testset <- cbind(testset, Pred = 0)
 # number of rows of test set data
 rows = nrow(testset)
 
-MAPEsum = 0
+#MAPEsum = 0
+MAPEsum <- 0
 #MAPEsum <- MAPEsum + 3.35
 #print (MAPEsum)
 
@@ -105,8 +106,9 @@ for (i in 1: 3) {
 	MAPEsum <- MAPEsum + diff$AAPL.Open
 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 	print ("MAPEsum")
-	print(MAPEsum)
+	print(MAPEsum[1,]$AAPL.Open)
 	MAPE <- MAPEsum*100/rows
+	print("MAPE")
 	print(MAPE)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
