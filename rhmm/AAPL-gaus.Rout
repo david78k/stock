@@ -97,11 +97,14 @@ Loading required package: nlme
 > rows = nrow(testset)
 > 
 > MAPEsum = 0
+> MAPEsum <- MAPEsum + 3
+> print (MAPEsum)
+[1] 3
 > 
 > # predict and update HMM to include the new actual value
 > #for (i in 1: 251) {
 > #for (i in 1: rows) {
-> for (i in 1: 3) {
+> for (i in 1: 2) {
 + #	print(i)
 + #	print(rows)
 + 	if (i == rows) break
@@ -161,34 +164,22 @@ Loading required package: nlme
 + 	# Viterbi Algorithm to find the most probable state sequence
 + 	VitPath <- viterbi (hm_model, train)
 + }
-[1] -2.771229
+[1] 0.08269839
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-01     441.9     443.7   427.74     428.91    13919000        418.33
                Pred
-2013-04-01 439.1288
+2013-04-01 441.9827
             AAPL.Open
-2013-04-01 0.02382498
-            AAPL.Open
-2013-04-01 0.02382498
-[1] -0.9338351
+2013-04-01 0.03047888
+           AAPL.Open
+2013-04-01  3.030479
+[1] -0.9047931
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-02     427.6    438.14    426.4     429.79    18911400        419.19
                Pred
-2013-04-02 426.6662
-             AAPL.Open
-2013-04-02 0.007268282
-Data:
-numeric(0)
-
-Index:
-numeric(0)
-[1] 0.1084321
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
-2013-04-03    431.37    437.28   430.31     431.99    12972000        421.34
-               Pred
-2013-04-03 431.4784
-             AAPL.Open
-2013-04-03 0.001184212
+2013-04-02 426.6952
+            AAPL.Open
+2013-04-02 0.00720071
 Data:
 numeric(0)
 
@@ -231,4 +222,4 @@ numeric(0)
 > 
 > proc.time()
    user  system elapsed 
- 14.479   0.062  14.816 
+ 14.592   0.060  14.894 

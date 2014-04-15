@@ -105,11 +105,13 @@ testset <- cbind(testset, Pred = 0)
 rows = nrow(testset)
 
 MAPEsum = 0
+MAPEsum <- MAPEsum + 3
+print (MAPEsum)
 
 # predict and update HMM to include the new actual value
 #for (i in 1: 251) {
 #for (i in 1: rows) {
-for (i in 1: 3) {
+for (i in 1: 2) {
 #	print(i)
 #	print(rows)
 	if (i == rows) break
