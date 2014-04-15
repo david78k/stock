@@ -63,10 +63,8 @@ MAPEsum <- 0
 
 # predict and update HMM to include the new actual value
 #for (i in 1: 251) {
-#for (i in 1: rows) {
-for (i in 1: 3) {
-#	print(i)
-#	print(rows)
+#for (i in 1: 3) {
+for (i in 1: rows) {
 	#if (i == rows) break
 
 	if(i != 0) {
@@ -75,9 +73,6 @@ for (i in 1: 3) {
 		todayopen <- testset$AAPL.Open[i, ]
 		todayclose <- testset$AAPL.Close[i, ]
 	}
-
-#	actual <- testset$AAPL.Open[i + 1, ]
-	#print(testset$AAPL.Open[i, ])
 
 	# predict the closing value of today
 	change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
