@@ -99,7 +99,8 @@ for (i in 1: 2) {
 	#print ((pred - todayclose)/todayclose)
 	diff = (abs ((pred - todayclose)/ todayclose))$AAPL.Open
 	print (diff)
-	MAPEsum <- MAPEsum + diff
+	print (diff$AAPL.Open)
+	MAPEsum <- MAPEsum + diff$AAPL.Open
 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 	print(MAPEsum)
 
