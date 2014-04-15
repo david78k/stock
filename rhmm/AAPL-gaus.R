@@ -81,11 +81,12 @@ for (i in 1: 3) {
 
 	# update today's predicted value
 	testset[i, ]$Pred <- pred
-	#print(testset[i, ]$Pred)
-	print(testrow)
+	print(testset[i, ])
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
 	#MAPE <- pred$AAPL.Close - actual$AAPL.Close
+	diff = abs ((pred - todayclose)/ todayclose)
+	print (diff)
 	MAPEsum <- MAPEsum + abs((pred - todayclose)/todayclose)
 	print(MAPEsum)
 
