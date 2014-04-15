@@ -51,14 +51,14 @@ testset <- cbind(testset, Pred = 0)
 rows = nrow(testset)
 
 MAPEsum = 0
-MAPEsum <- MAPEsum + 3.35
-print (MAPEsum)
+#MAPEsum <- MAPEsum + 3.35
+#print (MAPEsum)
 
-MAPEsum <- abs(MAPEsum / 2.71)
-print(MAPEsum)
+#MAPEsum <- abs(MAPEsum / 2.71)
+#print(MAPEsum)
 
-MAPEsum <- MAPEsum + 5.18
-print(MAPEsum)
+#MAPEsum <- MAPEsum + 5.18
+#print(MAPEsum)
 
 # predict and update HMM to include the new actual value
 #for (i in 1: 251) {
@@ -93,6 +93,10 @@ for (i in 1: 2) {
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
 	#MAPE <- pred$AAPL.Close - actual$AAPL.Close
+	print (pred)
+	print (todayclose)
+	print (pred - todayclose)
+	print ((pred - todayclose)/todayclose)
 	diff = abs ((pred - todayclose)/ todayclose)
 	print (diff)
 	MAPEsum <- MAPEsum + abs((pred - todayclose)/todayclose)
