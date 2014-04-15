@@ -106,7 +106,7 @@ for (i in 1: 3) {
 	MAPEsum <- MAPEsum + diff$AAPL.Open
 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 	print ("MAPEsum")
-	print(MAPEsum[1,]$AAPL.Open)
+	print(MAPEsum$AAPL.Open)
 	MAPE <- MAPEsum*100/rows
 	print("MAPE")
 	print(MAPE)

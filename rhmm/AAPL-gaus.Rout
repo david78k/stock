@@ -152,7 +152,7 @@ Loading required package: nlme
 + 	MAPEsum <- MAPEsum + diff$AAPL.Open
 + 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 + 	print ("MAPEsum")
-+ 	print(MAPEsum[1,]$AAPL.Open)
++ 	print(MAPEsum$AAPL.Open)
 + 	MAPE <- MAPEsum*100/rows
 + 	print("MAPE")
 + 	print(MAPE)
@@ -211,7 +211,7 @@ Loading required package: nlme
            AAPL.Open
 2013-04-02 0.0100436
 [1] "MAPEsum"
-Error in xts(rep(NA, length(index(x))), index(x)) : 
-  order.by requires an appropriate time-based object
-Calls: print -> [ -> [.xts -> xts
+Error in `$.zoo`(MAPEsum, AAPL.Open) : 
+  not possible for univariate zoo series
+Calls: print -> $ -> $.zoo
 Execution halted
