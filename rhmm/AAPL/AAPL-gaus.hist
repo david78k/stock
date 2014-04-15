@@ -1,0 +1,234 @@
+
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> library(quantmod)
+Loading required package: Defaults
+Loading required package: xts
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+Loading required package: TTR
+Version 0.4-0 included new data defaults. See ?getSymbols.
+> 
+> require(devEMF)
+Loading required package: devEMF
+> #postscript('AAPL-gaus.eps')
+> 
+> getSymbols("AAPL")
+    As of 0.4-0, ‘getSymbols’ uses env=parent.frame() and
+ auto.assign=TRUE by default.
+
+ This  behavior  will be  phased out in 0.5-0  when the call  will
+ default to use auto.assign=FALSE. getOption("getSymbols.env") and 
+ getOptions("getSymbols.auto.assign") are now checked for alternate defaults
+
+ This message is shown once per session and may be disabled by setting 
+ options("getSymbols.warning4.0"=FALSE). See ?getSymbol for more details
+[1] "AAPL"
+> chartSeries(AAPL, theme="white")
+> AAPL_Subset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-03-01"))
+> AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open, AAPL_Subset$AAPL.Volume)
+> 
+> testset <- window(AAPL, start = as.Date("2013-03-02"), end = as.Date("2014-03-01"))
+> test <- cbind(testset$AAPL.Close - testset$AAPL.Open, testset$AAPL.Volume)
+> 
+> library(RHmm)
+Loading required package: MASS
+Loading required package: nlme
+> # Baum-Welch Algorithm to find the model for the given observations
+> #hm_model <- HMMFit(obs = AAPL_Train, nStates = 5)
+> hm_model <- HMMFit(obs = AAPL_Train, nStates = 5, nMixt = 4, dis = "MIXTURE")
+> 
+> # Viterbi Algorithm to find the most probable state sequence
+> VitPath <- viterbi (hm_model, AAPL_Train)
+> 
+> # scatter plot
+> postscript('AAPL-gaus.eps')
+> AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
+> #print(AAPL_Subset)
+> #print(AAPL_Subset[,4] - AAPL_Predict [,1])
+> #print(AAPL_Predict)
+> 
+> # predict next stock value m = nMixt, n = nStates
+> #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
+> # gaussian mixture HMM: nrow = nMixture, ncol = nStates
+> print(hm_model$HMM$transMat[last(VitPath$states),])
+[1] 8.950466e-01 1.641076e-02 6.510538e-02 2.343724e-02 1.648618e-92
+> print(hm_model$HMM$distribution)
+
+Model:
+5 states HMM with mixture of 4 2-d gaussian distributions
+
+Distribution parameters:
+  State 1
+Mixt. 1
+              mean               cov                                prop.
+1 1.34983347424525   9.5863589217474 -213737.774394237 0.0159069810193544
+2 33487378.9406479 -213737.774394237  1331619481050.75                   
+
+Mixt. 2
+               mean              cov                               prop.
+1 0.857240753732838 25.1054099842402 5509263.65594241 0.0919848572246593
+2  16214426.7372352 5509263.65594241 1565586037825.94                   
+
+Mixt. 3
+                mean              cov                              prop.
+1 -0.927707521602034 11.9024471910512 2911920.29825634 0.334588566221009
+2   18551917.9095226 2911920.29825634 8521363215014.44                  
+
+Mixt. 4
+              mean              cov                              prop.
+1 0.65303647430161 2.17119822081219 948251.514475511 0.557519595534976
+2 13811018.5202308 948251.514475511 4228216815609.22                  
+
+
+  State 2
+Mixt. 1
+              mean               cov                                prop.
+1 3.50275940749461  23.0645768474981 -263826.083841749 0.0666824291342419
+2 15841166.8620975 -263826.083841749  45959097321.3125                   
+
+Mixt. 2
+              mean              cov                              prop.
+1 5.87282721146024  7.6349482823173 7052991.87106419 0.192086500353579
+2 12479770.6567457 7052991.87106419   10105213966668                  
+
+Mixt. 3
+              mean              cov                              prop.
+1 1.32979430831212 3.44899383763957  4023332.5769223 0.192401470866262
+2 9890364.17935221  4023332.5769223 5618712465302.05                  
+
+Mixt. 4
+               mean               cov                               prop.
+1 -1.84736438570042  10.0271243499423 -3290308.10246598 0.548829599645917
+2  11732329.7567186 -3290308.10246598  5860126024573.06                  
+
+
+  State 3
+Mixt. 1
+                mean              cov                              prop.
+1 -0.301818819742645 0.72385162096601 969680.657615478 0.135354604526448
+2   17733345.7833183 969680.657615478    7180168612303                  
+
+Mixt. 2
+              mean              cov                              prop.
+1 2.80232690095503  107.36849216539 8400202.73831406 0.141806541014597
+2  20651431.624216 8400202.73831406 2543175823092.25                  
+
+Mixt. 3
+               mean              cov                              prop.
+1 -3.46284499550313 61.8040012312036 -2295834.1447621 0.319440314337272
+2  25737182.9631066 -2295834.1447621   23453146761742                  
+
+Mixt. 4
+                mean              cov                              prop.
+1 -0.390929501642414 22.9204906701176 1815316.50915758 0.403398540121685
+2   19801806.7522034 1815316.50915758 13028819685261.4                  
+
+
+  State 4
+Mixt. 1
+              mean              cov                               prop.
+1 8.50320408857857 76.8799310734968 5854616.76517245 0.0170678997993041
+2 28075539.1713769 5854616.76517245  483051969352.75                   
+
+Mixt. 2
+               mean              cov                              prop.
+1 -2.24967008103271 144.111008293594 1272064.13835454 0.108101324686125
+2  40619918.3579812 1272064.13835454   31028286075956                  
+
+Mixt. 3
+               mean               cov                               prop.
+1 -1.62748022181845  10.5252022120602 -3619508.34446409 0.399380797414881
+2  31742449.5344182 -3619508.34446409  34069580319382.6                  
+
+Mixt. 4
+               mean              cov                              prop.
+1 0.989190504382789 3.32964334205108 4002892.19571064 0.475449978099689
+2  26384061.6970466 4002892.19571064   15163662340703                  
+
+
+  State 5
+Mixt. 1
+              mean              cov                              prop.
+1 1.23405238166181 5.81921057020352 77573856.1693079 0.036138811288311
+2 65861784.5506716 77573856.1693079 1495961339027298                  
+
+Mixt. 2
+              mean               cov                                prop.
+1 4.56455115273049 0.704574958775716 -373913.671728134 0.0613261131362072
+2 38191274.9423677 -373913.671728134   9683332412038.5                   
+
+Mixt. 3
+               mean               cov                               prop.
+1 -1.45505445052825  34.0542199073687 -766199.501381949 0.395050688878685
+2  59409159.6909635 -766199.501381949   151899718414956                  
+
+Mixt. 4
+                mean              cov                              prop.
+1 -0.309545202974236 6.46826493361227 3199898.13096377 0.507484386696801
+2   39777230.3571019 3199898.13096377 45709968455751.5                  
+
+
+> sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
+[1] 11660818
+> # single HMM
+> #sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
+> 
+> chartSeries(testset, theme="white")
+> #chartSeries(test, theme="white")
+> 
+> # Forward-backward 
+> #fb <- forwardBackward(hm_model, test, FALSE)
+> #print(fb)
+> #print(AAPL_Subset[,4] - AAPL_Predict [,1])
+> 
+> #layout(matrix(1:2, nrow=2))
+> layout(matrix(2:1, ncol=2))
+> print(matrix(2:1, ncol=2))
+     [,1] [,2]
+[1,]    2    1
+> 
+> # show the states with predicted closing value
+> #chartSeries(AAPL_Predict[,1], #theme="white.mono", 
+> #chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
+> #TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
+> #")
+> 
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==1,1],on=1,type="p",col=5,pch=25)
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type="p",col=6,pch=24)
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type="p",col=7,pch=23)
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type="p",col=8,pch=22)
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type="p",col=10,pch=21)
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  4.103   0.055   4.464 
