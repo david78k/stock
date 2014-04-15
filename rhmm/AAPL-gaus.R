@@ -66,7 +66,7 @@ MAPEsum = 0
 for (i in 1: 2) {
 #	print(i)
 #	print(rows)
-	if (i == rows) break
+	#if (i == rows) break
 
 	if(i != 0) {
 		testrow <- testset[i, ]
