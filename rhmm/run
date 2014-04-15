@@ -62,7 +62,8 @@ library(RHmm)
 library(parallel)
 #$cmd
 
-getSymbols("${name}")
+getSymbols("${name}", src = "google")
+#getSymbols("${name}")
 chartSeries(${name}, theme="white")
 trainset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 print(trainset)
