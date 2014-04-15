@@ -1,0 +1,1477 @@
+
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> require(devEMF)
+Loading required package: devEMF
+> library(quantmod)
+Loading required package: Defaults
+Loading required package: xts
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+Loading required package: TTR
+Version 0.4-0 included new data defaults. See ?getSymbols.
+> library(RHmm)
+Loading required package: MASS
+Loading required package: nlme
+> #postscript('MSFT-gaus.eps')
+> 
+> getSymbols("MSFT")
+    As of 0.4-0, ‘getSymbols’ uses env=parent.frame() and
+ auto.assign=TRUE by default.
+
+ This  behavior  will be  phased out in 0.5-0  when the call  will
+ default to use auto.assign=FALSE. getOption("getSymbols.env") and 
+ getOptions("getSymbols.auto.assign") are now checked for alternate defaults
+
+ This message is shown once per session and may be disabled by setting 
+ options("getSymbols.warning4.0"=FALSE). See ?getSymbol for more details
+[1] "MSFT"
+> chartSeries(MSFT, theme="white")
+> trainset <- window(MSFT, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+> #print(trainset)
+> #MSFT_Subset <- window(MSFT, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+> #MSFT_Train <- cbind(MSFT_Subset$MSFT.Close - MSFT_Subset$MSFT.Open, MSFT_Subset$MSFT.Volume)
+> train <- cbind(trainset$MSFT.Close - trainset$MSFT.Open)
+> #print(train)
+> 
+> testset <- window(MSFT, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
+> test <- cbind(testset$MSFT.Close - testset$MSFT.Open)
+> #print(testset)
+> 
+> # Baum-Welch Algorithm to find the model for the given observations
+> #hm_model <- HMMFit(obs = MSFT_Train, nStates = 5)
+> hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
+> 
+> # Viterbi Algorithm to find the most probable state sequence
+> VitPath <- viterbi (hm_model, train)
+> 
+> # scatter plot
+> postscript('MSFT-gaus.eps')
+> MSFT_Predict <- cbind(trainset$MSFT.Close, VitPath$states)
+> #MSFT_Predict <- cbind(MSFT_Subset$MSFT.Close, VitPath$states)
+> #print(MSFT_Subset[,4] - MSFT_Predict [,1])
+> 
+> # predict next stock value m = nMixt, n = nStates
+> #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
+> # gaussian mixture HMM: nrow = nMixture, ncol = nStates
+> #print(hm_model$HMM$transMat[last(VitPath$states),])
+> #print(hm_model$HMM$distribution)
+> #print(hm_model$HMM$distribution$mean)
+> #print(hm_model$HMM$distribution$mean[, seq(1, ncol(hm_model$HMM$distribution$mean), by = 2)])
+> #print(unlist(hm_model$HMM$distribution$mean))
+> #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
+> 
+> # add a new colum "Pred"
+> testset <- cbind(testset, Pred = 0)
+> #testset <- cbind(testset$MSFT.Close, Pred = 0)
+> #print(testset)
+> 
+> #chartSeries(testset, theme="white")
+> #chartSeries(test, theme="white")
+> 
+> # number of rows of test set data
+> rows = nrow(testset)
+> 
+> #MAPEsum = 0
+> MAPEsum <- 0
+> #MAPEsum <- MAPEsum + 3.35
+> #print (MAPEsum)
+> 
+> #MAPEsum <- abs(MAPEsum / 2.71)
+> #print(MAPEsum)
+> 
+> #MAPEsum <- MAPEsum + 5.18
+> #print(MAPEsum)
+> 
+> # predict and update HMM to include the new actual value
+> #for (i in 1: 251) {
+> #for (i in 1: 3) {
+> for (i in 1: rows) {
++ 	#if (i == rows) break
++ 
++ 	if(i != 0) {
++ 		testrow <- testset[i, ]
++ 		#print(testrow)
++ 		todayopen <- testset$MSFT.Open[i, ]
++ 		todayclose <- testset$MSFT.Close[i, ]
++ 	}
++ 
++ 	# predict the closing value of today
++ 	change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
++ 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
++ 	print(change)
++ 
++ 	pred <- todayopen + change
++ 	#testrow$Pred <- pred
++ 	#print(pred)
++ 
++ 	# update today's predicted value
++ 	testset[i, ]$Pred <- pred
++ 	print(testset[i, ])
++ 
++ 	# MAPE = sum(|pred - actual|/|actual|)*100/n
++ 	diff = (abs ((pred - todayclose)/ todayclose))[1,]$MSFT.Open
++ 	#print ("diff")
++ 	#print (diff)
++ 	#MAPEsum <- MAPEsum + diff$MSFT.Open
++ 	MAPEsum <- sum(MAPEsum, diff[1,1])
++ 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
++ 	#print ("MAPEsum")
++ 	#print(MAPEsum)
++ 	#MAPE <- MAPEsum*100/rows
++ 	#print("MAPE")
++ 	#print(MAPE)
++ 
++ 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
++ 
++ 	# ROC
++ 
++ 	# [Optional] Returns: sell or buy
++ 	# if stock increased sell, otherwise buy
++ 
++ 	# single HMM
++ 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
++ 
++ 	# Forward-backward 
++ 	#fb <- forwardBackward(hm_model, test, FALSE)
++ 	#print(fb)
++ 	#print(MSFT_Subset[,4] - MSFT_Predict [,1])
++ 
++ 	# update train data
++ 	train <- rbind (train, todayclose - todayopen)
++ 	
++ 	# update HMM with the new data
++ 	# Baum-Welch Algorithm to find the model for the given observations
++ 	hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
++ 
++ 	# Viterbi Algorithm to find the most probable state sequence
++ 	VitPath <- viterbi (hm_model, train)
++ }
+[1] -0.03626929
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-01     28.64     28.66    28.36      28.61    29201100         27.79
+               Pred
+2013-04-01 28.60373
+[1] -0.04138544
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-02     28.59     28.85    28.52       28.8    28456500         27.98
+               Pred
+2013-04-02 28.54861
+[1] 0.03884016
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-03     28.75     28.95    28.54      28.56    35062800         27.74
+               Pred
+2013-04-03 28.78884
+[1] -0.1018951
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-04     28.39     28.61    28.27       28.6    45263200         27.78
+              Pred
+2013-04-04 28.2881
+[1] 0.1859904
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-05     28.22     28.78    28.11       28.7    50927300         27.88
+               Pred
+2013-04-05 28.40599
+[1] -0.0270646
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-08     28.73     28.73    28.47      28.59    34759500         27.77
+               Pred
+2013-04-08 28.70294
+[1] -0.06631407
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-09     28.73     29.82    28.68      29.61    77733800         28.76
+               Pred
+2013-04-09 28.66369
+[1] 0.0384714
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-10     29.57     30.32    29.52      30.28    71116700         29.41
+               Pred
+2013-04-10 29.60847
+[1] -0.02519476
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-11      29.1      29.2    28.73      28.94   130923200         28.11
+               Pred
+2013-04-11 29.07481
+[1] 0.1493564
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-12     28.85     29.02    28.66      28.79    62886300         27.97
+               Pred
+2013-04-12 28.99936
+[1] -0.08483912
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-15     28.65     28.98    28.51      28.69    56332900         27.87
+               Pred
+2013-04-15 28.56516
+[1] 0.0186297
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-16      28.9     29.14     28.7      28.97    52797300         28.14
+               Pred
+2013-04-16 28.91863
+[1] 0.07492814
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-17     28.85     29.04     28.6      28.83    52840700            28
+               Pred
+2013-04-17 28.92493
+[1] 0.0787355
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-18     28.95     28.98     28.5      28.79    56906600         27.97
+               Pred
+2013-04-18 29.02874
+[1] 0.1101155
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-19     29.62     30.24    29.61      29.77    99790700         28.92
+               Pred
+2013-04-19 29.73012
+[1] 0.04378666
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-22      30.3     31.18    30.27      30.83   137904000         29.95
+               Pred
+2013-04-22 30.34379
+[1] -0.09258043
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-23      30.7      30.9    30.38       30.6    59126900         29.72
+               Pred
+2013-04-23 30.60742
+[1] -0.06103207
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-24     30.62     31.92     30.6      31.76    90946600         30.85
+               Pred
+2013-04-24 30.55897
+[1] -0.05310345
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-25     31.71     32.84    31.54      31.94   110700200         31.03
+              Pred
+2013-04-25 31.6569
+[1] -0.03316267
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-26      31.9     31.98    31.45      31.79    47799300         30.88
+               Pred
+2013-04-26 31.86684
+[1] 0.02939022
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-29      31.8     32.68    31.77      32.61    59116400         31.68
+               Pred
+2013-04-29 31.82939
+[1] 0.2173058
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-04-30     32.56     33.11    32.28       33.1    75165200         32.15
+               Pred
+2013-04-30 32.77731
+[1] -0.04139373
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-01     32.93     33.08     32.6      32.72    54330900         31.78
+               Pred
+2013-05-01 32.88861
+[1] -0.03219039
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-02     32.63     33.17    32.39      33.16    46059500         32.21
+               Pred
+2013-05-02 32.59781
+[1] 0.1157536
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-03     33.23     33.52    33.08      33.49    46784600         32.53
+               Pred
+2013-05-03 33.34575
+[1] -0.03711179
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-06     33.42     33.91    33.25      33.75    40978300         32.78
+               Pred
+2013-05-06 33.38289
+[1] -0.06282782
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-07     33.65     33.79    33.24      33.31    43078300         32.36
+               Pred
+2013-05-07 33.58717
+[1] -0.1014775
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-08     33.07     33.24    32.65      32.99    51595700         32.05
+               Pred
+2013-05-08 32.96852
+[1] 0.2143268
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-09     32.85        33    32.59      32.66    46417800         31.73
+               Pred
+2013-05-09 33.06433
+[1] -0.08729269
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-10     32.67     32.72    32.32      32.69    36394900         31.75
+               Pred
+2013-05-10 32.58271
+[1] -0.0382404
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-13     32.61     33.07    32.55      33.03    36027600         32.08
+               Pred
+2013-05-13 32.57176
+[1] 0.07944421
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-14     32.86     33.53     32.8      33.53    56870100          32.8
+               Pred
+2013-05-14 32.93944
+[1] -0.04946577
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-15     33.45      33.9    33.43      33.85    46303900         33.11
+               Pred
+2013-05-15 33.40053
+[1] -0.03886119
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-16     33.64     34.15    33.55      34.08    59382900         33.34
+               Pred
+2013-05-16 33.60114
+[1] -0.009566727
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-17     34.13     34.87     34.1      34.87    60666700         34.11
+               Pred
+2013-05-17 34.12043
+[1] 0.02671189
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-20     34.73      35.1    34.68      35.08    54020800         34.32
+               Pred
+2013-05-20 34.75671
+[1] -0.03334535
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-21      35.1     35.27    34.72      34.85    48702400         34.09
+               Pred
+2013-05-21 35.06665
+[1] 0.04201499
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-22     34.79     34.84    34.36      34.61    66047500         33.86
+               Pred
+2013-05-22 34.83201
+[1] -0.02929224
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-23     34.23     34.55     33.9      34.15    51102700         33.41
+               Pred
+2013-05-23 34.20071
+[1] -0.02175113
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-24     33.92     34.28     33.9      34.27    33174400         33.52
+               Pred
+2013-05-24 33.89825
+[1] -0.03226014
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-28     34.42     35.18    34.41      35.02    48212100         34.26
+               Pred
+2013-05-28 34.38774
+[1] -0.02626035
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-29     34.74     35.02    34.57      34.88    38412200         34.12
+               Pred
+2013-05-29 34.71374
+[1] -0.02477669
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-30     34.85     35.25    34.81      35.03    51131000         34.27
+               Pred
+2013-05-30 34.82522
+[1] 0.03964523
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-05-31     34.82     35.28    34.79       34.9    56165700         34.14
+               Pred
+2013-05-31 34.85965
+[1] -0.03840324
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-03     34.92     35.63    34.83      35.59    51252600         34.81
+              Pred
+2013-06-03 34.8816
+[1] -0.03251243
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-04     35.62     35.74    34.77      34.99    65529500         34.23
+               Pred
+2013-06-04 35.58749
+[1] -0.02144692
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-05      34.6     34.89    34.43      34.78    46025100         34.02
+               Pred
+2013-06-05 34.57855
+[1] 0.00313199
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-06     34.84     35.11    34.49      34.96    37618500          34.2
+               Pred
+2013-06-06 34.84313
+[1] -0.03309687
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-07     35.25     35.78    35.06      35.67    40757300         34.89
+              Pred
+2013-06-07 35.2169
+[1] -0.01417907
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-10     35.51     35.65    35.14      35.47    35994500          34.7
+               Pred
+2013-06-10 35.49582
+[1] 0.008421337
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-11     35.05     35.18    34.68      34.84    39435900         34.08
+               Pred
+2013-06-11 35.05842
+[1] -0.03289449
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-12     35.14     35.27    34.85         35    37372700         34.24
+               Pred
+2013-06-12 35.10711
+[1] -0.03205168
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-13     34.99     35.02    34.59      34.72    45654900         33.96
+               Pred
+2013-06-13 34.95795
+[1] -0.03225056
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-14     34.55     34.69    34.25       34.4    53192600         33.65
+               Pred
+2013-06-14 34.51775
+[1] -0.0553409
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-17     34.69     35.16    34.63         35    49670100         34.24
+               Pred
+2013-06-17 34.63466
+[1] 0.03785042
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-18     34.97     35.17     34.9      34.98    28616500         34.22
+               Pred
+2013-06-18 35.00785
+[1] -0.03276118
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-19     34.96     35.09    34.59      34.59    30816200         33.84
+               Pred
+2013-06-19 34.92724
+[1] -0.07069187
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-20     34.26     34.33    33.37      33.49    54493700         32.76
+               Pred
+2013-06-20 34.18931
+[1] -0.03428538
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-21     33.66     33.73    33.05      33.27    85338500         32.54
+               Pred
+2013-06-21 33.62571
+[1] -0.08774436
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-24     32.94      34.2    32.57      33.72    56109000         32.98
+               Pred
+2013-06-24 32.85226
+[1] -0.0004505983
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-25     34.08     34.38    33.46      33.67    44073400         32.94
+               Pred
+2013-06-25 34.07955
+[1] -0.03316846
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-26     34.12     34.48    33.89      34.35    48665900          33.6
+               Pred
+2013-06-26 34.08683
+[1] -0.03230157
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-27     34.52     34.78     34.5      34.62    28993100         33.87
+              Pred
+2013-06-27 34.4877
+[1] -0.009635826
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-06-28     34.38     34.79    34.34      34.54    65545500         33.79
+               Pred
+2013-06-28 34.37036
+[1] -0.08113248
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-01     34.75     34.99    34.33      34.36    31055400         33.61
+               Pred
+2013-07-01 34.66887
+[1] -0.08944223
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-02     34.41     34.44    33.63      33.94    37630000          33.2
+               Pred
+2013-07-02 34.32056
+[1] -0.0562775
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-03     33.66     34.37     33.6      34.01    15994400         33.27
+               Pred
+2013-07-03 33.60372
+[1] -0.03536952
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-05     34.09     34.24    33.58      34.21    26085900         33.46
+               Pred
+2013-07-05 34.05463
+[1] -0.03291729
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-08     34.35     34.59    33.98      34.33    32396900         33.58
+               Pred
+2013-07-08 34.31708
+[1] -0.04008844
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-09     34.58      34.6    34.14      34.35    25318500          33.6
+               Pred
+2013-07-09 34.53991
+[1] -0.005998183
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-10     34.34     34.81    34.32       34.7    29658800         33.94
+             Pred
+2013-07-10 34.334
+[1] 0.02075311
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-11        35     35.77     34.9      35.69    53638300         34.91
+               Pred
+2013-07-11 35.02075
+[1] -0.02555848
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-12     35.58     35.73    35.28      35.67    35501200         34.89
+               Pred
+2013-07-12 35.55444
+[1] -0.08116673
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-15     35.66     36.22    35.58      36.17    34142600         35.38
+               Pred
+2013-07-15 35.57883
+[1] -0.08732639
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-16     36.01     36.43    35.96      36.27    36378500         35.48
+               Pred
+2013-07-16 35.92267
+[1] -0.03268485
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-17     36.34     36.39    35.49      35.74    37285100         34.96
+               Pred
+2013-07-17 36.30732
+[1] -0.03331255
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-18     35.72     35.89    35.22      35.44    49547100         34.67
+               Pred
+2013-07-18 35.68669
+[1] -0.0220749
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-19      32.4     32.67    31.02       31.4   248428500         30.72
+               Pred
+2013-07-19 32.37793
+[1] -0.02022658
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-22      31.7     32.01     31.6      32.01    79040700         31.31
+               Pred
+2013-07-22 31.67977
+[1] -0.0889671
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-23     31.91     32.04    31.71      31.82    65810400         31.13
+               Pred
+2013-07-23 31.82103
+[1] -0.07682615
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-24     32.04     32.19    31.89      31.96    52803100         31.26
+               Pred
+2013-07-24 31.96317
+[1] -0.03340539
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-25     31.62     31.65    31.25      31.39    63213000         30.71
+               Pred
+2013-07-25 31.58659
+[1] -0.007983112
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-26     31.26     31.62    31.21      31.62    38633600         30.93
+               Pred
+2013-07-26 31.25202
+[1] -0.005006395
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-29     31.47      31.6     31.4      31.54    28870700         30.85
+               Pred
+2013-07-29 31.46499
+[1] -0.0174221
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-30     31.78     32.12    31.55      31.85    45799500         31.16
+               Pred
+2013-07-30 31.76258
+[1] -0.1010565
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-07-31     31.97     32.05    31.71      31.84    43898400         31.15
+               Pred
+2013-07-31 31.86894
+[1] -0.05594581
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-01     32.06     32.09     31.6      31.67    42557900         30.98
+               Pred
+2013-08-01 32.00405
+[1] 0.2011972
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-02     31.69      31.9    31.57      31.89    29199900         31.19
+              Pred
+2013-08-02 31.8912
+[1] -0.01960147
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-05      31.9        32    31.64       31.7    30984000         31.01
+              Pred
+2013-08-05 31.8804
+[1] -0.08853355
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-06     31.55     31.67    31.38      31.58    36331500         30.89
+               Pred
+2013-08-06 31.46147
+[1] -0.02834294
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-07     31.54      32.1    31.25      32.06    38078600         31.36
+               Pred
+2013-08-07 31.51166
+[1] -0.02795456
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-08     32.24     33.07    32.05      32.89    59034400         32.17
+               Pred
+2013-08-08 32.21205
+[1] -0.02947884
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-09     32.77      32.9    32.47       32.7    26800700         31.99
+               Pred
+2013-08-09 32.74052
+[1] -0.02036318
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-12     32.46     32.97    32.46      32.87    25493700         32.15
+               Pred
+2013-08-12 32.43964
+[1] -0.01739978
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-13     32.51     32.55    32.21      32.23    39464100         31.75
+              Pred
+2013-08-13 32.4926
+[1] -0.01225241
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-14     32.14     33.36     31.7      32.35    48519600         31.87
+               Pred
+2013-08-14 32.12775
+[1] -0.08294937
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-15        32     32.18    30.84      31.79    33338000         31.32
+               Pred
+2013-08-15 31.91705
+[1] -0.03337279
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-16     31.79     31.99    31.66       31.8    32866300         31.33
+               Pred
+2013-08-16 31.75663
+[1] -0.03343176
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-19     31.76     31.97    31.38      31.39    27902500         30.92
+               Pred
+2013-08-19 31.72657
+[1] -0.006429948
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-20     31.44      31.9    31.37      31.62    22979600         31.15
+               Pred
+2013-08-20 31.43357
+[1] -0.02664135
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-21     31.61     32.01    31.54      31.61    37409100         31.14
+               Pred
+2013-08-21 31.58336
+[1] -0.01800291
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-22     32.19     32.49     32.1      32.39    31169900         31.91
+             Pred
+2013-08-22 32.172
+[1] -0.02802346
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-23     35.17      35.2       34      34.75   225493800         34.23
+               Pred
+2013-08-23 35.14198
+[1] -0.04855011
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-26      34.4     34.67    34.03      34.15    72786800         33.64
+               Pred
+2013-08-26 34.35145
+[1] -0.08840924
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-27     33.52      34.1    33.15      33.26    58522300         32.76
+               Pred
+2013-08-27 33.43159
+[1] -0.03277078
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-28     33.39      33.6       33      33.02    44257400         32.53
+               Pred
+2013-08-28 33.35723
+[1] -0.03456392
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-29     32.93      33.6     32.8      33.55    45284700         33.05
+               Pred
+2013-08-29 32.89544
+[1] -0.03327043
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-08-30     33.37     33.48    33.09       33.4    42790200          32.9
+               Pred
+2013-08-30 33.33673
+[1] -0.03259254
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-03     31.75     32.07    31.29      31.88   154507000          31.4
+               Pred
+2013-09-03 31.71741
+[1] -0.02675372
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-04     31.39     31.47    31.11       31.2   142320600         30.73
+               Pred
+2013-09-04 31.36325
+[1] -0.1020533
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-05      31.1     31.44    30.95      31.23    71644900         30.76
+               Pred
+2013-09-05 30.99795
+[1] -0.03226027
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-06     31.31     31.39    31.13      31.15    75434900         30.69
+               Pred
+2013-09-06 31.27774
+[1] 0.08011057
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-09     31.22     31.79     31.2      31.66    49628500         31.19
+               Pred
+2013-09-09 31.30011
+[1] -0.03315619
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-10      31.9      32.4    31.79      32.39    56881200         31.91
+               Pred
+2013-09-10 31.86684
+[1] -0.03273273
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-11     32.57     32.93    32.53      32.74    39087500         32.25
+               Pred
+2013-09-11 32.53727
+[1] -0.01835543
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-12     32.72     32.78    32.59      32.69    32860200          32.2
+               Pred
+2013-09-12 32.70164
+[1] -0.03874287
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-13     32.77     33.07    32.51      33.03    40899000         32.54
+               Pred
+2013-09-13 32.73126
+[1] -0.02768822
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-16     33.38      33.5    32.73       32.8    52839700         32.31
+               Pred
+2013-09-16 33.35231
+[1] -0.02005184
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-17     33.42     33.47     32.9      32.93    84716500         32.44
+               Pred
+2013-09-17 33.39995
+[1] 0.01972878
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-18     32.99      33.4    32.83      33.32    64099900         32.82
+               Pred
+2013-09-18 33.00973
+[1] -0.03369129
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-19     33.48     33.68    33.32      33.64    42026600         33.14
+               Pred
+2013-09-19 33.44631
+[1] 0.007432166
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-20     33.41     33.48    32.69      32.79   102904900          32.3
+               Pred
+2013-09-20 33.41743
+[1] -0.03261195
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-23     32.54     32.97     32.5      32.74    39826100         32.25
+               Pred
+2013-09-23 32.50739
+[1] -0.02507826
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-24     32.87     32.87    32.15      32.45    40685000         31.97
+               Pred
+2013-09-24 32.84492
+[1] -0.02800488
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-25     32.49      32.8     32.4      32.51    28907500         32.03
+             Pred
+2013-09-25 32.462
+[1] 0.2324244
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-26     32.64        33    32.59      32.77    28504000         32.28
+               Pred
+2013-09-26 32.87242
+[1] -0.136412
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-27     32.88     33.75    32.87      33.27    55348000         32.77
+               Pred
+2013-09-27 32.74359
+[1] -0.00445486
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-09-30        33     33.31     32.7      33.28    39839500         32.78
+               Pred
+2013-09-30 32.99555
+[1] -0.03284588
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-01     33.35     33.61     33.3      33.58    36718700         33.08
+               Pred
+2013-10-01 33.31715
+[1] -0.008785518
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-02     33.36     34.03    33.29      33.92    46946800         33.41
+               Pred
+2013-10-02 33.35121
+[1] -0.01917892
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-03     33.88        34    33.42      33.86    38703800         33.36
+               Pred
+2013-10-03 33.86082
+[1] -0.02779787
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-04     33.69     33.99    33.62      33.88    33008100         33.37
+              Pred
+2013-10-04 33.6622
+[1] -0.01682184
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-07      33.6     33.71     33.2       33.3    35069300          32.8
+               Pred
+2013-10-07 33.58318
+[1] -0.04735477
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-08     33.31     33.33     32.8      33.01    41017600         32.52
+               Pred
+2013-10-08 33.26265
+[1] -0.08842021
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-09     33.07     33.35    32.96      33.07    35878600         32.58
+               Pred
+2013-10-09 32.98158
+[1] -0.08154911
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-10     33.31     33.89    33.26      33.76    42875100         33.26
+               Pred
+2013-10-10 33.22845
+[1] -0.02274718
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-11     33.68     34.14    33.68      34.13    30033300         33.62
+               Pred
+2013-10-11 33.65725
+[1] -0.01864756
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-14      33.9      34.5    33.78      34.45    27757900         33.94
+               Pred
+2013-10-14 33.88135
+[1] -0.1104269
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-15     34.67     34.99    34.47      34.49    47097800         33.98
+               Pred
+2013-10-15 34.55957
+[1] -0.008158477
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-16      34.6      34.9    34.56      34.64    35111600         34.12
+               Pred
+2013-10-16 34.59184
+[1] -0.01350255
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-17     34.45     34.99    34.37      34.92    31359200          34.4
+              Pred
+2013-10-17 34.4365
+[1] -0.04559443
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-18     34.82     34.99    34.33      34.96    41811700         34.44
+               Pred
+2013-10-18 34.77441
+[1] -0.09204525
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-21     34.98      35.2    34.91      34.99    27433500         34.47
+               Pred
+2013-10-21 34.88795
+[1] -0.03289542
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-22     35.02      35.1    34.52      34.58    40438500         34.06
+              Pred
+2013-10-22 34.9871
+[1] -0.01055295
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-23     34.35     34.49    33.67      33.76    58600500         33.26
+               Pred
+2013-10-23 34.33945
+[1] -0.0333724
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-24     33.82      34.1    33.57      33.72    53209700         33.22
+               Pred
+2013-10-24 33.78663
+[1] -0.03247529
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-25     35.88     36.29    35.47      35.73   113494000          35.2
+               Pred
+2013-10-25 35.84752
+[1] -0.03319619
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-28     35.61     35.73    35.27      35.57    38383600         35.04
+              Pred
+2013-10-28 35.5768
+[1] -0.00465539
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-29     35.63     35.72    35.26      35.52    31702200         34.99
+               Pred
+2013-10-29 35.62534
+[1] 0.01449914
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-30     35.53     35.79    35.43      35.54    36997700         35.01
+              Pred
+2013-10-30 35.5445
+[1] 0.2849182
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-10-31     35.66     35.69    35.34      35.41    41682300         34.88
+               Pred
+2013-10-31 35.94492
+[1] -0.03345181
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-01     35.67     35.69    35.39      35.53    40264600            35
+               Pred
+2013-11-01 35.63655
+[1] -0.03244863
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-04     35.59     35.98    35.55      35.94    28060700          35.4
+               Pred
+2013-11-04 35.55755
+[1] -0.01241779
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-05     35.79     36.71    35.77      36.64    51681900         36.09
+               Pred
+2013-11-05 35.77758
+[1] -0.01296916
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-06     37.24     38.22    37.06      38.18    88948800         37.61
+               Pred
+2013-11-06 37.22703
+[1] -0.04253646
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-07     37.96     38.01    37.43       37.5    60437400         36.94
+               Pred
+2013-11-07 37.91746
+[1] -0.01828869
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-08     37.67     37.78    37.34      37.78    36737800         37.22
+               Pred
+2013-11-08 37.65171
+[1] -0.02292413
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-11     37.69     37.78    37.35      37.59    26872500         37.03
+               Pred
+2013-11-11 37.66708
+[1] 0.0007157819
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-12     37.38      37.6     37.2      37.36    31651600          36.8
+               Pred
+2013-11-12 37.38072
+[1] -0.03225156
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-13     36.98     38.16     36.9      38.16    44957600         37.59
+               Pred
+2013-11-13 36.94775
+[1] -0.01873861
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-14     37.87     38.13    37.72      38.02    46183700         37.45
+               Pred
+2013-11-14 37.85126
+[1] -0.09853643
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-15     37.95     38.02    37.72      37.84    50601300         37.28
+               Pred
+2013-11-15 37.85146
+[1] -0.03186742
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-18     37.35     37.58    37.07       37.2    53277500         36.65
+               Pred
+2013-11-18 37.31813
+[1] -0.1387416
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-19     36.85     37.23    36.67      36.74    44275000         36.47
+               Pred
+2013-11-19 36.71126
+[1] -0.03228811
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-20     36.92     37.41    36.86      37.08    32229900          36.8
+               Pred
+2013-11-20 36.88771
+[1] 0.03938902
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-21     37.27     37.53    37.26       37.4    23064700         37.12
+               Pred
+2013-11-21 37.30939
+[1] -0.03006361
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-22     37.53     37.68    37.33      37.57    27982000         37.29
+               Pred
+2013-11-22 37.49994
+[1] -0.03427857
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-25     37.93     37.95    37.57      37.64    30646800         37.36
+               Pred
+2013-11-25 37.89572
+[1] -0.07461122
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-26     37.57     37.65    37.35      37.35    34465300         37.07
+               Pred
+2013-11-26 37.49539
+[1] -0.03357792
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-27     37.57     37.76    37.49       37.6    26002100         37.32
+               Pred
+2013-11-27 37.53642
+[1] -0.02795247
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-11-29     37.82     38.29    37.82      38.13    22090400         37.85
+               Pred
+2013-11-29 37.79205
+[1] -0.03243881
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-02     38.09     38.78    38.06      38.45    42950400         38.16
+               Pred
+2013-12-02 38.05756
+[1] -0.03388023
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-03     38.14     38.49    38.08      38.31    52109800         38.02
+               Pred
+2013-12-03 38.10612
+[1] 0.03034411
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-04     38.21     38.98    38.12      38.94    51983600         38.65
+               Pred
+2013-12-04 38.24034
+[1] -0.0554866
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-05     38.85     38.88    37.18         38   116305000         37.72
+               Pred
+2013-12-05 38.79451
+[1] -0.01926006
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-06     38.42     38.55    37.99      38.36    36457300         38.07
+               Pred
+2013-12-06 38.40074
+[1] -0.04201157
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-09     38.56     38.87    38.37      38.71    30286000         38.42
+               Pred
+2013-12-09 38.51799
+[1] -0.03238912
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-10     38.61      38.9    38.02      38.11    37828600         37.83
+               Pred
+2013-12-10 38.57761
+[1] -0.03195946
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-11     38.06      38.3    37.39      37.61    39853400         37.33
+               Pred
+2013-12-11 38.02804
+[1] -0.03554049
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-12     37.64     37.64    37.18      37.22    36012800         36.94
+               Pred
+2013-12-12 37.60446
+[1] -0.03343285
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-13     37.42     37.45    36.62      36.69    40066100         36.42
+               Pred
+2013-12-13 37.38657
+[1] -0.03398251
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-16     36.73        37    36.54      36.89    31734200         36.62
+               Pred
+2013-12-16 36.69602
+[1] -0.0791781
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-17     36.94     37.11    36.33      36.52    45687700         36.25
+               Pred
+2013-12-17 36.86082
+[1] -0.01713431
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-18     36.36      36.6    35.53      36.58    63192100         36.31
+               Pred
+2013-12-18 36.34287
+[1] -0.08637184
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-19     36.51     36.55    36.08      36.25    34160100         35.98
+               Pred
+2013-12-19 36.42363
+[1] -0.07484722
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-20      36.2     36.93    36.19       36.8    62649100         36.53
+               Pred
+2013-12-20 36.12515
+[1] -0.03303869
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-23     36.81     36.89    36.55      36.62    25128700         36.35
+               Pred
+2013-12-23 36.77696
+[1] -0.08604022
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-24     36.72     37.17    36.64      37.08    14243000          36.8
+               Pred
+2013-12-24 36.63396
+[1] -0.03455158
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-26      37.2     37.49    37.17      37.44    17612800         37.16
+               Pred
+2013-12-26 37.16545
+[1] -0.03337126
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-27     37.58     37.62    37.17      37.29    14563000         37.01
+               Pred
+2013-12-27 37.54663
+[1] -0.003334652
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-30     37.22     37.38     36.9      37.29    16290500         37.01
+               Pred
+2013-12-30 37.21667
+[1] -0.03759048
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2013-12-31      37.4     37.58    37.22      37.41    17503500         37.13
+               Pred
+2013-12-31 37.36241
+[1] -0.01485559
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-02     37.35      37.4     37.1      37.16    30632200         36.88
+               Pred
+2014-01-02 37.33514
+[1] -0.06971113
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-03      37.2     37.22     36.6      36.91    31134800         36.64
+               Pred
+2014-01-03 37.13029
+[1] -0.08559672
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-06     36.85     36.89    36.11      36.13    43603700         35.86
+              Pred
+2014-01-06 36.7644
+[1] -0.02741541
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-07     36.33     36.49    36.21      36.41    35802800         36.14
+               Pred
+2014-01-07 36.30258
+[1] -0.01418202
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-08        36     36.14    35.58      35.76    59971700         35.49
+               Pred
+2014-01-08 35.98582
+[1] -0.02508058
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-09     35.88     35.91     35.4      35.53    36516300         35.27
+               Pred
+2014-01-09 35.85492
+[1] -0.03426444
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-10      35.9     36.15    35.75      36.04    40548800         35.77
+               Pred
+2014-01-10 35.86574
+[1] 0.025142
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-13     35.99     36.02    34.83      34.98    45901900         34.72
+               Pred
+2014-01-13 36.01514
+[1] -0.09629309
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-14     34.73     35.88    34.63      35.78    41623300         35.51
+               Pred
+2014-01-14 34.63371
+[1] -0.03508293
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-15      35.9     36.79    35.85      36.76    44812600         36.49
+               Pred
+2014-01-15 35.86492
+[1] -0.03463267
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-16     36.69        37    36.31      36.89    38018700         36.62
+               Pred
+2014-01-16 36.65537
+[1] -0.03097128
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-17     36.83     36.83    36.15      36.38    46267500         36.11
+               Pred
+2014-01-17 36.79903
+[1] -0.03305159
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-21     36.82     36.82    36.06      36.17    31567300          35.9
+               Pred
+2014-01-21 36.78695
+[1] -0.03729007
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-22     36.26     36.32    35.75      35.93    21904300         35.66
+               Pred
+2014-01-22 36.22271
+[1] -0.07153169
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-23     36.09     36.13    35.52      36.06    43954000         35.79
+               Pred
+2014-01-23 36.01847
+[1] -0.03704589
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-24     37.45     37.55    36.53      36.81    76395500         36.54
+               Pred
+2014-01-24 37.41295
+[1] -0.03499044
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-27     36.87     36.89    35.98      36.03    44420800         35.76
+               Pred
+2014-01-27 36.83501
+[1] -0.03821886
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-28     36.12     36.39    35.75      36.27    36205500            36
+               Pred
+2014-01-28 36.08178
+[1] -0.03784307
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-29     35.98     36.88     35.9      36.66    52745900         36.39
+               Pred
+2014-01-29 35.94216
+[1] -0.03995721
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-30     36.79     36.88    36.23      36.86    35036300         36.59
+               Pred
+2014-01-30 36.75004
+[1] -0.03747821
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-01-31     36.95     37.89    36.56      37.84    93162300         37.56
+               Pred
+2014-01-31 36.91252
+[1] -0.03657035
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-03     37.74     37.99    36.43      36.48    64063100         36.21
+               Pred
+2014-02-03 37.70343
+[1] -0.09162257
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-04     36.97     37.19    36.25      36.35    54697900         36.08
+               Pred
+2014-02-04 36.87838
+[1] -0.06218805
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-05     36.29     36.47     35.8      35.82    55814400         35.55
+               Pred
+2014-02-05 36.22781
+[1] -0.1114533
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-06      35.8     36.25    35.69      36.18    35351800         35.91
+               Pred
+2014-02-06 35.68855
+[1] -0.03792018
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-07     36.32     36.59    36.01      36.56    33260500         36.29
+               Pred
+2014-02-07 36.28208
+[1] -0.0367629
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-10     36.63      36.8    36.29       36.8    26767000         36.53
+               Pred
+2014-02-10 36.59324
+[1] -0.03854254
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-11     36.88     37.26    36.86      37.17    32141400         36.89
+               Pred
+2014-02-11 36.84146
+[1] -0.02173092
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-12     37.35      37.6     37.3      37.47    27051800         37.19
+               Pred
+2014-02-12 37.32827
+[1] -0.03764778
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-13     37.33     37.86    37.33      37.61    37635500         37.33
+               Pred
+2014-02-13 37.29235
+[1] -0.01511044
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-14     37.39     37.78    37.33      37.62    31407500         37.34
+               Pred
+2014-02-14 37.37489
+[1] -0.03782381
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-18     37.63     37.78    37.41      37.42    32834000         37.42
+               Pred
+2014-02-18 37.59218
+[1] -0.04501519
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-19     37.22     37.75    37.21      37.51    29750400         37.51
+               Pred
+2014-02-19 37.17498
+[1] -0.01714884
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-20     37.57     37.87     37.4      37.75    27526100         37.75
+               Pred
+2014-02-20 37.55285
+[1] -0.0208586
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-21     37.94     38.35    37.86      37.98    38021300         37.98
+               Pred
+2014-02-21 37.91914
+[1] -0.01212475
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-24     37.69     37.98    37.54      37.69    32085100         37.69
+               Pred
+2014-02-24 37.67788
+[1] 0.03644567
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-25     37.61     37.85    37.35      37.54    30736500         37.54
+               Pred
+2014-02-25 37.64645
+[1] -0.0441462
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-26     37.58     37.74    37.19      37.47    41041800         37.47
+               Pred
+2014-02-26 37.53585
+[1] 0.04142458
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-27     37.45     37.89    37.23      37.86    33903400         37.86
+               Pred
+2014-02-27 37.49142
+[1] 0.08202446
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-02-28     37.98     38.46    37.82      38.31    41215000         38.31
+               Pred
+2014-02-28 38.06202
+[1] 0.02995561
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-03     37.92     38.13    37.49      37.78    29717500         37.78
+               Pred
+2014-03-03 37.94996
+[1] 0.09400718
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-04      38.2     38.48    38.07      38.41    26802400         38.41
+               Pred
+2014-03-04 38.29401
+[1] -0.08556038
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-05     38.25     38.27    37.93      38.11    20520100         38.11
+               Pred
+2014-03-05 38.16444
+[1] 0.03470175
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-06     38.14     38.24    37.89      38.15    23582200         38.15
+              Pred
+2014-03-06 38.1747
+[1] 0.04074291
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-07     38.28     38.36    37.69       37.9    26591600          37.9
+               Pred
+2014-03-07 38.32074
+[1] -0.03982773
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-10     37.99     38.01    37.72      37.82    19006600         37.82
+               Pred
+2014-03-10 37.95017
+[1] -0.1007354
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-11     37.87     38.23    37.72      38.02    25216400         38.02
+               Pred
+2014-03-11 37.76926
+[1] 0.03378477
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-12      37.8     38.43    37.79      38.27    30494100         38.27
+               Pred
+2014-03-12 37.83378
+[1] 0.03426397
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-13     38.42     38.45    37.64      37.89    32169700         37.89
+               Pred
+2014-03-13 38.45426
+[1] -0.08716729
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-14     37.65     38.14    37.51       37.7    27195600          37.7
+               Pred
+2014-03-14 37.56283
+[1] -0.02279395
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-17      37.9     38.41    37.79      38.05    20479600         38.05
+               Pred
+2014-03-17 37.87721
+[1] -0.03885346
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-18     38.26      39.9    38.22      39.55    64063900         39.55
+               Pred
+2014-03-18 38.22115
+[1] -0.04145308
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-19     39.47     39.55    38.91      39.27    35597200         39.27
+               Pred
+2014-03-19 39.42855
+[1] -0.04017376
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-20     39.25     40.65    39.24      40.33    59269800         40.33
+               Pred
+2014-03-20 39.20983
+[1] -0.03930549
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-21     40.72     40.94    40.01      40.16    80721800         40.16
+               Pred
+2014-03-21 40.68069
+[1] -0.08620121
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-24     40.34     40.64    39.86       40.5    46098400          40.5
+              Pred
+2014-03-24 40.2538
+[1] -0.03971677
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-25     40.66     40.99    39.96      40.34    43193100         40.34
+               Pred
+2014-03-25 40.62028
+[1] -0.04316504
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-26     40.48     40.71     39.6      39.79    41977500         39.79
+               Pred
+2014-03-26 40.43683
+[1] -0.05550297
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-27     39.74     39.97    39.34      39.36    35369200         39.36
+              Pred
+2014-03-27 39.6845
+[1] -0.08645168
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-28     39.79     40.64    39.68       40.3    43472700          40.3
+               Pred
+2014-03-28 39.70355
+[1] 0.05920251
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-03-31     40.43      41.5     40.4      40.99    46886300         40.99
+              Pred
+2014-03-31 40.4892
+[1] -0.04216494
+           MSFT.Open MSFT.High MSFT.Low MSFT.Close MSFT.Volume MSFT.Adjusted
+2014-04-01     41.15     41.59    41.07      41.42    32605000         41.42
+               Pred
+2014-04-01 41.10784
+> 
+> MAPE <- MAPEsum*100/rows
+> print(MAPE)
+[1] 0.9118262
+> 
+> # plot actual with predicted values added
+> # compare actual closing value and predicted closing value
+> #chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "MSFT", legend = "Actual",
+> chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "MSFT", legend = "Actual",
++ 	TA = "addTA(testset[1:rows, 7], on = 1, col='red')") # 
+> #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"), legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = \"Predicted\")") # yellow
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
+> 
+> #chartSeries(testset)
+> 
+> #chartSeries(MSFT_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
+> #TA="addTA(MSFT_Predict[MSFT_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
+> #addTA(MSFT_Predict[MSFT_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
+> #addTA(MSFT_Predict[MSFT_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
+> #addTA(MSFT_Predict[MSFT_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
+> #addTA(MSFT_Predict[MSFT_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
+> #")
+> 
+> 
+> proc.time()
+   user  system elapsed 
+922.584   0.091 923.912 
