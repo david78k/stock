@@ -14,7 +14,8 @@ fi
 #symbol=FB # 2012-05-18
 #symbol=MSFT # 
 #symbol=TWTR # 
-symbol=LNKD # 
+#symbol=LNKD # 
+symbol=AMZ # 
 
 name=$symbol
 #out=$symbol
