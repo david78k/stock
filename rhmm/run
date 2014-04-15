@@ -13,8 +13,8 @@ fi
 #symbol=GOOG
 #symbol=FB # 2012-05-18
 #symbol=MSFT # 
-symbol=TWTR # 
-#symbol=LNKD # 
+#symbol=TWTR # 
+symbol=LNKD # 
 
 name=$symbol
 #out=$symbol

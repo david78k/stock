@@ -1,0 +1,1477 @@
+
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> require(devEMF)
+Loading required package: devEMF
+> library(quantmod)
+Loading required package: Defaults
+Loading required package: xts
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+Loading required package: TTR
+Version 0.4-0 included new data defaults. See ?getSymbols.
+> library(RHmm)
+Loading required package: MASS
+Loading required package: nlme
+> #postscript('LNKD-gaus.eps')
+> 
+> getSymbols("LNKD")
+    As of 0.4-0, ‘getSymbols’ uses env=parent.frame() and
+ auto.assign=TRUE by default.
+
+ This  behavior  will be  phased out in 0.5-0  when the call  will
+ default to use auto.assign=FALSE. getOption("getSymbols.env") and 
+ getOptions("getSymbols.auto.assign") are now checked for alternate defaults
+
+ This message is shown once per session and may be disabled by setting 
+ options("getSymbols.warning4.0"=FALSE). See ?getSymbol for more details
+[1] "LNKD"
+> chartSeries(LNKD, theme="white")
+> trainset <- window(LNKD, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+> #print(trainset)
+> #LNKD_Subset <- window(LNKD, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+> #LNKD_Train <- cbind(LNKD_Subset$LNKD.Close - LNKD_Subset$LNKD.Open, LNKD_Subset$LNKD.Volume)
+> train <- cbind(trainset$LNKD.Close - trainset$LNKD.Open)
+> #print(train)
+> 
+> testset <- window(LNKD, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
+> test <- cbind(testset$LNKD.Close - testset$LNKD.Open)
+> #print(testset)
+> 
+> # Baum-Welch Algorithm to find the model for the given observations
+> #hm_model <- HMMFit(obs = LNKD_Train, nStates = 5)
+> hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
+> 
+> # Viterbi Algorithm to find the most probable state sequence
+> VitPath <- viterbi (hm_model, train)
+> 
+> # scatter plot
+> postscript('LNKD-gaus.eps')
+> LNKD_Predict <- cbind(trainset$LNKD.Close, VitPath$states)
+> #LNKD_Predict <- cbind(LNKD_Subset$LNKD.Close, VitPath$states)
+> #print(LNKD_Subset[,4] - LNKD_Predict [,1])
+> 
+> # predict next stock value m = nMixt, n = nStates
+> #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
+> # gaussian mixture HMM: nrow = nMixture, ncol = nStates
+> #print(hm_model$HMM$transMat[last(VitPath$states),])
+> #print(hm_model$HMM$distribution)
+> #print(hm_model$HMM$distribution$mean)
+> #print(hm_model$HMM$distribution$mean[, seq(1, ncol(hm_model$HMM$distribution$mean), by = 2)])
+> #print(unlist(hm_model$HMM$distribution$mean))
+> #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
+> 
+> # add a new colum "Pred"
+> testset <- cbind(testset, Pred = 0)
+> #testset <- cbind(testset$LNKD.Close, Pred = 0)
+> #print(testset)
+> 
+> #chartSeries(testset, theme="white")
+> #chartSeries(test, theme="white")
+> 
+> # number of rows of test set data
+> rows = nrow(testset)
+> 
+> #MAPEsum = 0
+> MAPEsum <- 0
+> #MAPEsum <- MAPEsum + 3.35
+> #print (MAPEsum)
+> 
+> #MAPEsum <- abs(MAPEsum / 2.71)
+> #print(MAPEsum)
+> 
+> #MAPEsum <- MAPEsum + 5.18
+> #print(MAPEsum)
+> 
+> # predict and update HMM to include the new actual value
+> #for (i in 1: 251) {
+> #for (i in 1: 3) {
+> for (i in 1: rows) {
++ 	#if (i == rows) break
++ 
++ 	if(i != 0) {
++ 		testrow <- testset[i, ]
++ 		#print(testrow)
++ 		todayopen <- testset$LNKD.Open[i, ]
++ 		todayclose <- testset$LNKD.Close[i, ]
++ 	}
++ 
++ 	# predict the closing value of today
++ 	change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
++ 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
++ 	print(change)
++ 
++ 	pred <- todayopen + change
++ 	#testrow$Pred <- pred
++ 	#print(pred)
++ 
++ 	# update today's predicted value
++ 	testset[i, ]$Pred <- pred
++ 	print(testset[i, ])
++ 
++ 	# MAPE = sum(|pred - actual|/|actual|)*100/n
++ 	diff = (abs ((pred - todayclose)/ todayclose))[1,]$LNKD.Open
++ 	#print ("diff")
++ 	#print (diff)
++ 	#MAPEsum <- MAPEsum + diff$LNKD.Open
++ 	MAPEsum <- sum(MAPEsum, diff[1,1])
++ 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
++ 	#print ("MAPEsum")
++ 	#print(MAPEsum)
++ 	#MAPE <- MAPEsum*100/rows
++ 	#print("MAPE")
++ 	#print(MAPE)
++ 
++ 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
++ 
++ 	# ROC
++ 
++ 	# [Optional] Returns: sell or buy
++ 	# if stock increased sell, otherwise buy
++ 
++ 	# single HMM
++ 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
++ 
++ 	# Forward-backward 
++ 	#fb <- forwardBackward(hm_model, test, FALSE)
++ 	#print(fb)
++ 	#print(LNKD_Subset[,4] - LNKD_Predict [,1])
++ 
++ 	# update train data
++ 	train <- rbind (train, todayclose - todayopen)
++ 	
++ 	# update HMM with the new data
++ 	# Baum-Welch Algorithm to find the model for the given observations
++ 	hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
++ 
++ 	# Viterbi Algorithm to find the most probable state sequence
++ 	VitPath <- viterbi (hm_model, train)
++ }
+[1] 0.0869648
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-01    178.31    180.39   172.26     173.61     1811300        173.61
+              Pred
+2013-04-01 178.397
+[1] 0.4951369
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-02    174.24     175.7   171.61     172.68     1377500        172.68
+               Pred
+2013-04-02 174.7351
+[1] 0.001001197
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-03    172.96       174   165.02     167.31     2971100        167.31
+              Pred
+2013-04-03 172.961
+[1] -1.564209
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-04       168    172.83   167.06     172.71     2069700        172.71
+               Pred
+2013-04-04 166.4358
+[1] 0.8442023
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-05    168.75    173.68    168.3     172.77     1611600        172.77
+               Pred
+2013-04-05 169.5942
+[1] -0.1788997
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-08    172.36    173.42   170.27     172.12      928500        172.12
+               Pred
+2013-04-08 172.1811
+[1] 0.224787
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-09    172.24     175.5   168.55     172.07     2247900        172.07
+               Pred
+2013-04-09 172.4648
+[1] 0.5595925
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-10    172.96    177.47   172.55     177.31     1451100        177.31
+               Pred
+2013-04-10 173.5196
+[1] 0.1656378
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-11    176.54     183.2   176.07     180.18     2153400        180.18
+               Pred
+2013-04-11 176.7056
+[1] 0.5374409
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-12    178.33    186.06    175.8     185.39     2608500        185.39
+               Pred
+2013-04-12 178.8674
+[1] -0.1951362
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-15    184.27     185.3   175.01     175.37     2814100        175.37
+               Pred
+2013-04-15 184.0749
+[1] 0.8703978
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-16    179.25    182.93   176.25     182.47     2363800        182.47
+               Pred
+2013-04-16 180.1204
+[1] -0.1681261
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-17    179.48    183.48   177.34     179.97     2168400        179.97
+               Pred
+2013-04-17 179.3119
+[1] 0.09199489
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-18    179.82    180.45   172.49     173.81     1996300        173.81
+              Pred
+2013-04-18 179.912
+[1] -0.2957254
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-19    175.19    178.74   173.91     174.95     1650300        174.95
+               Pred
+2013-04-19 174.8943
+[1] 1.80778
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-22    175.04    178.36   172.37     177.22     1468700        177.22
+               Pred
+2013-04-22 176.8478
+[1] 0.005954854
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-23    178.63    187.13   178.28     186.11     2179000        186.11
+              Pred
+2013-04-23 178.636
+[1] -0.005624308
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-24    185.62    188.52   182.95     187.66     1865100        187.66
+               Pred
+2013-04-24 185.6144
+[1] -0.0257842
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-25     188.8    191.78   186.31     187.87     1991700        187.87
+               Pred
+2013-04-25 188.7742
+[1] -0.04230315
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-26    187.58    188.99   185.16     187.76     1209800        187.76
+               Pred
+2013-04-26 187.5377
+[1] 0.3391556
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-29    188.89    190.79   188.05     188.39     1365300        188.39
+               Pred
+2013-04-29 189.2292
+[1] 0.03377418
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-04-30    189.16    193.37   189.16     192.09     2256000        192.09
+               Pred
+2013-04-30 189.1938
+[1] -1.296897
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-01    192.61     195.5   191.03     194.82     2637700        194.82
+               Pred
+2013-05-01 191.3131
+[1] 0.5352532
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-02    196.61    202.91   196.43     201.67     6538800        201.67
+               Pred
+2013-05-02 197.1453
+[1] 0.09794666
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-03    184.75    187.75   173.72     175.59    11658100        175.59
+               Pred
+2013-05-03 184.8479
+[1] -0.1666928
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-06       176    178.69   174.25     176.92     3490300        176.92
+               Pred
+2013-05-06 175.8333
+[1] 0.02714516
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-07     178.4    181.17    177.2     180.65     3325400        180.65
+               Pred
+2013-05-07 178.4271
+[1] -0.7232202
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-08    181.17    182.55    175.6     177.15     2919200        177.15
+               Pred
+2013-05-08 180.4468
+[1] -0.254199
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-09    176.03    179.65   175.81     177.39     1701600        177.39
+               Pred
+2013-05-09 175.7758
+[1] 0.0720484
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-10    177.87    179.25   170.87     173.78     2973000        173.78
+              Pred
+2013-05-10 177.942
+[1] 0.03596901
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-13    171.77    176.66   171.01     175.03     1824500        175.03
+              Pred
+2013-05-13 171.806
+[1] 1.194703
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-14    175.49    185.48   175.21      184.4     3911200         184.4
+               Pred
+2013-05-14 176.6847
+[1] 0.1492187
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-15    184.44    192.56   182.35     184.81     3865200        184.81
+               Pred
+2013-05-15 184.5892
+[1] -0.8701847
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-16    182.06     184.8    180.9     181.36     1803100        181.36
+               Pred
+2013-05-16 181.1898
+[1] 0.2789761
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-17    182.48     184.5   179.65     182.35     1706300        182.35
+              Pred
+2013-05-17 182.759
+[1] -0.5414005
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-20    182.09    185.24   180.72     182.31     1584000        182.31
+               Pred
+2013-05-20 181.5486
+[1] 0.1413375
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-21    183.36     187.3      183     184.31     1650700        184.31
+               Pred
+2013-05-21 183.5013
+[1] 0.190921
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-22    184.39    185.48    175.5     176.95     2169900        176.95
+               Pred
+2013-05-22 184.5809
+[1] 0.8595258
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-23    173.51    177.98    170.8     176.33     1809900        176.33
+               Pred
+2013-05-23 174.3695
+[1] 0.8695338
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-24    175.04    176.77   172.62      173.8     1363500         173.8
+               Pred
+2013-05-24 175.9095
+[1] 0.09656994
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-28     176.2    176.62   167.06     169.17     2875400        169.17
+               Pred
+2013-05-28 176.2966
+[1] -0.1180536
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-29    167.82    169.84   164.17     168.02     2004900        168.02
+               Pred
+2013-05-29 167.7019
+[1] 1.636593
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-30       169    170.35   166.85     169.35     1311400        169.35
+               Pred
+2013-05-30 170.6366
+[1] -0.01415867
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-05-31    168.38       172   167.53     167.53     1462500        167.53
+               Pred
+2013-05-31 168.3658
+[1] 0.5202967
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-03    168.71    169.33   160.93     165.12     2740500        165.12
+               Pred
+2013-06-03 169.2303
+[1] -0.5960832
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-04    165.54    166.14    161.7     162.46     2212600        162.46
+               Pred
+2013-06-04 164.9439
+[1] -1.007901
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-05    160.38     168.4    160.2     163.49     2264000        163.49
+               Pred
+2013-06-05 159.3721
+[1] 0.1534961
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-06    163.74    170.22   163.68     170.18     1821300        170.18
+               Pred
+2013-06-06 163.8935
+[1] -0.291729
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-07    170.76    171.68    168.2      170.7     1229000         170.7
+               Pred
+2013-06-07 170.4683
+[1] -0.6420871
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-10    172.32       175   170.89     174.09     1415300        174.09
+               Pred
+2013-06-10 171.6779
+[1] -0.156314
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-11    171.45       174   168.18     168.39     1533600        168.39
+               Pred
+2013-06-11 171.2937
+[1] -0.2230612
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-12    169.77    169.89   166.36     167.12      915900        167.12
+               Pred
+2013-06-12 169.5469
+[1] -0.6946102
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-13    166.43    172.39   165.14     172.02     1118600        172.02
+               Pred
+2013-06-13 165.7354
+[1] -0.1363945
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-14    172.51     179.9    171.6     178.24     3376000        178.24
+               Pred
+2013-06-14 172.3736
+[1] 0.1251188
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-17       180       180   175.53     177.59     1655800        177.59
+               Pred
+2013-06-17 180.1251
+[1] 0.517399
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-18    179.16     181.9   177.11     179.42     1591800        179.42
+               Pred
+2013-06-18 179.6774
+[1] -0.03956986
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-19    179.02    183.87   178.04     180.97     1994900        180.97
+               Pred
+2013-06-19 178.9804
+[1] -0.01433755
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-20    179.29    179.83    172.5     175.26     2393800        175.26
+               Pred
+2013-06-20 179.2757
+[1] 1.838994
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-21    176.25    176.88   169.17     171.95     2031100        171.95
+              Pred
+2013-06-21 178.089
+[1] -0.4717607
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-24    169.05    174.87   166.05     172.95     1559700        172.95
+               Pred
+2013-06-24 168.5782
+[1] 0.1413592
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-25     174.9    177.21   173.01     176.87     1132300        176.87
+               Pred
+2013-06-25 175.0414
+[1] -0.07522831
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-26    177.59    180.84   177.59      179.5     1384100         179.5
+               Pred
+2013-06-26 177.5148
+[1] -0.6437124
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-27    180.79    182.25      180     180.63     1467800        180.63
+               Pred
+2013-06-27 180.1463
+[1] -0.3501934
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-06-28       180    181.06   177.01      178.3     2067400         178.3
+               Pred
+2013-06-28 179.6498
+[1] 1.8357
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-01       180    183.53   177.26     183.11     1577500        183.11
+               Pred
+2013-07-01 181.8357
+[1] 0.04294395
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-02    182.32    185.81   181.16      182.3     1501100         182.3
+               Pred
+2013-07-02 182.3629
+[1] -0.07506033
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-03    181.85    188.92    180.5     188.18     1393300        188.18
+               Pred
+2013-07-03 181.7749
+[1] -0.1411196
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-05    188.92    191.87   187.65      190.3     1569600         190.3
+               Pred
+2013-07-05 188.7789
+[1] 0.2571009
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-08    191.69     193.5   189.64      192.5     1167900         192.5
+               Pred
+2013-07-08 191.9471
+[1] -0.3302875
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-09       193    193.03   187.53     189.34     1666200        189.34
+               Pred
+2013-07-09 192.6697
+[1] -0.4383386
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-10    188.69    192.17    187.1     188.39     1321400        188.39
+               Pred
+2013-07-10 188.2517
+[1] 0.03850078
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-11    191.84    197.14   190.31     196.57     2085800        196.57
+               Pred
+2013-07-11 191.8785
+[1] 0.6265596
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-12    196.65    201.67   195.01     199.96     1921800        199.96
+               Pred
+2013-07-12 197.2766
+[1] 1.030039
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-15    200.81    200.95    197.5      198.8     1237000         198.8
+             Pred
+2013-07-15 201.84
+[1] 0.09154143
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-16    198.11    198.36   190.75     193.65     1814900        193.65
+               Pred
+2013-07-16 198.2015
+[1] -0.1872174
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-17    194.01    199.15   194.01     197.94     1355600        197.94
+               Pred
+2013-07-17 193.8228
+[1] 1.156919
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-18     198.7    207.23   197.26     204.16     2849000        204.16
+               Pred
+2013-07-18 199.8569
+[1] 0.3270429
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-19    200.93     202.4    198.3     199.29     2089500        199.29
+              Pred
+2013-07-19 201.257
+[1] 0.1817105
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-22       200    200.87   194.11     197.04     1516200        197.04
+               Pred
+2013-07-22 200.1817
+[1] -1.121951
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-23    198.25    199.36   193.26     194.51     1148700        194.51
+              Pred
+2013-07-23 197.128
+[1] -0.07183974
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-24    196.02    199.34   194.11      197.6     1176700         197.6
+               Pred
+2013-07-24 195.9482
+[1] 0.05547464
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-25    201.79     206.3      201     203.98     2817200        203.98
+               Pred
+2013-07-25 201.8455
+[1] -0.6546788
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-26     203.4    208.88   203.05     208.53     2245100        208.53
+               Pred
+2013-07-26 202.7453
+[1] -0.08264865
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-29    209.17    209.39   201.07     203.71      213200        203.71
+               Pred
+2013-07-29 209.0874
+[1] 0.1786543
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-30    203.71    204.72    201.3     202.57     1576500        202.57
+               Pred
+2013-07-30 203.8887
+[1] -0.1013056
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-07-31    203.01    207.28   202.13     203.79     1923800        203.79
+               Pred
+2013-07-31 202.9087
+[1] 1.791759
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-01    206.99    213.48   206.99        213     5087100           213
+               Pred
+2013-08-01 208.7818
+[1] -0.8657125
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-02    233.47    237.96    228.8     235.58     7492900        235.58
+               Pred
+2013-08-02 232.6043
+[1] -0.7525694
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-05    233.87       236   230.38     233.64     2933200        233.64
+               Pred
+2013-08-05 233.1174
+[1] -0.0007198447
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-06    232.37    235.49   229.36     231.77     1655800        231.77
+               Pred
+2013-08-06 232.3693
+[1] -0.7299057
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-07    229.72    233.21   227.28     232.92     1729600        232.92
+               Pred
+2013-08-07 228.9901
+[1] 0.1240412
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-08     234.5     235.8   230.07     232.39     1252400        232.39
+              Pred
+2013-08-08 234.624
+[1] 0.1903663
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-09    231.38       234   230.88     232.81     1132800        232.81
+               Pred
+2013-08-09 231.5704
+[1] 2.371452
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-12    234.11       242   233.05     239.65     2448700        239.65
+               Pred
+2013-08-12 236.4815
+[1] 0.0932352
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-13    240.65       244    238.1     241.82     1774500        241.82
+               Pred
+2013-08-13 240.7432
+[1] -0.3204735
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-14     241.5    241.75   233.98     236.33     1729100        236.33
+               Pred
+2013-08-14 241.1795
+[1] -0.6818864
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-15     232.5    232.75    227.3     228.29     2252900        228.29
+               Pred
+2013-08-15 231.8181
+[1] -0.09152234
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-16    223.01       230   222.22     227.01     2213500        227.01
+               Pred
+2013-08-16 222.9185
+[1] 0.1772314
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-19    225.29     233.5   225.29      230.5     1706200         230.5
+               Pred
+2013-08-19 225.4672
+[1] -0.3604831
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-20    232.41     234.2   228.88     231.77     1199000        231.77
+               Pred
+2013-08-20 232.0495
+[1] -0.7348704
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-21    231.18     233.9   228.75     230.79     1132200        230.79
+               Pred
+2013-08-21 230.4451
+[1] 0.1421007
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-22    232.38       235   231.78     234.25      751100        234.25
+               Pred
+2013-08-22 232.5221
+[1] 1.849648
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-23    235.75    240.88      235     240.37     1367300        240.37
+               Pred
+2013-08-23 237.5996
+[1] -0.151219
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-26    240.77    247.98   238.51     242.39     2035400        242.39
+               Pred
+2013-08-26 240.6188
+[1] -0.9368293
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-27    238.88    242.38   234.68     235.92     1592800        235.92
+               Pred
+2013-08-27 237.9432
+[1] 0.0409884
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-28    236.93    240.74    235.4     238.88      985500        238.88
+              Pred
+2013-08-28 236.971
+[1] 0.2095066
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-29    238.02    243.55      238     241.12     1105600        241.12
+               Pred
+2013-08-29 238.2295
+[1] 0.05868221
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-08-30    240.99    242.47   238.12     240.04     1078000        240.04
+               Pred
+2013-08-30 241.0487
+[1] 0.1401737
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-03    243.77     246.7   241.76     246.13     1878600        246.13
+               Pred
+2013-09-03 243.9102
+[1] 1.566264
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-04    240.59    243.42    237.5     238.93     2384100        238.93
+               Pred
+2013-09-04 242.1563
+[1] -0.506542
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-05     237.5    249.98   237.22     248.35     6215400        248.35
+               Pred
+2013-09-05 236.9935
+[1] -0.7151129
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-06     249.8    253.53   245.65     253.22     2848700        253.22
+               Pred
+2013-09-06 249.0849
+[1] 0.02853191
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-09    252.38    254.61   247.64     249.01     1822800        249.01
+               Pred
+2013-09-09 252.4085
+[1] -1.093166
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-10    252.26    252.55   249.01     252.17     1017400        252.17
+               Pred
+2013-09-10 251.1668
+[1] 0.08033783
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-11    251.31    257.56   248.95     256.14     1618900        256.14
+               Pred
+2013-09-11 251.3903
+[1] -0.60078
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-12    256.58     257.2      249      249.7     1719200         249.7
+               Pred
+2013-09-12 255.9792
+[1] -1.502258
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-13    250.99    251.99   247.12     249.59     1165100        249.59
+               Pred
+2013-09-13 249.4877
+[1] 0.421508
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-16    253.01    253.72   243.78        245     1437100           245
+               Pred
+2013-09-16 253.4315
+[1] 0.2412428
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-17    246.57    248.49   244.52     247.69      963400        247.69
+               Pred
+2013-09-17 246.8112
+[1] 2.288894
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-18    246.71    250.36   246.53     249.58     1291300        249.58
+               Pred
+2013-09-18 248.9989
+[1] 0.06065486
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-19     251.9     252.3   246.66     249.06     1565500        249.06
+               Pred
+2013-09-19 251.9607
+[1] 0.0825408
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-20    249.53    249.55   241.87      243.9     3199700         243.9
+               Pred
+2013-09-20 249.6125
+[1] -0.07528088
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-23    242.35    242.75   233.16     239.56     2303800        239.56
+               Pred
+2013-09-23 242.2747
+[1] -0.1186758
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-24    239.87    249.99   239.78      245.8     1745800         245.8
+               Pred
+2013-09-24 239.7513
+[1] -0.5494039
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-25    247.35    249.22      245     246.69     1097000        246.69
+               Pred
+2013-09-25 246.8006
+[1] -0.9838855
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-26    248.97    255.84    248.5     254.01     1656900        254.01
+               Pred
+2013-09-26 247.9861
+[1] -0.5874367
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-27    246.51    249.48   244.58     246.72     2317500        246.72
+               Pred
+2013-09-27 245.9226
+[1] 3.012307
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-09-30    243.67       249   240.13     246.06     1492600        246.06
+               Pred
+2013-09-30 246.6823
+[1] -1.140384
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-01    247.71     251.3   243.72        251     1224300           251
+               Pred
+2013-10-01 246.5696
+[1] 0.07058054
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-02    248.61    253.56   248.42     251.19     1450500        251.19
+               Pred
+2013-10-02 248.6806
+[1] -0.5175215
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-03    250.52     254.2   242.57     245.07     1863400        245.07
+               Pred
+2013-10-03 250.0025
+[1] 0.4637144
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-04    245.93    246.68   242.88     244.99     1731900        244.99
+               Pred
+2013-10-04 246.3937
+[1] -0.1931775
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-07    242.56     243.7    237.1     237.21     2250100        237.21
+               Pred
+2013-10-07 242.3668
+[1] 0.1647633
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-08    237.34    237.36   217.74     222.73     6431600        222.73
+               Pred
+2013-10-08 237.5048
+[1] 0.03324654
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-09    221.03       226    213.5     221.83     4483000        221.83
+               Pred
+2013-10-09 221.0632
+[1] -0.5297203
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-10    225.44    228.75   223.19     227.55     2272200        227.55
+               Pred
+2013-10-10 224.9103
+[1] -0.03707046
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-11    226.99    228.89   223.26     226.62     1724700        226.62
+               Pred
+2013-10-11 226.9529
+[1] -0.05154831
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-14     223.2       230   221.06      228.5     1574200         228.5
+               Pred
+2013-10-14 223.1485
+[1] 0.1107525
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-15     228.3     236.9    227.1     235.45     2539500        235.45
+               Pred
+2013-10-15 228.4108
+[1] 2.338387
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-16    236.76    240.37   236.76     238.92     1748700        238.92
+               Pred
+2013-10-16 239.0984
+[1] 0.3157084
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-17       239    241.42   237.22        240     2013300           240
+               Pred
+2013-10-17 239.3157
+[1] -1.820207
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-18     246.6     252.3    244.5     250.21     2518600        250.21
+               Pred
+2013-10-18 244.7798
+[1] 1.588242
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-21    251.01    253.66   246.32     249.79     1541400        249.79
+               Pred
+2013-10-21 252.5982
+[1] -0.9053938
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-22     251.5    252.32   238.45     244.95     2693500        244.95
+               Pred
+2013-10-22 250.5946
+[1] 0.3319689
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-23       241    242.59   235.25     240.83     1942800        240.83
+              Pred
+2013-10-23 241.332
+[1] 0.1493088
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-24    241.91    245.26   240.25     243.29     1262000        243.29
+               Pred
+2013-10-24 242.0593
+[1] 0.05472595
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-25    245.82    246.46   238.88      240.7     1567700         240.7
+               Pred
+2013-10-25 245.8747
+[1] 0.1318737
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-28    241.37    246.88    238.5        243     2128300           243
+               Pred
+2013-10-28 241.5019
+[1] 2.647713
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-29     244.1       248   238.32     247.14     4073100        247.14
+               Pred
+2013-10-29 246.7477
+[1] -0.003829537
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-30    241.59     242.7   222.22     224.11     8941600        224.11
+               Pred
+2013-10-30 241.5862
+[1] 0.04606355
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-10-31    221.71    227.43      218     223.67     3326900        223.67
+               Pred
+2013-10-31 221.7561
+[1] -0.2076648
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-01     225.2     226.2   219.01      219.9     2756900         219.9
+               Pred
+2013-11-01 224.9923
+[1] -0.3500221
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-04     219.9    225.23   216.39     223.72     2620400        223.72
+             Pred
+2013-11-04 219.55
+[1] 2.496839
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-05    221.21     227.5   221.01     224.54     2056800        224.54
+               Pred
+2013-11-05 223.7068
+[1] -0.9252535
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-06    226.99    229.27    220.2     220.78     2104200        220.78
+               Pred
+2013-11-06 226.0647
+[1] 1.118517
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-07    220.66    221.99   210.74     211.47     3449300        211.47
+               Pred
+2013-11-07 221.7785
+[1] -0.07755457
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-08    212.52    216.46   208.35     215.17     2057400        215.17
+               Pred
+2013-11-08 212.4424
+[1] 0.02386916
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-11    212.67    216.75   210.13     211.66     2115800        211.66
+               Pred
+2013-11-11 212.6939
+[1] 0.1853684
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-12    212.79    214.79      208     209.28     1781700        209.28
+               Pred
+2013-11-12 212.9754
+[1] -1.33929
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-13     208.5    220.99   208.23     220.77     2826800        220.77
+               Pred
+2013-11-13 207.1607
+[1] 2.109873
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-14     220.5    223.81   217.48     221.44     2062600        221.44
+               Pred
+2013-11-14 222.6099
+[1] -0.7798421
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-15     225.5       233   224.88     231.06     3458100        231.06
+               Pred
+2013-11-15 224.7202
+[1] -0.2658701
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-18    227.62    231.48   221.01     222.07     2788700        222.07
+               Pred
+2013-11-18 227.3541
+[1] -0.2530889
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-19    221.34     225.3      220     221.38     1735500        221.38
+               Pred
+2013-11-19 221.0869
+[1] -0.0460159
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-20    221.08    223.31   214.32     216.19     1192400        216.19
+              Pred
+2013-11-20 221.034
+[1] 0.2173936
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-21    217.12    221.77   216.17     220.61     1015100        220.61
+               Pred
+2013-11-21 217.3374
+[1] 0.06484514
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-22       221       222      216     220.25     1651400        220.25
+               Pred
+2013-11-22 221.0648
+[1] 0.1595992
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-25    220.19     220.7   212.01     216.62     1867700        216.62
+               Pred
+2013-11-25 220.3496
+[1] 0.1157957
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-26    216.89    223.44   214.31     222.93     1673500        222.93
+               Pred
+2013-11-26 217.0058
+[1] 0.116773
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-27    222.28    225.34   219.61     223.13     1235600        223.13
+               Pred
+2013-11-27 222.3968
+[1] 0.4778184
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-11-29    223.73    226.69   222.54     224.03      768700        224.03
+               Pred
+2013-11-29 224.2078
+[1] 0.002285493
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-02    223.16    223.83   219.28     220.39     1295400        220.39
+               Pred
+2013-12-02 223.1623
+[1] 0.05989273
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-03    219.25    221.74      215     216.43     1449400        216.43
+               Pred
+2013-12-03 219.3099
+[1] 0.6173238
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-04    214.76    221.26   214.76     219.02     1387800        219.02
+               Pred
+2013-12-04 215.3773
+[1] 0.1359484
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-05    219.18    227.32   218.03     226.44     1663000        226.44
+               Pred
+2013-12-05 219.3159
+[1] -0.63295
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-06    232.15    235.08   228.01     232.99     2656600        232.99
+              Pred
+2013-12-06 231.517
+[1] 0.166775
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-09    233.24    237.65    231.7     234.81     1735100        234.81
+               Pred
+2013-12-09 233.4068
+[1] 0.1424524
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-10    233.79    239.17      233     236.98     1618500        236.98
+               Pred
+2013-12-10 233.9325
+[1] 0.1428812
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-11    237.11    237.11   230.52     231.41     1143700        231.41
+               Pred
+2013-12-11 237.2529
+[1] 0.0389074
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-12     231.9    233.85   228.87     231.74     1205700        231.74
+               Pred
+2013-12-12 231.9389
+[1] 0.03137327
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-13       232    235.49   228.83      229.3     1571600         229.3
+               Pred
+2013-12-13 232.0314
+[1] 0.9596029
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-16    230.12    231.73   225.72     228.09     1475400        228.09
+               Pred
+2013-12-16 231.0796
+[1] 0.5395722
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-17    229.02    229.48   223.39     223.58     1481900        223.58
+               Pred
+2013-12-17 229.5596
+[1] -0.2061069
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-18    217.67    218.44   207.33     215.42     5582200        215.42
+               Pred
+2013-12-18 217.4639
+[1] 1.422099
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-19    215.67    220.14      215     219.07     2492200        219.07
+               Pred
+2013-12-19 217.0921
+[1] 0.07153612
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-20    219.32       222   216.75     218.66     2733200        218.66
+               Pred
+2013-12-20 219.3915
+[1] -0.4795869
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-23    219.42    221.35   218.05     220.02     1307900        220.02
+               Pred
+2013-12-23 218.9404
+[1] -0.1052829
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-24    220.32     222.5    218.5      220.3      505100         220.3
+               Pred
+2013-12-24 220.2147
+[1] -0.004733459
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-26    221.34    221.81      218      220.5      639200         220.5
+               Pred
+2013-12-26 221.3353
+[1] 0.2647995
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-27    220.15    220.86   215.95     216.35     1035200        216.35
+               Pred
+2013-12-27 220.4148
+[1] -0.004246763
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-30     215.1    216.12   210.27     214.65     1096500        214.65
+               Pred
+2013-12-30 215.0958
+[1] -0.01489262
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2013-12-31    215.43    217.49   213.25     216.83     1004900        216.83
+               Pred
+2013-12-31 215.4151
+[1] -0.05306474
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-02    213.98       214   206.28     207.64     3574800        207.64
+               Pred
+2014-01-02 213.9269
+[1] 0.03890214
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-03    208.41    209.58   205.55     207.42     1989300        207.42
+               Pred
+2014-01-03 208.4489
+[1] -0.8219789
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-06    207.73    208.14   202.55     203.92     2079300        203.92
+              Pred
+2014-01-06 206.908
+[1] 0.1657133
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-07    199.63       210    198.6     209.64     3766800        209.64
+               Pred
+2014-01-07 199.7957
+[1] 0.235474
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-08     211.9    212.58   207.55     209.06     2247300        209.06
+               Pred
+2014-01-08 212.1355
+[1] 0.000110353
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-09    209.01    215.28   209.01     215.25     2380100        215.25
+               Pred
+2014-01-09 209.0101
+[1] -0.7940905
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-10     216.2    218.79   215.59     218.75     2241000        218.75
+               Pred
+2014-01-10 215.4059
+[1] -0.3405449
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-13    219.17    220.34   211.03     213.54     2471300        213.54
+               Pred
+2014-01-13 218.8295
+[1] -0.4928073
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-14     214.9    216.98   212.56     216.22     1363100        216.22
+               Pred
+2014-01-14 214.4072
+[1] 1.244106
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-15    217.03       220    214.7        216     1988900           216
+               Pred
+2014-01-15 218.2741
+[1] 0.09119607
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-16    217.53    234.48   217.32     230.56     3945100        230.56
+               Pred
+2014-01-16 217.6212
+[1] 2.002997
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-17     229.8    229.96    219.2     219.93     2863900        219.93
+              Pred
+2014-01-17 231.803
+[1] -0.1723072
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-21    222.16    223.84    218.1     220.98     1372000        220.98
+               Pred
+2014-01-21 221.9877
+[1] 1.043969
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-22    221.55    223.74    218.5     220.48     1317500        220.48
+              Pred
+2014-01-22 222.594
+[1] 0.06023388
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-23    218.52     220.3   214.52     216.74     1265100        216.74
+               Pred
+2014-01-23 218.5802
+[1] -0.1552344
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-24    215.25     221.5   213.81     217.39     2125500        217.39
+               Pred
+2014-01-24 215.0948
+[1] -0.4471625
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-27     217.5     217.5   204.97     205.22     2996500        205.22
+               Pred
+2014-01-27 217.0528
+[1] 0.03093506
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-28    207.04       213   207.04     212.69     1993600        212.69
+               Pred
+2014-01-28 207.0709
+[1] -0.8096292
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-29    209.74     212.4   201.86     204.13     2278800        204.13
+               Pred
+2014-01-29 208.9304
+[1] -1.43018
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-30    211.83    215.77   208.63      212.4     2190900         212.4
+               Pred
+2014-01-30 210.3998
+[1] 0.03105708
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-01-31    208.16    218.95   208.16     215.21     2089100        215.21
+               Pred
+2014-01-31 208.1911
+[1] 0.743855
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-03    217.24     220.9   210.55      215.4     2789000         215.4
+               Pred
+2014-02-03 217.9839
+[1] 0.0362367
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-04    213.55     214.5   209.68     212.33     2365800        212.33
+               Pred
+2014-02-04 213.5862
+[1] -1.542259
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-05    212.59    215.95   207.69     214.36     2149200        214.36
+               Pred
+2014-02-05 211.0477
+[1] 1.386037
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-06    214.56       225   212.68     223.45     7094500        223.45
+              Pred
+2014-02-06 215.946
+[1] -0.6804307
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-07    210.19    211.78   201.98     209.59    11190000        209.59
+               Pred
+2014-02-07 209.5096
+[1] 0.06934826
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-10       209       213   206.81     207.33     3786500        207.33
+               Pred
+2014-02-10 209.0693
+[1] 0.367748
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-11     207.9       209   200.19      202.8     5055300         202.8
+               Pred
+2014-02-11 208.2677
+[1] -0.532671
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-12    202.41     204.4   192.24     192.34     7159400        192.34
+               Pred
+2014-02-12 201.8773
+[1] 0.00886759
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-13     190.3       195   189.87     191.67     4337800        191.67
+               Pred
+2014-02-13 190.3089
+[1] 2.241185
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-14    192.13    192.46   185.73     186.13     4344300        186.13
+               Pred
+2014-02-14 194.3712
+[1] -0.004969285
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-18    186.21    191.99   185.04     191.92     4219400        191.92
+              Pred
+2014-02-18 186.205
+[1] -0.5646943
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-19       190    198.69   189.75     196.32     5337000        196.32
+               Pred
+2014-02-19 189.4353
+[1] 0.1120343
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-20     195.9    198.16   192.04     193.39     2886300        193.39
+              Pred
+2014-02-20 196.012
+[1] -1.434443
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-21    194.72    196.47   192.23     192.62     2460600        192.62
+               Pred
+2014-02-21 193.2856
+[1] 0.03110166
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-24    191.72    199.88   191.51     199.59     2720200        199.59
+               Pred
+2014-02-24 191.7511
+[1] -0.008934827
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-25    206.12    211.55   203.09     209.84     5867600        209.84
+               Pred
+2014-02-25 206.1111
+[1] -2.309104
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-26    216.69    217.49   211.02      212.8     4220800         212.8
+               Pred
+2014-02-26 214.3809
+[1] 1.860025
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-27    212.05    214.99   210.25     213.77     2458600        213.77
+             Pred
+2014-02-27 213.91
+[1] 0.3978023
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-02-28    213.32    214.16      200     204.04     4271000        204.04
+               Pred
+2014-02-28 213.7178
+[1] 0.1443473
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-03     201.6    205.34    198.3     201.45     2626300        201.45
+               Pred
+2014-03-03 201.7443
+[1] 0.1497216
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-04     206.5    206.88   202.46        203     2702300           203
+               Pred
+2014-03-04 206.6497
+[1] -0.08569992
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-05       203    207.99    202.7     207.74     1955900        207.74
+               Pred
+2014-03-05 202.9143
+[1] -0.005826087
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-06     208.4    211.94   205.65     208.81     2291000        208.81
+               Pred
+2014-03-06 208.3942
+[1] 0.8779915
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-07     210.2     210.2      205     206.79     2275900        206.79
+              Pred
+2014-03-07 211.078
+[1] 0.7417545
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-10     205.8    206.05   201.07     202.43     1887000        202.43
+               Pred
+2014-03-10 206.5418
+[1] 0.07376973
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-11    202.53    207.04   200.92      201.5     1770300         201.5
+               Pred
+2014-03-11 202.6038
+[1] 0.01969672
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-12    200.58    205.62   198.19     203.08     1832900        203.08
+               Pred
+2014-03-12 200.5997
+[1] 0.08304288
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-13    203.88    206.63   197.01     197.84     2196800        197.84
+              Pred
+2014-03-13 203.963
+[1] -0.73713
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-14    197.81    200.53   194.34     196.78     1925800        196.78
+               Pred
+2014-03-14 197.0729
+[1] -0.01436222
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-17    197.91    197.91   190.82     191.81     2849200        191.81
+               Pred
+2014-03-17 197.8956
+[1] -0.6270105
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-18    191.99    197.98   191.92     197.85     1643800        197.85
+              Pred
+2014-03-18 191.363
+[1] 0.07385693
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-19    201.16    205.19   199.61     201.95     2373000        201.95
+               Pred
+2014-03-19 201.2339
+[1] 0.07958383
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-20    201.49    206.43   200.01     204.42     2144200        204.42
+               Pred
+2014-03-20 201.5696
+[1] -0.5670762
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-21    204.63    205.45   196.17     196.72     2756700        196.72
+               Pred
+2014-03-21 204.0629
+[1] 0.05088123
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-24    196.56    197.88   183.75     188.14     4617500        188.14
+               Pred
+2014-03-24 196.6109
+[1] -0.7262625
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-25    189.65    189.87   181.77     184.33     3500800        184.33
+               Pred
+2014-03-25 188.9237
+[1] -0.7126231
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-26    186.37    189.67   185.03     185.93     3571100        185.93
+               Pred
+2014-03-26 185.6574
+[1] 0.6057444
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-27    184.65    189.29   178.25     188.54     3263400        188.54
+               Pred
+2014-03-27 185.2557
+[1] 0.1155063
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-28    189.25    193.83   187.26     190.59     2978600        190.59
+               Pred
+2014-03-28 189.3655
+[1] 2.142761
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-03-31    192.29    193.73    184.3     184.94     2367000        184.94
+               Pred
+2014-03-31 194.4328
+[1] 2.61901
+           LNKD.Open LNKD.High LNKD.Low LNKD.Close LNKD.Volume LNKD.Adjusted
+2014-04-01       185       188   183.36     187.96     3286100        187.96
+              Pred
+2014-04-01 187.619
+> 
+> MAPE <- MAPEsum*100/rows
+> print(MAPE)
+[1] 1.659669
+> 
+> # plot actual with predicted values added
+> # compare actual closing value and predicted closing value
+> #chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "LNKD", legend = "Actual",
+> chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "LNKD", legend = "Actual",
++ 	TA = "addTA(testset[1:rows, 7], on = 1, col='red')") # 
+> #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"), legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = \"Predicted\")") # yellow
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
+> 
+> #chartSeries(testset)
+> 
+> #chartSeries(LNKD_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
+> #TA="addTA(LNKD_Predict[LNKD_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
+> #addTA(LNKD_Predict[LNKD_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
+> #addTA(LNKD_Predict[LNKD_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
+> #addTA(LNKD_Predict[LNKD_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
+> #addTA(LNKD_Predict[LNKD_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
+> #")
+> 
+> 
+> proc.time()
+   user  system elapsed 
+290.166   0.069 290.723 
