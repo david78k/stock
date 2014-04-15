@@ -1,4 +1,6 @@
-NMRSE
+NMRSE, MSE (mean square error), MAE (mean absolute error)
+
+library(parallel): mclapply 
 
 GOOG, TWTR (no trainset, testset from 2013-11-07)
 - getSymbols("YHOO",src="google")
