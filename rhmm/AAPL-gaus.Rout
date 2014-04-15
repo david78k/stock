@@ -109,7 +109,7 @@ Loading required package: nlme
 > # predict and update HMM to include the new actual value
 > #for (i in 1: 251) {
 > #for (i in 1: rows) {
-> for (i in 1: 2) {
+> for (i in 1: 3) {
 + #	print(i)
 + #	print(rows)
 + 	#if (i == rows) break
@@ -152,6 +152,8 @@ Loading required package: nlme
 + 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 + 	print ("MAPEsum")
 + 	print(MAPEsum)
++ 	MAPE <- MAPEsum*100/rows
++ 	print(MAPE)
 + 
 + 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
 + 
@@ -178,32 +180,61 @@ Loading required package: nlme
 + 	# Viterbi Algorithm to find the most probable state sequence
 + 	VitPath <- viterbi (hm_model, train)
 + }
-[1] 0.486033
+[1] 1.775624
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-01     441.9     443.7   427.74     428.91    13919000        418.33
-              Pred
-2013-04-01 442.386
+               Pred
+2013-04-01 443.6756
 [1] "diff"
             AAPL.Open
-2013-04-01 0.03141926
+2013-04-01 0.03442593
 [1] "diff.open"
             AAPL.Open
-2013-04-01 0.03141926
+2013-04-01 0.03442593
 [1] "MAPEsum"
             AAPL.Open
-2013-04-01 0.03141926
-[1] -0.7453023
+2013-04-01 0.03442593
+            AAPL.Open
+2013-04-01 0.01355351
+[1] -0.9366685
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-02     427.6    438.14    426.4     429.79    18911400        419.19
                Pred
-2013-04-02 426.8547
+2013-04-02 426.6633
 [1] "diff"
-            AAPL.Open
-2013-04-02 0.00682962
+             AAPL.Open
+2013-04-02 0.007274875
 [1] "diff.open"
-            AAPL.Open
-2013-04-02 0.00682962
+             AAPL.Open
+2013-04-02 0.007274875
 [1] "MAPEsum"
+Data:
+numeric(0)
+
+Index:
+numeric(0)
+Data:
+numeric(0)
+
+Index:
+numeric(0)
+[1] -2.128841
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
+2013-04-03    431.37    437.28   430.31     431.99    12972000        421.34
+               Pred
+2013-04-03 429.2412
+[1] "diff"
+             AAPL.Open
+2013-04-03 0.006363205
+[1] "diff.open"
+             AAPL.Open
+2013-04-03 0.006363205
+[1] "MAPEsum"
+Data:
+numeric(0)
+
+Index:
+numeric(0)
 Data:
 numeric(0)
 
@@ -246,4 +277,4 @@ numeric(0)
 > 
 > proc.time()
    user  system elapsed 
- 11.157   0.061  11.532 
+ 16.546   0.061  16.793 

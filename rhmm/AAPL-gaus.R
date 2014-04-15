@@ -63,7 +63,7 @@ MAPEsum = 0
 # predict and update HMM to include the new actual value
 #for (i in 1: 251) {
 #for (i in 1: rows) {
-for (i in 1: 2) {
+for (i in 1: 3) {
 #	print(i)
 #	print(rows)
 	#if (i == rows) break
@@ -106,6 +106,8 @@ for (i in 1: 2) {
 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 	print ("MAPEsum")
 	print(MAPEsum)
+	MAPE <- MAPEsum*100/rows
+	print(MAPE)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
 
