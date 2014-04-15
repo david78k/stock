@@ -54,14 +54,15 @@ MAPEsum = 0
 
 # predict and update HMM to include the new actual value
 #for (i in 1: 251) {
-for (i in 1: rows) {
+#for (i in 1: rows) {
+for (i in 1: 3) {
 #	print(i)
 #	print(rows)
 	if (i == rows) break
 
 	if(i != 0) {
 		testrow <- testset[i, ]
-		print(testrow)
+		#print(testrow)
 		todayopen <- testset$AAPL.Open[i, ]
 		todayclose <- testset$AAPL.Close[i, ]
 	}
@@ -81,6 +82,7 @@ for (i in 1: rows) {
 	# update today's predicted value
 	testset[i, ]$Pred <- pred
 	#print(testset[i, ]$Pred)
+	print(testrow)
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
 	#MAPE <- pred$AAPL.Close - actual$AAPL.Close
