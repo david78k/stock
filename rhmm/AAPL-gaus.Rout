@@ -152,7 +152,7 @@ Loading required package: nlme
 + 	MAPEsum <- MAPEsum + diff$AAPL.Open
 + 	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 + 	print ("MAPEsum")
-+ 	print(MAPEsum$AAPL.Open)
++ 	print(MAPEsum)
 + 	MAPE <- MAPEsum*100/rows
 + 	print("MAPE")
 + 	print(MAPE)
@@ -182,36 +182,104 @@ Loading required package: nlme
 + 	# Viterbi Algorithm to find the most probable state sequence
 + 	VitPath <- viterbi (hm_model, train)
 + }
-[1] -0.7064701
+[1] -2.209251
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-01     441.9     443.7   427.74     428.91    13919000        418.33
                Pred
-2013-04-01 441.1935
+2013-04-01 439.6907
 [1] "diff"
             AAPL.Open
-2013-04-01 0.02863895
+2013-04-01 0.02513522
 [1] "diff.open"
             AAPL.Open
-2013-04-01 0.02863895
+2013-04-01 0.02513522
 [1] "MAPEsum"
             AAPL.Open
-2013-04-01 0.02863895
+2013-04-01 0.02513522
 [1] "MAPE"
-            AAPL.Open
-2013-04-01 0.01127518
-[1] -2.126639
+             AAPL.Open
+2013-04-01 0.009895757
+[1] -0.7294452
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 2013-04-02     427.6    438.14    426.4     429.79    18911400        419.19
                Pred
-2013-04-02 425.4734
+2013-04-02 426.8706
 [1] "diff"
-           AAPL.Open
-2013-04-02 0.0100436
+             AAPL.Open
+2013-04-02 0.006792725
 [1] "diff.open"
-           AAPL.Open
-2013-04-02 0.0100436
+             AAPL.Open
+2013-04-02 0.006792725
 [1] "MAPEsum"
-Error in `$.zoo`(MAPEsum, AAPL.Open) : 
-  not possible for univariate zoo series
-Calls: print -> $ -> $.zoo
-Execution halted
+Data:
+numeric(0)
+
+Index:
+numeric(0)
+[1] "MAPE"
+Data:
+numeric(0)
+
+Index:
+numeric(0)
+[1] -0.5921385
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
+2013-04-03    431.37    437.28   430.31     431.99    12972000        421.34
+               Pred
+2013-04-03 430.7779
+[1] "diff"
+             AAPL.Open
+2013-04-03 0.002805941
+[1] "diff.open"
+             AAPL.Open
+2013-04-03 0.002805941
+[1] "MAPEsum"
+Data:
+numeric(0)
+
+Index:
+numeric(0)
+[1] "MAPE"
+Data:
+numeric(0)
+
+Index:
+numeric(0)
+> 
+> MAPE <- MAPEsum*100/rows
+> print(MAPE)
+Data:
+numeric(0)
+
+Index:
+numeric(0)
+> 
+> # plot actual with predicted values added
+> # compare actual closing value and predicted closing value
+> #chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "AAPL", legend = "Actual",
+> chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "AAPL", legend = "Actual",
++ 	TA = "addTA(testset[1:rows, 7], on = 1, col='red')") # 
+> #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"), legend = \"Predicted\")") # 
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = \"Predicted\")") # yellow
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
+> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
+> 
+> #chartSeries(testset)
+> 
+> #chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
+> #TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
+> #addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
+> #")
+> 
+> 
+> proc.time()
+   user  system elapsed 
+ 17.436   0.052  17.753 
