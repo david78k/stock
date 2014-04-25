@@ -22,7 +22,7 @@ test <- cbind(testset$GOOG.Close - testset$GOOG.Open)
 # Baum-Welch Algorithm to find the model for the given observations
 #hm_model <- HMMFit(obs = GOOG_Train, nStates = 5)
 hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
-print(hm_model)
+#print(hm_model)
 
 # Viterbi Algorithm to find the most probable state sequence
 VitPath <- viterbi (hm_model, train)
