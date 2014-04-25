@@ -188,7 +188,7 @@ for (i in 1: rows) {
 MAPE <- MAPEsum*100/rows
 print(MAPE)
 
-#NRMSE <- NRMSEsum*100/rows
+#NRMSE <- sqrt(NRMSEsum)/rows (ymax - ymin)
 #print(NRMSE)
 
 # plot actual with predicted values added
