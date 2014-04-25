@@ -10,10 +10,10 @@ fi
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
 #symbol=$1
 #symbol=AAPL
-symbol=GOOG # not working
+symbol=GOOG # not working, source should be google
 #symbol=FB # 2012-05-18
 #symbol=MSFT # 
-#symbol=TWTR # 
+#symbol=TWTR # source should be google
 #symbol=LNKD # 
 #symbol=AMZN # 
 #symbol=IBM # 
@@ -21,6 +21,7 @@ symbol=GOOG # not working
 name=$symbol
 out=$symbol # Gaussian mixture
 #out=$symbol-single 
+src=yahoo
 
 # training period
 #startdate=2012-01-01
@@ -41,6 +42,8 @@ xlabel="DATE"
 #xlabel="DAY"
 ylabel="STOCK VALUE ($)"
 #ylabel="CLOSE VALUE"
+
+#if [ $symbol == "GOOG" or $symbol == "TWTR" ]
 
 function genplot() {
 	cmd="emf($emf)"
@@ -63,8 +66,8 @@ library(RHmm)
 library(parallel)
 #$cmd
 
-#getSymbols("${name}", src = "google")
-getSymbols("${name}")
+getSymbols("${name}", src = "google")
+#getSymbols("${name}")
 chartSeries(${name}, theme="white")
 trainset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 #print(trainset)
