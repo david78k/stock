@@ -17,12 +17,12 @@ train <- cbind(trainset$GOOG.Close - trainset$GOOG.Open)
 
 testset <- window(GOOG, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
 test <- cbind(testset$GOOG.Close - testset$GOOG.Open)
-#print(testset)
+print(testset)
 
 # Baum-Welch Algorithm to find the model for the given observations
 #hm_model <- HMMFit(obs = GOOG_Train, nStates = 5)
 hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
-#print(hm_model)
+print(hm_model)
 
 # Viterbi Algorithm to find the most probable state sequence
 VitPath <- viterbi (hm_model, train)

@@ -63,7 +63,12 @@ Loading required package: nlme
 > 
 > testset <- window(GOOG, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
 > test <- cbind(testset$GOOG.Close - testset$GOOG.Open)
-> #print(testset)
+> print(testset)
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume GOOG.Adjusted
+2014-03-27    568.00    568.00   552.92     558.46       13100        558.46
+2014-03-28    561.20    566.43   558.67     559.99       41100        559.99
+2014-03-31    566.89    567.00   556.93     556.97       10800        556.97
+2014-04-01    558.71    568.45   558.71     567.16        7900        567.16
 > 
 > # Baum-Welch Algorithm to find the model for the given observations
 > #hm_model <- HMMFit(obs = GOOG_Train, nStates = 5)
