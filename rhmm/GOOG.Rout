@@ -53,10 +53,10 @@ Loading required package: nlme
 [1] "GOOG"
 > #getSymbols("GOOG")
 > chartSeries(GOOG, theme="white")
-> trainset <- window(GOOG, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+> trainset <- window(GOOG, start = as.Date("2010-09-07"), end = as.Date("2013-04-01"))
 > #print(trainset)
 > 
-> #GOOG_Subset <- window(GOOG, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+> #GOOG_Subset <- window(GOOG, start = as.Date("2010-09-07"), end = as.Date("2013-04-01"))
 > #GOOG_Train <- cbind(GOOG_Subset$GOOG.Close - GOOG_Subset$GOOG.Open, GOOG_Subset$GOOG.Volume)
 > train <- cbind(trainset$GOOG.Close - trainset$GOOG.Open)
 > #print(train)
@@ -336,7 +336,7 @@ Model:
 Baum-Welch algorithm status:
 ----------------------------
 
-NO CONVERGENCE AFTER 1 ITERATIONS
+NO CONVERGENCE AFTER 12 ITERATIONS
 
 PROBLEM IN BAUM-WELCH'S ALGORITHM
 
@@ -344,54 +344,54 @@ Last Estimation:
 ----------------
 
 Initial probabilities:
-  Pi 1 Pi 2 Pi 3 Pi 4 Pi 5
-   NaN  NaN  NaN  NaN  NaN
+          Pi 1         Pi 2         Pi 3      Pi 4      Pi 5
+  0.0002767739 0.0004657712 0.0005228891 0.3943205 0.6044141
 
 Transition matrix:
-        State 1 State 2 State 3 State 4 State 5
-State 1     NaN     NaN     NaN     NaN     NaN
-State 2     NaN     NaN     NaN     NaN     NaN
-State 3     NaN     NaN     NaN     NaN     NaN
-State 4     NaN     NaN     NaN     NaN     NaN
-State 5     NaN     NaN     NaN     NaN     NaN
+          State 1    State 2    State 3    State 4   State 5
+State 1 0.0372823 0.15575938 0.30383728 0.28841493 0.2147061
+State 2 0.3712327 0.11104572 0.28741365 0.06352104 0.1667869
+State 3 0.1710781 0.13151591 0.23602000 0.38305490 0.0783311
+State 4 0.4560791 0.06314386 0.01901717 0.30235219 0.1594077
+State 5 0.1616942 0.23510471 0.01833706 0.29929008 0.2855740
 
 Conditionnal distribution parameters:
 
 Distribution parameters:
   State 1
-         mean var prop
-mixt.  1  NaN NaN  NaN
-mixt.  2  NaN NaN  NaN
-mixt.  3  NaN NaN  NaN
-mixt.  4  NaN NaN  NaN
+                mean      var      prop
+mixt.  1 -3.85632751 20.74693 0.1092095
+mixt.  2 -0.06273305 10.58353 0.1529038
+mixt.  3  1.46652392 10.53068 0.3162127
+mixt.  4  1.20715498 10.13093 0.4216739
 
   State 2
-         mean var prop
-mixt.  1  NaN NaN  NaN
-mixt.  2  NaN NaN  NaN
-mixt.  3  NaN NaN  NaN
-mixt.  4  NaN NaN  NaN
+                mean       var       prop
+mixt.  1 -30.2400000  0.000000 0.01152385
+mixt.  2   0.5351313 10.584231 0.26811055
+mixt.  3  -0.6271188  2.752942 0.34400335
+mixt.  4   1.8438005  9.847312 0.37636224
 
   State 3
-         mean var prop
-mixt.  1  NaN NaN  NaN
-mixt.  2  NaN NaN  NaN
-mixt.  3  NaN NaN  NaN
-mixt.  4  NaN NaN  NaN
+              mean       var        prop
+mixt.  1 -4.520875 22.105093 0.001381158
+mixt.  2 -4.648257 20.852579 0.228531374
+mixt.  3 -1.534505  6.230798 0.346881245
+mixt.  4  1.591764 11.310494 0.423206224
 
   State 4
-         mean var prop
-mixt.  1  NaN NaN  NaN
-mixt.  2  NaN NaN  NaN
-mixt.  3  NaN NaN  NaN
-mixt.  4  NaN NaN  NaN
+                mean       var       prop
+mixt.  1  0.28818251  8.409634 0.03749904
+mixt.  2 -3.06410383 19.118674 0.12683267
+mixt.  3 -0.04510105  2.285680 0.22611919
+mixt.  4  0.79227172  9.399674 0.60954910
 
   State 5
-         mean var prop
-mixt.  1  NaN NaN  NaN
-mixt.  2  NaN NaN  NaN
-mixt.  3  NaN NaN  NaN
-mixt.  4  NaN NaN  NaN
+               mean       var       prop
+mixt.  1 -0.9252759 15.322041 0.03797892
+mixt.  2  0.9873595 11.110553 0.14401245
+mixt.  3 -0.9067387  2.796143 0.37681172
+mixt.  4 -0.2923531  2.369604 0.44119691
 
 
 Log-likelihood: NaN
@@ -402,52 +402,27 @@ AIC criterium: NaN
 > VitPath <- viterbi (hm_model, train)
 > print(VitPath)
 $states
-   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-  [75] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [112] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [149] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [186] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [223] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [260] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [297] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [334] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [371] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [408] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [445] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [482] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [519] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [556] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [593] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [630] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [667] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [704] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [741] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [778] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [815] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [852] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [889] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [926] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [963] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1000] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1037] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1074] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1111] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1148] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1185] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1222] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1259] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1296] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1333] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1370] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1407] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1444] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1481] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1518] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-[1555] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  [1] 4 1 5 5 5 5 5 4 1 3 4 1 4 1 4 1 5 5 5 4 1 3 4 1 5 5 5 5 4 1 5 5 5 5 4 1 5
+ [38] 5 5 5 5 5 5 4 1 3 4 1 3 3 3 4 1 3 4 4 1 4 1 3 4 4 1 5 5 5 5 5 5 5 5 5 5 4
+ [75] 1 5 5 5 5 5 5 4 1 4 1 5 5 5 5 5 5 4 1 3 3 3 4 1 4 1 3 4 1 5 5 5 4 1 4 1 4
+[112] 1 5 5 4 1 3 4 1 4 1 3 4 1 3 3 4 1 3 4 4 1 3 4 4 1 4 1 4 1 3 4 4 1 4 1 3 4
+[149] 1 3 4 1 4 1 3 4 1 5 5 4 1 5 5 4 1 5 5 5 5 4 1 5 5 5 4 1 4 1 3 4 4 1 4 4 1
+[186] 5 5 5 5 5 5 5 5 5 5 4 1 3 4 1 5 5 5 4 1 4 4 1 3 4 1 5 5 4 1 3 4 4 1 3 4 1
+[223] 4 1 3 4 1 3 4 1 3 4 4 1 3 4 4 1 3 4 1 3 4 1 4 1 4 1 4 1 3 4 1 4 1 4 1 5 4
+[260] 1 4 1 3 3 4 1 4 1 3 4 1 3 4 1 3 4 1 3 4 1 3 4 1 3 4 4 1 3 4 4 1 5 5 4 1 4
+[297] 1 4 1 3 4 1 4 4 1 3 4 1 3 4 1 3 4 1 4 1 4 1 3 4 1 5 5 5 5 4 1 3 4 4 1 5 5
+[334] 4 1 4 1 3 3 4 1 5 5 4 1 5 5 4 1 3 4 1 5 5 5 5 4 1 5 5 5 5 4 1 3 4 4 1 3 4
+[371] 1 4 1 5 5 5 5 5 4 1 3 4 1 4 1 4 1 4 4 1 4 1 4 1 3 4 1 5 5 4 1 3 4 1 3 3 4
+[408] 4 1 3 4 4 1 4 1 3 4 1 4 1 4 1 4 1 3 4 4 1 3 4 1 3 4 1 3 4 1 3 4 1 4 1 3 4
+[445] 1 5 5 5 4 1 4 1 3 4 1 4 1 4 1 5 4 1 3 4 1 3 4 1 5 5 4 1 4 1 3 4 4 1 4 1 3
+[482] 4 4 1 4 1 5 4 1 3 4 1 4 1 4 1 4 4 1 4 1 5 5 5 4 1 4 1 3 4 1 5 4 1 4 1 4 1
+[519] 4 1 3 4 1 3 4 1 4 1 3 4 1 3 4 4 1 3 3 4 1 3 4 1 4 1 3 4 1 3 4 1 4 1 3 4 4
+[556] 1 5 5 5 4 1 3 4 1 3 4 4 1 3 4 1 3 3 4 1 4 1 5 5 5 5 5 5 4 1 4 1 5 4 1 5 5
+[593] 4 1 3 4 1 5 4 1 4 4 1 5 4 1 3 4 1 4 1 4 1 4 1 4 1 3 4 1 3 4 1 4 1 4 1 3 4
+[630] 4 1 5 5 5 5 5 5 5 5 5 5 5 5 4 1
 
 $logViterbiScore
-[1] NaN
+[1] -2266.461
 
 $logProbSeq
 [1] NaN
@@ -549,49 +524,781 @@ attr(,"class")
 + 	# Viterbi Algorithm to find the most probable state sequence
 + 	VitPath <- viterbi (hm_model, train)
 + }
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-01    397.11    400.72   396.23     400.19          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-02    401.87    407.01    401.6     406.11          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-03    406.32    406.69   399.93      402.7          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-04    401.72    402.47   395.25     397.14          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-05    392.64     393.1   387.81     391.13          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-08    388.99    389.39   383.82     387.04          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-09    387.36    391.48   386.17     388.44          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-10    391.07    395.78   387.61     394.69          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-11    396.04    396.15   391.64      394.8          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-12     395.6    395.66   391.07     394.63          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-15    392.58     398.1   388.12     390.57          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-16     392.9     397.6   391.57     396.29          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-17    392.98    395.03   388.66     390.89          NA  NaN
-[1] NaN
-           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume Pred
-2013-04-18    392.28    392.51   380.25     382.57          NA  NaN
-Error in if (relVariation > paramAlgo$tol) convergence <- FALSE else convergence <- TRUE : 
-  missing value where TRUE/FALSE needed
-Calls: HMMFit -> BaumWelch
+[1] -0.2696407
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-01    397.11    400.72   396.23     400.19          NA 396.8404
+[1] 0.03380027
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-02    401.87    407.01    401.6     406.11          NA 401.9038
+[1] -0.3419123
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-03    406.32    406.69   399.93      402.7          NA 405.9781
+[1] -0.1945599
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-04    401.72    402.47   395.25     397.14          NA 401.5254
+[1] 0.06665674
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-05    392.64     393.1   387.81     391.13          NA 392.7067
+[1] 0.2327385
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-08    388.99    389.39   383.82     387.04          NA 389.2227
+[1] -0.1997909
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-09    387.36    391.48   386.17     388.44          NA 387.1602
+[1] 0.1354102
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-10    391.07    395.78   387.61     394.69          NA 391.2054
+[1] -0.200723
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-11    396.04    396.15   391.64      394.8          NA 395.8393
+[1] 0.1088471
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-12     395.6    395.66   391.07     394.63          NA 395.7088
+[1] -0.04559479
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-15    392.58     398.1   388.12     390.57          NA 392.5344
+[1] 0.3553498
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-16     392.9     397.6   391.57     396.29          NA 393.2553
+[1] -1.317387
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-17    392.98    395.03   388.66     390.89          NA 391.6626
+[1] -0.02103884
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-04-18    392.28    392.51   380.25     382.57          NA 392.259
+[1] -1.088668
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-19     384.2    401.32   382.75     399.54          NA 383.1113
+[1] -2.134224
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-22     399.9    401.58   387.11     399.66          NA 397.7658
+[1] -0.2370782
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-23     400.1    407.34   399.78     403.55          NA 399.8629
+[1] 1.022762
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-24    403.65    408.59    403.6     406.32          NA 404.6728
+[1] 0.01752606
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-25    407.72    407.83   403.41     404.15          NA 407.7375
+[1] -1.320126
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-26     403.4    403.47   397.89     400.31          NA 402.0799
+[1] -1.190318
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-29    401.22    410.94    401.1     409.12          NA 400.0297
+[1] 0.9243015
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-04-30    409.09    413.41   408.43     411.87          NA 410.0143
+[1] 0.7518426
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-01    411.22    411.95   407.77      409.8          NA 411.9718
+[1] -1.488408
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-02    409.64    416.86   409.12     414.39          NA 408.1516
+[1] 0.1773424
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-03    418.06    422.98   417.58     422.44          NA 418.2373
+[1] 0.0631174
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-06    423.71    430.49   423.71     430.34          NA 423.7731
+[1] 0.09767556
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-07    431.07     431.5   424.91     428.19          NA 431.1677
+[1] 0.2022268
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-08    428.07     436.5   426.03     436.38          NA 428.2722
+[1] 0.3389876
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-05-09    434.98    439.39   433.68      435.3          NA 435.319
+[1] -1.088629
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-10    437.22    439.83   435.64     439.67          NA 436.1314
+[1] 0.04044505
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-13    439.01    440.79   436.25     438.33          NA 439.0504
+[1] 0.09136604
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-14    438.31     443.9   438.13     443.11          NA 438.4014
+[1] 0.5481955
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-15     447.3    457.73   446.56     457.49          NA 447.8482
+[1] 0.06089324
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-16    459.04    459.53   450.55     451.48          NA 459.1009
+[1] -1.839243
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-17    454.56    456.29   449.81     454.14          NA 452.7208
+[1] -1.367256
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-20    452.05    459.84   452.05     453.81          NA 450.6827
+[1] 0.5436705
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-21    453.56    455.37   448.36     453.03          NA 454.1037
+[1] -0.8660931
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-22    450.83     454.2      443     444.27          NA 449.9639
+[1] 0.04055734
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-23    438.06    444.54   436.56     440.95          NA 438.1006
+[1] 0.7960764
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-24    437.19    438.97   435.07     436.22          NA 437.9861
+[1] 0.7584085
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-28    441.31    445.62   439.76     440.19          NA 442.0684
+[1] -0.007559414
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-29    437.42    438.56   431.71     433.72          NA 437.4124
+[1] 0.9100608
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-30    434.53    439.01   432.77     434.94          NA 435.4401
+[1] 0.4068624
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-05-31    433.63    438.06   433.33     435.17          NA 434.0369
+[1] 0.4307057
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-03    431.34    436.55   427.08     433.38          NA 431.7707
+[1] -1.60504
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-06-04    433.49    434.86   426.61     429.12          NA 431.885
+[1] -1.564742
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-05    430.82    434.29   428.14     429.42          NA 429.2553
+[1] 1.06958
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-06    431.72    432.73   423.19     431.89          NA 432.7896
+[1] 0.1453879
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-07    434.77    439.56   432.23     439.43          NA 434.9154
+[1] 0.1637042
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-10    440.61    445.05    439.6     444.66          NA 440.7737
+[1] -1.461983
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-06-11    441.54    443.06   439.32     439.47          NA 440.078
+[1] 0.08691828
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-12    442.29    442.56   434.39     435.55          NA 442.3769
+[1] -1.739127
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-13    434.06    439.39   432.32     438.06          NA 432.3209
+[1] -2.756693
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-14    439.61    441.91   436.63     437.08          NA 436.8533
+[1] -0.01893321
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-17    439.18    444.27    438.7     442.68          NA 439.1611
+[1] 0.2975679
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-18    443.88    450.05   443.73     449.86          NA 444.1776
+[1] 1.008431
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-19    450.23    454.96    448.3     449.89          NA 451.2384
+[1] -0.9587411
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-20    446.55    450.05   441.21     441.93          NA 445.5913
+[1] -1.340171
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-21    443.73     444.5    436.1     440.02          NA 442.3898
+[1] -0.2765001
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-24     435.5    437.72   431.19     434.46          NA 435.2235
+[1] 0.03439784
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-25    438.19     439.4   431.82     432.67          NA 438.2244
+[1] 0.2357806
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-26    436.44    438.56   434.85     436.39          NA 436.6758
+[1] -2.137363
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-27    438.96     441.9   437.89      438.1          NA 436.8226
+[1] -0.3606093
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-06-28    437.01    440.48   436.66     439.74          NA 436.6494
+[1] -1.159744
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-01    442.78    445.59   442.06      443.5          NA 441.6203
+[1] 0.1977563
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-02    444.65    445.05    438.2     440.71          NA 444.8478
+[1] -0.09043799
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-03    439.51    444.14   438.81     442.77          NA 439.4196
+[1] -0.4389872
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-07-05    444.56    447.26   443.23      446.3          NA 444.121
+[1] 0.714638
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-08    449.16    452.68   448.09     452.09          NA 449.8746
+[1] -2.999937
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-09    455.04    456.02   448.54     452.17          NA 452.0401
+[1] 0.1835329
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-10    451.27    455.11   449.74     452.54          NA 451.4535
+[1] 0.4427043
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-11    456.04    459.94   453.81     459.66          NA 456.4827
+[1] -1.479041
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-07-12    459.54    461.04   457.16     461.04          NA 458.061
+[1] -2.095965
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-07-15    461.69    463.54   457.72     461.88          NA 459.594
+[1] -1.828568
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-16     463.1    463.52   456.49     459.34          NA 461.2714
+[1] -0.1019039
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-17    460.04    462.97   457.69     458.82          NA 459.9381
+[1] 0.1578328
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-18    459.04    459.54   451.14     454.88          NA 459.1978
+[1] -0.4731343
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-19    442.86    451.02   437.37     447.85          NA 442.3869
+[1] 0.09798892
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-07-22    450.55    455.88   448.05     454.89          NA 450.648
+[1] 0.5092944
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-23    454.89    456.04   449.34     451.45          NA 455.3993
+[1] -0.9066888
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-24    453.18    454.69    449.9        451          NA 452.2733
+[1] -0.7430387
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-07-25    446.49    447.98    442.6     443.41          NA 445.747
+[1] -6.058155
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-26    443.05    444.55   440.56     442.23          NA 436.9918
+[1] -0.01776087
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-29    442.01    446.96      440     440.69          NA 441.9922
+[1] 0.2174011
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-30    442.29    447.36   439.99     445.01          NA 442.5074
+[1] 0.9997789
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-07-31    446.05    447.81   442.65     443.43          NA 447.0498
+[1] -1.088314
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-01    447.05    451.82   447.05     451.66          NA 445.9617
+[1] -1.957665
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-02    451.27    453.05   449.96     452.83          NA 449.3123
+[1] 0.2896607
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-05    452.24    452.31   449.15     452.05          NA 452.5297
+[1] -0.03686799
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-06    451.89     454.4   447.42     447.84          NA 451.8531
+[1] 0.1142756
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-07    447.07    448.78    444.1     444.88          NA 447.1843
+[1] -0.06702285
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-08-08     447.3    447.47    442.2     445.88          NA 447.233
+[1] 0.3236436
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-09    444.83    447.31   444.56     444.76          NA 445.1536
+[1] -5.296328
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-12    443.01    443.06   440.38     442.31          NA 437.7137
+[1] 0.01826249
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-13    442.97    443.81   437.66     440.18          NA 442.9883
+[1] -0.8650138
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-08-14    438.75    439.67   433.15     434.47          NA 437.885
+[1] -5.875237
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-15    431.79    432.03   428.57      429.4          NA 425.9148
+[1] 2.000018
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume   Pred
+2013-08-16    430.21    430.79   427.84     428.03          NA 432.21
+[1] 0.1553291
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-19    428.43    435.56    428.3     432.39          NA 428.5853
+[1] -0.146846
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-20    433.74    435.62   431.34     432.28          NA 433.5932
+[1] -0.2582178
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-21    434.89    438.02   432.82     434.23          NA 434.6318
+[1] -2.109936
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-22    435.91    436.94   434.69     436.42          NA 433.8001
+[1] -0.291413
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-23    438.48    438.56   434.44     434.67          NA 438.1886
+[1] -1.556577
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-26    434.56    437.01   432.59     432.76          NA 433.0034
+[1] -2.774801
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-27    429.38    431.43   423.53     424.65          NA 426.6052
+[1] -0.8536788
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-28     424.7    427.28   423.46     423.85          NA 423.8463
+[1] 0.2813626
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-29    424.11    429.76   423.87     427.29          NA 424.3914
+[1] -0.448553
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-08-30    427.45    428.59   422.36     423.03          NA 427.0014
+[1] -0.1199562
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume   Pred
+2013-09-03    426.75    432.66   426.55     429.76          NA 426.63
+[1] -1.719713
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-04    429.74    436.31   427.16     435.38          NA 428.0203
+[1] -1.34177
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-05    436.31     439.5   435.37     439.34          NA 434.9682
+[1] -1.446428
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-06    440.78    441.45   436.43     439.35          NA 439.3336
+[1] -1.76173
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-09    441.42    444.43   440.77     443.58          NA 439.6583
+[1] 0.7912987
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-10    444.56    445.55   441.56     443.89          NA 445.3513
+[1] -0.1501977
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-11    443.83    448.04    442.6     447.65          NA 443.6798
+[1] 0.7206066
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-12    448.25     448.5   444.56     446.08          NA 448.9706
+[1] -1.430195
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-13     446.8    447.39   441.98     444.09          NA 445.3698
+[1] 0.2993949
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-16    447.65    448.05   441.99     443.44          NA 447.9494
+[1] 0.4230394
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-09-17    443.26    443.75   440.06     442.61          NA 443.683
+[1] 0.2309235
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-18    442.73    451.53   441.09     451.21          NA 442.9609
+[1] 0.8171443
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-19    452.54    452.54   447.25     448.75          NA 453.3571
+[1] 0.01400157
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-09-20    448.75    451.61   447.36      451.1          NA 448.764
+[1] 0.2044413
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-23    447.63    450.34   442.16     442.81          NA 447.8344
+[1] -0.6956149
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-24    442.81     444.6   440.26     442.98          NA 442.1144
+[1] -0.2444396
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-25    442.83    442.83   437.36     438.18          NA 442.5856
+[1] 0.2491705
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-26    438.71    440.93   437.06     438.65          NA 438.9592
+[1] -0.08955872
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-27    436.97    438.32   435.22     437.76          NA 436.8804
+[1] -2.237519
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-09-30    434.11    439.98   433.72     437.52          NA 431.8725
+[1] -0.08920286
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-01    439.68    443.39   439.58     443.06          NA 439.5908
+[1] 0.3689947
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-10-02    440.92    444.23   438.47     443.55          NA 441.289
+[1] -0.3516546
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-03    443.56     446.6   435.61     437.61          NA 443.2083
+[1] -0.05937543
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-04    437.06    438.32   434.56     435.74          NA 437.0006
+[1] -0.9589489
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-07    433.29    436.56   431.62     432.44          NA 432.3311
+[1] -0.7232493
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-08    432.23    432.56   425.39     426.41          NA 431.5068
+[1] -0.05145459
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-09    427.71    430.89   421.07      427.5          NA 427.6585
+[1] -0.04620866
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-10    431.49    433.98   429.67     433.69          NA 431.4438
+[1] -0.6588324
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-11    432.58     436.3   432.22     435.56          NA 431.9212
+[1] 0.2389594
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-10-14     432.9    437.69   432.26     437.62          NA 433.139
+[1] -0.7156032
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-15    437.44    442.37   436.56     440.56          NA 436.7244
+[1] 0.3105345
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-16    442.49    448.72   441.56     448.56          NA 442.8005
+[1] 0.6184237
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-17    446.05       448   442.42     443.95          NA 446.6684
+[1] -0.5349954
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-10-18     487.8    507.22   486.51      505.2          NA 487.265
+[1] -0.1147288
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-21    505.22    508.99   499.28     501.15          NA 505.1053
+[1] 0.6782453
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-22       502    505.99    497.4        503          NA 502.6782
+[1] 0.9643898
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-23       500    516.86   499.81     515.19          NA 500.9644
+[1] -0.7115125
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-24    515.42    519.76   511.89     512.26          NA 514.7085
+[1] -0.2309337
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-25     513.9     513.9   504.86     507.09          NA 513.6691
+[1] -0.358115
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-28    507.09     511.2   505.99     506.99          NA 506.7319
+[1] -1.136328
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-29    509.04    517.95   506.24      517.6          NA 507.9037
+[1] 0.7461389
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-30     518.2    518.24   512.49     514.69          NA 518.9461
+[1] 0.1286115
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-10-31    513.95    520.24   511.47     514.77          NA 514.0786
+[1] -0.2478551
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-01    515.38    517.48   512.04     513.01          NA 515.1321
+[1] -0.5058046
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-04    515.23    515.67    510.5     512.54          NA 514.7242
+[1] -0.2553159
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-05    509.66    515.31    508.2     510.25          NA 509.4047
+[1] -1.247564
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-06    512.29    512.99   507.18     510.86          NA 511.0424
+[1] -0.1641411
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-07    510.79    511.45   503.32     503.47          NA 510.6259
+[1] -0.02064213
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-08    503.87    508.74   503.75     507.51          NA 503.8494
+[1] -0.09733653
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-11    504.25    507.46    503.5     504.79          NA 504.1527
+[1] 0.2983444
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-12    503.35    508.27      502     505.38          NA 503.6483
+[1] -2.043471
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-13    502.87    515.91   502.75     515.72          NA 500.8265
+[1] -0.8119709
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-11-14    516.44    519.36   514.66      517.1          NA 515.628
+[1] -0.2910976
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-15    516.92    518.48   514.64     516.26          NA 516.6289
+[1] 0.3532183
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-18    517.36    523.85   514.11     515.26          NA 517.7132
+[1] -1.828926
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-19    515.34    516.86   511.01     512.09          NA 513.5111
+[1] -0.8044779
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-20    514.46    516.16   509.67     510.64          NA 513.6555
+[1] -0.7751464
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-21    512.99    518.64   512.49     516.52          NA 512.2149
+[1] -0.1514426
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-22    516.19    517.57    514.1     515.43          NA 516.0386
+[1] -1.72147
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-25    518.06    526.07   516.99     522.44          NA 516.3385
+[1] 0.3273934
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-26    523.78    530.22   520.95     528.68          NA 524.1074
+[1] 0.5914544
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-11-27    530.48    533.47   529.47     531.02          NA 531.0715
+[1] -3.748013
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2013-11-29    530.55    532.78    529.2     529.27          NA 526.802
+[1] -1.050926
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-02    531.22    532.64   524.85     526.71          NA 530.1691
+[1] -0.3000294
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume   Pred
+2013-12-03    524.95    531.19   523.99      526.1          NA 524.65
+[1] -1.415081
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-04    525.16    531.46   524.48     528.56          NA 523.7449
+[1] 0.4324441
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-05    528.07     529.3   525.02     528.14          NA 528.5024
+[1] -1.662373
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-06    534.36    534.46   529.51      534.4          NA 532.6976
+[1] -1.471426
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-09    534.51    540.61   533.48     538.53          NA 533.0386
+[1] 1.018863
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-10    537.29    545.61   537.29     541.79          NA 538.3089
+[1] -1.468465
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-11    543.16    545.11   537.05     538.11          NA 541.6915
+[1] -1.830526
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-12    539.25    540.93   533.97     534.45          NA 537.4195
+[1] -0.227077
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-13    537.07    537.61   528.41     529.86          NA 536.8429
+[1] 0.1951653
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-16    530.97    536.81   530.47     535.95          NA 531.1652
+[1] -1.007751
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-17    536.51    539.84   533.66      534.4          NA 535.5022
+[1] -1.311383
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-18    535.46    541.93   528.99     541.83          NA 534.1486
+[1] -1.585611
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-19    540.18    545.45      539     542.57          NA 538.5944
+[1] -1.430335
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-20     544.1    550.03   543.46     549.76          NA 542.6697
+[1] 0.03827373
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-23    553.37    557.34   552.01     556.99          NA 553.4083
+[1] -0.06662315
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-24    556.93    557.06    553.5     555.36          NA 556.8634
+[1] -0.2823966
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-26    556.45    558.94   553.79     558.17          NA 556.1676
+[1] -0.7541196
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-27    559.44    559.58   555.91     558.64          NA 558.6859
+[1] 0.1091777
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-30    559.61    559.69   553.96     554.18          NA 559.7192
+[1] 0.09752694
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2013-12-31    555.56    559.94   552.58     559.79          NA 555.6575
+[1] -1.749117
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-02    557.17    558.32   553.58        556          NA 555.4209
+[1] -2.496684
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-03    556.94    557.91   551.91     551.95          NA 554.4433
+[1] -0.4109878
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2014-01-06    555.95    558.87   552.67      558.1          NA 555.539
+[1] -0.2230637
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-07    561.94    569.28   560.02     568.86          NA 561.7169
+[1] 0.5340414
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2014-01-08    572.43    573.09   566.08     570.04          NA 572.964
+[1] 0.1544814
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-09    571.15    571.54   562.22     564.55          NA 571.3045
+[1] -0.3600642
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-10    568.97    568.97   560.56     564.52          NA 568.6099
+[1] 0.3953215
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-13    562.67    572.88   558.03     560.93          NA 563.0653
+[1] -1.735366
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-14    568.41    574.92   563.48     574.13          NA 566.6746
+[1] 0.5068677
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-15    575.92    576.92   571.32     573.74          NA 576.4269
+[1] -0.295616
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-16    573.98    578.39   573.43     577.53          NA 573.6844
+[1] -0.01355617
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-17    577.85    579.73   571.53     574.69          NA 577.8364
+[1] -3.206586
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-21    579.88    581.42   575.07     581.27          NA 576.6734
+[1] -0.3842095
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-22    582.72    583.36   578.85     581.93          NA 582.3358
+[1] -0.9829135
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-23    579.42    580.66   576.61     579.47          NA 578.4371
+[1] -1.14068
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-24    574.93     576.2   560.94     561.35          NA 573.7893
+[1] -0.9172883
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-27    562.49    562.69   540.59     550.06          NA 561.5727
+[1] -0.09776268
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-28     554.6    562.31   554.42     560.94          NA 554.5022
+[1] 0.04741674
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-29       559    560.31   549.16     552.91          NA 559.0474
+[1] -0.5731517
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-30    571.93    575.67   563.06     567.13          NA 571.3568
+[1] -1.652717
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-01-31    585.09    592.68   574.99     589.89          NA 583.4373
+[1] -1.746758
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-03    589.01    590.27   565.44     566.15          NA 587.2632
+[1] -1.700836
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-04    568.43    576.92   567.94     568.51          NA 566.7292
+[1] -0.8381173
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-05    571.12    574.81   563.45     571.03          NA 570.2819
+[1] 0.2539847
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2014-02-06    574.99     579.5    573.2      579.4          NA 575.244
+[1] -0.8964276
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-07    583.23    588.36    579.7     588.13          NA 582.3336
+[1] -1.245653
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-10    585.31    590.61   583.93     585.88          NA 584.0643
+[1] -0.945313
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-11    589.49    595.34   585.52     594.49          NA 588.5447
+[1] -0.1033839
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-12    593.91     594.4    590.1     592.75          NA 593.8066
+[1] -0.09003089
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume   Pred
+2014-02-13    589.78    599.35   589.24     599.35          NA 589.69
+[1] 0.7274903
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-14    597.21    601.59    595.8      600.8          NA 597.9375
+[1] 0.2360459
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2014-02-18     600.1    605.83    599.4     604.83          NA 600.336
+[1] 0.1580505
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-19    602.05       604   598.15     600.57          NA 602.2081
+[1] -0.3334039
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-20    600.97    602.84   599.51     601.45          NA 600.6366
+[1] -0.4971961
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-21     603.3    604.33   600.82     601.29          NA 602.8028
+[1] -0.3293371
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-24    602.08    609.47   601.95     605.65          NA 601.7507
+[1] 0.2563871
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-25    607.36    611.64   604.61     609.39          NA 607.6164
+[1] -0.0120178
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2014-02-26    611.39    613.83   606.27     609.47          NA 611.378
+[1] -0.5714243
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-27    608.59     611.5    607.9        609          NA 608.0186
+[1] 1.03474
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-02-28    609.56    611.48   602.51     607.22          NA 610.5947
+[1] -0.5833393
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-03    602.77    603.32   595.47     600.74          NA 602.1867
+[1] 0.2223791
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-04    606.89    607.39   604.15     606.85          NA 607.1124
+[1] 1.394833
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-05    606.92    610.93    605.1     608.52          NA 608.3148
+[1] 0.03617429
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-06    610.53    612.46   608.69      609.2          NA 610.5662
+[1] -0.9019223
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-07    612.79    612.88   605.11     606.79          NA 611.8881
+[1] 1.011705
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-10    607.24    608.21   601.44     605.18          NA 608.2517
+[1] -0.6647156
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-11    606.28    606.55   597.72      599.4          NA 605.6153
+[1] 0.8648599
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-12     597.6    603.32    591.5     603.05          NA 598.4649
+[1] -3.748528
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-13    603.37    604.64   591.79     593.94          NA 599.6215
+[1] -4.133588
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-14     590.4    594.84   585.68     585.81          NA 586.2664
+[1] -0.1675975
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-17    589.04    597.94   588.47     595.45          NA 588.8724
+[1] -2.796979
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2014-03-18    596.74    605.16   595.93     605.02          NA 593.943
+[1] -2.671264
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-19    605.29    605.39   596.61     599.03          NA 602.6187
+[1] -2.283823
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-20    599.38     604.2   597.08     597.98          NA 597.0962
+[1] -0.3958796
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-21    602.55    604.21   590.63     590.93          NA 602.1541
+[1] -2.071626
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-24     591.5    591.86    572.4     578.39          NA 589.4284
+[1] -1.473529
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-25    582.42    584.34   572.93     578.78          NA 580.9465
+[1] -2.485601
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-26    580.42     585.2   565.18     565.42          NA 577.9344
+[1] -2.354426
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-27    283.72    283.72   276.18     278.95       13052 281.3656
+[1] -1.638966
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume    Pred
+2014-03-28    280.32    282.93   279.06     279.72       41003 278.681
+[1] 2.14277
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-03-31    283.16    283.22   278.19     278.21       10772 285.3028
+[1] -1.394442
+           GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume     Pred
+2014-04-01    279.08    283.94   279.08      283.3        7932 277.6856
+> 
+> MAPE <- MAPEsum*100/rows
+> print(MAPE)
+[1] 0.7490005
+> 
+> #NRMSE <- NRMSEsum*100/rows
+> #print(NRMSE)
+> 
+> # plot actual with predicted values added
+> # compare actual closing value and predicted closing value
+> #chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "GOOG", legend = "Actual",
+> chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "GOOG", legend = "Actual",
++ 	TA = "addTA(testset[1:rows, 7], on = 1, col='red')") # 
+Error in `[.xts`(testset, 1:rows, 7) : subscript out of bounds
+Calls: chartSeries -> eval -> eval -> addTA -> [ -> [.xts
 Execution halted
