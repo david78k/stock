@@ -10,7 +10,7 @@ fi
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
 #symbol=$1
 #symbol=AAPL
-#symbol=GOOG
+#symbol=GOOG # not working
 #symbol=FB # 2012-05-18
 #symbol=MSFT # 
 #symbol=TWTR # 

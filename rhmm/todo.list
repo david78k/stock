@@ -1,4 +1,5 @@
-NMRSE, MSE (mean square error), MAE (mean absolute error)
+NRMSE (normalized root mean square error), MSE (mean square error), MAE (mean absolute error)
+- plot over iterations (days)
 
 library(parallel): mclapply 
 
