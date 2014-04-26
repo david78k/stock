@@ -8,7 +8,7 @@ getSymbols("GOOG", src = "google")
 #getSymbols("GOOG")
 chartSeries(GOOG, theme="white")
 #trainset <- window(GOOG, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
-trainsetraw window(GOOG, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+trainsetraw <- window(GOOG, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
 trainset <- na.omit(trainsetraw
 print(trainset)
 

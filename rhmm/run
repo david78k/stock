@@ -70,7 +70,7 @@ getSymbols("${name}", src = "google")
 #getSymbols("${name}")
 chartSeries(${name}, theme="white")
 #trainset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
-trainsetraw window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
+trainsetraw <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 trainset <- na.omit(trainsetraw
 print(trainset)
 
