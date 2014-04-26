@@ -60,7 +60,6 @@ testset <- cbind(testset, Pred = 0)
 rows = nrow(testset)
 
 MAPEsum = 0
-NRMSEsum = 0
 #MAPEsum <- 0
 
 # predict and update HMM to include the new actual value
@@ -73,8 +72,7 @@ for (i in 1: rows) {
 		testrow <- testset[i, ]
 		#print(testrow)
 		todayopen <- testset$GOOG.Open[i, ]
-		actual <- testset$GOOG.Close[i, ]
-		#todayclose <- testset$GOOG.Close[i, ]
+		todayclose <- testset$GOOG.Close[i, ]
 	}
 
 	# predict the closing value of today
@@ -91,12 +89,12 @@ for (i in 1: rows) {
 	print(testset[i, ])
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-	diff = (abs ((pred - actual)/ actual))[1,]$GOOG.Open
+	diff = (abs ((pred - todayclose)/ todayclose))[1,]$GOOG.Open
 	#print ("diff")
 	#print (diff)
 	#MAPEsum <- MAPEsum + diff$GOOG.Open
 	MAPEsum <- sum(MAPEsum, diff[1,1])
-	#MAPEsum = MAPEsum + abs((pred - actual)/todayclose)
+	#MAPEsum = MAPEsum + abs((pred - todayclose)/todayclose)
 	#print ("MAPEsum")
 	#print(MAPEsum)
 	#MAPE <- MAPEsum*100/rows
@@ -104,12 +102,11 @@ for (i in 1: rows) {
 	#print(MAPE)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
-	NRMSEsum <- sum(NRMSEsum, (pred - actual)^2) 
 
 	# ROC
 
 	# [Optional] Returns: sell or buy
-	# if stock would increase sell, otherwise buy
+	# if stock increased sell, otherwise buy
 
 	# single HMM
 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
@@ -135,11 +132,8 @@ print(rows)
 MAPE <- MAPEsum*100/rows
 print(MAPE)
 
-actuals <- testset$GOOG.Close
-ymax = max (actuals)
-ymin = min (actuals)
-NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
-print(NRMSE)
+#NRMSE <- sqrt(NRMSEsum)/rows (ymax - ymin)
+#print(NRMSE)
 
 # plot actual with predicted values added
 # compare actual closing value and predicted closing value

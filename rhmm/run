@@ -9,11 +9,11 @@ fi
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
 #symbol=$1
-#symbol=AAPL
-symbol=GOOG # not working, source should be google
+symbol=AAPL
+#symbol=GOOG # yahoo not working, google contains missing values NA
 #symbol=FB # 2012-05-18
 #symbol=MSFT # 
-#symbol=TWTR # source should be google
+#symbol=TWTR # too small data
 #symbol=LNKD # 
 #symbol=AMZN # 
 #symbol=IBM # 
@@ -21,7 +21,6 @@ symbol=GOOG # not working, source should be google
 name=$symbol
 out=$symbol # Gaussian mixture
 #out=$symbol-single 
-src=yahoo
 
 # training period
 startdate=2000-01-01
@@ -43,7 +42,10 @@ xlabel="DATE"
 ylabel="STOCK VALUE ($)"
 #ylabel="CLOSE VALUE"
 
-#if [ $symbol == "GOOG" or $symbol == "TWTR" ]
+src=yahoo
+#if [ $symbol == "GOOG"]; then # or $symbol == "TWTR" ]
+#	src=google
+#fi
 
 function genplot() {
 	cmd="emf($emf)"
