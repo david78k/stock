@@ -14,8 +14,8 @@ fi
 #symbol=FB # 2012-05-18
 #symbol=MSFT # 
 #symbol=TWTR # too small data
-#symbol=LNKD # 
-symbol=AMZN # 
+symbol=LNKD # 
+#symbol=AMZN # 
 #symbol=IBM # 
 
 name=$symbol
