@@ -7,8 +7,9 @@ library(parallel)
 getSymbols("GOOG", src = "google")
 #getSymbols("GOOG")
 chartSeries(GOOG, theme="white")
-trainset <- window(GOOG, start = as.Date("2010-09-07"), end = as.Date("2013-04-01"))
-#print(trainset)
+#trainset <- window(GOOG, start = as.Date("2010-09-07"), end = as.Date("2013-04-01"))
+trainset <- window(GOOG, start = as.Date("2010-09-07"), end = as.Date("2013-04-01"), na.rm)
+print(trainset)
 
 #GOOG_Subset <- window(GOOG, start = as.Date("2010-09-07"), end = as.Date("2013-04-01"))
 #GOOG_Train <- cbind(GOOG_Subset$GOOG.Close - GOOG_Subset$GOOG.Open, GOOG_Subset$GOOG.Volume)
@@ -123,17 +124,19 @@ for (i in 1: rows) {
 	VitPath <- viterbi (hm_model, train)
 }
 
+print(rows)
+
 MAPE <- MAPEsum*100/rows
 print(MAPE)
 
-#NRMSE <- NRMSEsum*100/rows
+#NRMSE <- sqrt(NRMSEsum)/rows (ymax - ymin)
 #print(NRMSE)
 
 # plot actual with predicted values added
 # compare actual closing value and predicted closing value
 #chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "GOOG", legend = "Actual",
 chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "GOOG", legend = "Actual",
-	TA = "addTA(testset[1:rows, 7], on = 1, col='red')") # 
+	TA = "addTA(testset[1:rows, ncol(testset)], on = 1, col='red')") # 
 #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
