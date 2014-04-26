@@ -9,10 +9,10 @@ fi
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
 #symbol=$1
-symbol=AAPL
+#symbol=AAPL
 #symbol=GOOG # yahoo not working, google contains missing values NA
 #symbol=FB # 2012-05-18
-#symbol=MSFT # 
+symbol=MSFT # 
 #symbol=TWTR # too small data
 #symbol=LNKD # 
 #symbol=AMZN # 
