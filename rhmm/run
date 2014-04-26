@@ -72,7 +72,7 @@ chartSeries(${name}, theme="white")
 #trainset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 trainsetraw <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 print(ncol(trainsetraw-1))
-print(trainsetraw[,1:ncol(trainsetraw-1)])
+print(trainsetraw[,1:ncol(trainsetraw)-1])
 trainset <- na.omit(trainsetraw[,1:ncol(trainsetraw-1)])
 print(trainset)
 
