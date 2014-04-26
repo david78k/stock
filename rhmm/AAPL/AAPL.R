@@ -2,29 +2,29 @@ require(devEMF)
 library(quantmod)
 library(RHmm)
 library(parallel)
-#postscript('FB.eps')
+#postscript('AAPL.eps')
 
-getSymbols("FB", src = "google")
-#getSymbols("FB")
-chartSeries(FB, theme="white")
-#trainset <- window(FB, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
-trainsetraw <- window(FB, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+getSymbols("AAPL", src = "google")
+#getSymbols("AAPL")
+chartSeries(AAPL, theme="white")
+#trainset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+trainsetraw <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
 print(ncol(trainsetraw)-1)
 print(trainsetraw[,1:ncol(trainsetraw)-1])
 trainset <- na.omit(trainsetraw[,1:ncol(trainsetraw)-1])
 print(trainset)
 
-#FB_Subset <- window(FB, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
-#FB_Train <- cbind(FB_Subset$FB.Close - FB_Subset$FB.Open, FB_Subset$FB.Volume)
-train <- cbind(trainset$FB.Close - trainset$FB.Open)
+#AAPL_Subset <- window(AAPL, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+#AAPL_Train <- cbind(AAPL_Subset$AAPL.Close - AAPL_Subset$AAPL.Open, AAPL_Subset$AAPL.Volume)
+train <- cbind(trainset$AAPL.Close - trainset$AAPL.Open)
 #print(train)
 
-testset <- window(FB, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
-test <- cbind(testset$FB.Close - testset$FB.Open)
+testset <- window(AAPL, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
+test <- cbind(testset$AAPL.Close - testset$AAPL.Open)
 print(testset)
 
 # Baum-Welch Algorithm to find the model for the given observations
-#hm_model <- HMMFit(obs = FB_Train, nStates = 5)
+#hm_model <- HMMFit(obs = AAPL_Train, nStates = 5)
 hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
 print(hm_model)
 
@@ -33,10 +33,10 @@ VitPath <- viterbi (hm_model, train)
 print(VitPath)
 
 # scatter plot
-postscript('FB.eps')
-FB_Predict <- cbind(trainset$FB.Close, VitPath$states)
-#FB_Predict <- cbind(FB_Subset$FB.Close, VitPath$states)
-#print(FB_Subset[,4] - FB_Predict [,1])
+postscript('AAPL.eps')
+AAPL_Predict <- cbind(trainset$AAPL.Close, VitPath$states)
+#AAPL_Predict <- cbind(AAPL_Subset$AAPL.Close, VitPath$states)
+#print(AAPL_Subset[,4] - AAPL_Predict [,1])
 
 # predict next stock value m = nMixt, n = nStates
 #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
@@ -50,7 +50,7 @@ FB_Predict <- cbind(trainset$FB.Close, VitPath$states)
 
 # add a new colum "Pred"
 testset <- cbind(testset, Pred = 0)
-#testset <- cbind(testset$FB.Close, Pred = 0)
+#testset <- cbind(testset$AAPL.Close, Pred = 0)
 #print(testset)
 
 #chartSeries(testset, theme="white")
@@ -72,9 +72,9 @@ for (i in 1: rows) {
 	if(i != 0) {
 		testrow <- testset[i, ]
 		#print(testrow)
-		todayopen <- testset$FB.Open[i, ]
-		actual <- testset$FB.Close[i, ]
-		#todayclose <- testset$FB.Close[i, ]
+		todayopen <- testset$AAPL.Open[i, ]
+		actual <- testset$AAPL.Close[i, ]
+		#todayclose <- testset$AAPL.Close[i, ]
 	}
 
 	# predict the closing value of today
@@ -91,10 +91,10 @@ for (i in 1: rows) {
 	print(testset[i, ])
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-	diff = (abs ((pred - actual)/ actual))[1,]$FB.Open
+	diff = (abs ((pred - actual)/ actual))[1,]$AAPL.Open
 	#print ("diff")
 	#print (diff)
-	#MAPEsum <- MAPEsum + diff$FB.Open
+	#MAPEsum <- MAPEsum + diff$AAPL.Open
 	MAPEsum <- sum(MAPEsum, diff[1,1])
 	#MAPEsum = MAPEsum + abs((pred - actual)/todayclose)
 	#print ("MAPEsum")
@@ -117,7 +117,7 @@ for (i in 1: rows) {
 	# Forward-backward 
 	#fb <- forwardBackward(hm_model, test, FALSE)
 	#print(fb)
-	#print(FB_Subset[,4] - FB_Predict [,1])
+	#print(AAPL_Subset[,4] - AAPL_Predict [,1])
 
 	# update train data
 	train <- rbind (train, todayclose - todayopen)
@@ -135,7 +135,7 @@ print(rows)
 MAPE <- MAPEsum*100/rows
 print(MAPE)
 
-actuals <- testset$FB.Close
+actuals <- testset$AAPL.Close
 ymax = max (actuals)
 ymin = min (actuals)
 NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
@@ -143,8 +143,8 @@ print(NRMSE)
 
 # plot actual with predicted values added
 # compare actual closing value and predicted closing value
-#chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "FB", legend = "Actual",
-chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "FB", legend = "Actual",
+#chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "AAPL", legend = "Actual",
+chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "AAPL", legend = "Actual",
 	TA = "addTA(testset[1:rows, ncol(testset)], on = 1, col='red')") # 
 #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
@@ -158,11 +158,11 @@ chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), nam
 
 #chartSeries(testset)
 
-#chartSeries(FB_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
-#TA="addTA(FB_Predict[FB_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
-#addTA(FB_Predict[FB_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
-#addTA(FB_Predict[FB_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
-#addTA(FB_Predict[FB_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
-#addTA(FB_Predict[FB_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
+#chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
+#TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
+#addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
+#addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
+#addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
+#addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
 #")
 

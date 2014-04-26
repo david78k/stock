@@ -11,8 +11,8 @@ fi
 #symbol=$1
 #symbol=AAPL
 #symbol=GOOG # yahoo not working, google contains missing values NA
-#symbol=FB # 2012-05-18
-symbol=MSFT # 
+symbol=FB # 2012-05-18
+#symbol=MSFT # 
 #symbol=TWTR # too small data
 #symbol=LNKD # 
 #symbol=AMZN # 
