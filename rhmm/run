@@ -24,8 +24,8 @@ out=$symbol # Gaussian mixture
 src=yahoo
 
 # training period
-#startdate=2000-01-01
-startdate=2010-09-07
+startdate=2000-01-01
+#startdate=2010-09-07
 enddate=2013-04-01
 
 # test period
