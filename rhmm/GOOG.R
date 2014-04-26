@@ -91,7 +91,7 @@ for (i in 1: 3) {
 	print(testset[i, ])
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-	diff = (abs ((pred - actua)/ actual))[1,]$GOOG.Open
+	diff = (abs ((pred - actual)/ actual))[1,]$GOOG.Open
 	#print ("diff")
 	#print (diff)
 	#MAPEsum <- MAPEsum + diff$GOOG.Open
