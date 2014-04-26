@@ -55,9 +55,14 @@ Loading required package: nlme
 > chartSeries(GOOG, theme="white")
 > #trainset <- window(GOOG, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
 > trainsetraw <- window(GOOG, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
-> trainset <- na.omit(trainsetraw
-+ print(trainset)
-Error: unexpected symbol in:
-"trainset <- na.omit(trainsetraw
-print"
+> trainset <- na.omit(trainsetraw)
+> print(trainset)
+     [,1] [,2] [,3] [,4] [,5]
+> 
+> #GOOG_Subset <- window(GOOG, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+> #GOOG_Train <- cbind(GOOG_Subset$GOOG.Close - GOOG_Subset$GOOG.Open, GOOG_Subset$GOOG.Volume)
+> train <- cbind(trainset$GOOG.Close - trainset$GOOG.Open)
+Error in `$.zoo`(trainset, GOOG.Close) : 
+  only possible for zoo series with column names
+Calls: cbind -> $ -> $.zoo
 Execution halted
