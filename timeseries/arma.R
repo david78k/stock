@@ -35,12 +35,12 @@ gspcBHGrowth = log( cumprod( 1 + mm[,2] ) )
 gspcAllGrowth = merge( gspcArmaGrowth, gspcBHGrowth, all=F )
 
 xyplot( gspcAllGrowth,
-superpose=T,
-col=c("darkgreen", "darkblue"),
-lwd=2,
-key=list( x=.01,
-y=0.95,
-text=list(c("ARMA", "Buy-and-Hold")),
-lines=list(lwd=2, col=c("darkgreen", "darkblue"))))
+	superpose=T,
+	col=c("darkgreen", "darkblue"),
+	lwd=2,
+	key=list( x=.01,
+		y=0.95,
+		text=list(c("ARMA", "Buy-and-Hold")),
+		lines=list(lwd=2, col=c("darkgreen", "darkblue"))))
 
 

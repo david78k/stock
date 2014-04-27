@@ -17,6 +17,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+[Previously saved workspace restored]
+
 > library(quantmod)
 Loading required package: Defaults
 Loading required package: xts
@@ -106,16 +108,16 @@ The following object is masked from ‘package:zoo’:
 > gspcAllGrowth = merge( gspcArmaGrowth, gspcBHGrowth, all=F )
 > 
 > xyplot( gspcAllGrowth,
-+ superpose=T,
-+ col=c("darkgreen", "darkblue"),
-+ lwd=2,
-+ key=list( x=.01,
-+ y=0.95,
-+ text=list(c("ARMA", "Buy-and-Hold")),
-+ lines=list(lwd=2, col=c("darkgreen", "darkblue"))))
++ 	superpose=T,
++ 	col=c("darkgreen", "darkblue"),
++ 	lwd=2,
++ 	key=list( x=.01,
++ 		y=0.95,
++ 		text=list(c("ARMA", "Buy-and-Hold")),
++ 		lines=list(lwd=2, col=c("darkgreen", "darkblue"))))
 > 
 > 
 > 
 > proc.time()
    user  system elapsed 
-  4.792   0.084   5.566 
+  4.922   0.101   5.696 
