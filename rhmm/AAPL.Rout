@@ -3224,11 +3224,10 @@ Loading required package: nlme
 > train <- cbind(trainset$AAPL.Close - trainset$AAPL.Open)
 > #print(train)
 > 
-> testset <- window(AAPL, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
+> testset <- window(AAPL, start = as.Date("2013-04-02"), end = as.Date("2014-04-01"))
 > test <- cbind(testset$AAPL.Close - testset$AAPL.Open)
 > print(testset)
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume
-2013-04-01    441.90    443.70   427.74     428.91    13918927
 2013-04-02    427.60    438.14   426.40     429.79    18920462
 2013-04-03    431.37    437.28   430.31     431.99    12971961
 2013-04-04    433.76    435.00   425.25     427.72    12809234
@@ -3498,121 +3497,120 @@ Model:
 
 Baum-Welch algorithm status:
 ----------------------------
+Number of iterations : 378
+Last relative variation of LLH function: 0.000001
 
-NO CONVERGENCE AFTER 500 ITERATIONS
-Last relative variation of LLH function: 0.000005
-
-Last Estimation:
-----------------
+Estimation:
+-----------
 
 Initial probabilities:
   Pi 1 Pi 2 Pi 3 Pi 4 Pi 5
      0    0    0    0    1
 
 Transition matrix:
-             State 1      State 2       State 3      State 4      State 5
-State 1 7.099380e-04 1.458207e-24 4.341840e-222 1.485647e-01 8.507254e-01
-State 2 3.459837e-12 9.889485e-01  4.974699e-03 2.861903e-14 6.076826e-03
-State 3 0.000000e+00 6.971127e-03  9.930289e-01 0.000000e+00 0.000000e+00
-State 4 7.337671e-01 9.065039e-63 4.028425e-164 2.662329e-01 1.415115e-17
-State 5 3.966241e-01 2.776416e-02 2.414895e-291 2.232596e-01 3.523521e-01
+              State 1       State 2       State 3       State 4       State 5
+State 1  9.116498e-01 2.203217e-304  9.014518e-03  7.933565e-02  2.381434e-69
+State 2 5.757370e-219  9.749580e-01  2.504202e-02  0.000000e+00  0.000000e+00
+State 3  5.152344e-03  1.173757e-02  9.831101e-01 5.141516e-126 4.958389e-307
+State 4  2.918976e-02 3.236964e-304  1.873236e-35  9.643179e-01  6.492327e-03
+State 5  1.078857e-02  0.000000e+00 1.010114e-273  1.915287e-20  9.892114e-01
 
 Conditionnal distribution parameters:
 
 Distribution parameters:
   State 1
-              mean       var       prop
-mixt.  1 1.7092925 1.1499189 0.04146458
-mixt.  2 2.5209225 0.7623029 0.14811879
-mixt.  3 1.6230567 1.1646100 0.25937681
-mixt.  4 0.2771889 0.4352638 0.55103982
+              mean       var      prop
+mixt.  1 -9.206943  5.384007 0.1059770
+mixt.  2 -3.656532  2.539109 0.1466430
+mixt.  3 -2.730876 13.113030 0.3106455
+mixt.  4  2.794048 18.589666 0.4367345
 
   State 2
-               mean       var       prop
-mixt.  1 -5.9738373  8.145475 0.09432879
-mixt.  2 -2.4873041  3.276277 0.20861680
-mixt.  3  1.5532353  3.574949 0.33582618
-mixt.  4  0.8958141 17.766953 0.36122823
+                mean      var      prop
+mixt.  1  17.7541189 58.44001 0.1089367
+mixt.  2  -0.9489602 29.28535 0.2201961
+mixt.  3 -11.6196533 82.65573 0.2627543
+mixt.  4  -4.4216127 37.84930 0.4081129
 
   State 3
-               mean        var      prop
-mixt.  1  6.8807764  17.162124 0.1381340
-mixt.  2 -7.2073314  12.922156 0.2213400
-mixt.  3 -1.0412921 133.415587 0.3068873
-mixt.  4  0.8061455   9.541462 0.3336387
+               mean       var      prop
+mixt.  1 -6.4590938  4.175113 0.1145007
+mixt.  2 -8.9948587 18.379500 0.1370500
+mixt.  3  0.6853941  4.915960 0.3153261
+mixt.  4  5.3129258 26.173121 0.4331232
 
   State 4
-              mean        var      prop
-mixt.  1 -4.232518 0.70342947 0.1491712
-mixt.  2  2.388370 0.24167981 0.2667461
-mixt.  3  4.159140 0.93766870 0.2697406
-mixt.  4  1.435024 0.07905875 0.3143420
+              mean      var      prop
+mixt.  1 -1.661545 8.628268 0.2105196
+mixt.  2 -2.199506 8.027020 0.2331892
+mixt.  3  1.009376 4.301742 0.2764329
+mixt.  4  2.270788 5.704420 0.2798582
 
   State 5
-               mean         var       prop
-mixt.  1 -2.6829790 0.002401161 0.02337749
-mixt.  2 -1.4386833 1.059537432 0.15076923
-mixt.  3 -1.8651544 0.916022082 0.18916930
-mixt.  4 -0.5411062 0.612284056 0.63668398
+               mean       var       prop
+mixt.  1 -3.8768100 1.0188771 0.02020028
+mixt.  2 -1.2121332 2.6867921 0.07373072
+mixt.  3 -0.4109364 0.5513448 0.20338770
+mixt.  4  0.6846940 3.9718971 0.70268130
 
 
-Log-likelihood: -4356.43
-BIC criterium: 9294.26
-AIC criterium: 8870.87
+Log-likelihood: -4340.68
+BIC criterium: 9262.75
+AIC criterium: 8839.35
 > 
 > # Viterbi Algorithm to find the most probable state sequence
 > VitPath <- viterbi (hm_model, train)
 > print(VitPath)
 $states
-   [1] 5 1 5 5 4 1 5 5 1 5 5 1 5 5 1 5 5 1 5 1 5 1 5 5 4 1 5 1 5 1 5 5 4 1 5 1 5
-  [38] 5 4 1 5 1 5 1 5 5 1 5 4 1 5 1 5 4 1 5 4 1 5 1 5 5 1 5 1 5 1 5 1 5 1 5 1 5
-  [75] 5 1 5 1 5 4 1 5 1 5 5 4 4 1 5 1 5 5 5 1 5 4 1 5 5 1 5 4 1 5 4 4 1 5 5 4 1
- [112] 5 1 5 1 5 5 1 5 5 4 1 5 1 5 4 1 5 5 4 1 5 1 5 1 5 5 1 5 4 1 5 2 2 2 2 2 2
- [149] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [186] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [223] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [260] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [297] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [334] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [371] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [408] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
- [445] 3 3 3 3 3 3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [482] 2 2 2 2 2 2 2 2 2 2 2 5 1 5 1 5 4 1 5 5 1 5 5 4 1 5 5 1 5 5 1 5 1 5 4 1 5
- [519] 4 1 5 4 1 5 4 1 5 4 4 1 5 1 4 1 5 5 5 4 4 4 1 5 4 1 5 1 5 5 5 4 4 1 5 5 4
- [556] 4 1 5 4 1 5 1 5 1 5 4 4 4 1 5 1 4 1 5 1 4 1 5 1 5 5 5 4 1 5 5 4 4 1 5 4 1
- [593] 4 4 4 1 5 4 1 5 5 5 4 4 4 1 4 1 5 1 5 1 5 5 1 5 1 5 5 5 1 5 5 1 4 1 5 1 5
- [630] 5 1 5 1 5 4 1 5 4 4 1 5 5 5 4 1 5 1 4 1 5 4 1 5 5 1 5 5 4 1 5 4 1 4 4 1 5
- [667] 1 5 1 5 1 5 1 5 4 1 5 1 5 4 1 4 1 5 1 5 1 5 5 1 5 5 4 1 5 4 1 5 4 1 5 5 1
- [704] 5 1 5 4 1 5 5 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [741] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [778] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [815] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [852] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [889] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [926] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- [963] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
-[1000] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
-[1037] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
-[1074] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
-[1111] 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+   [1] 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+  [38] 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+  [75] 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+ [112] 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 1 1 1 4 4 4
+ [149] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+ [186] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 1 1 1 1 1 1 4 4
+ [223] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 1 1 1 1 1 1
+ [260] 1 1 1 1 1 1 1 1 1 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+ [297] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+ [334] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+ [371] 4 4 4 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 4 4 4 4 4 4 4 4 4 4 4
+ [408] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [445] 1 1 1 1 1 1 1 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+ [482] 4 4 4 4 4 4 4 4 4 4 4 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+ [519] 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+ [556] 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+ [593] 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+ [630] 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+ [667] 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+ [704] 5 5 5 5 5 5 5 1 1 1 1 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+ [741] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+ [778] 4 4 4 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+ [815] 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [852] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [889] 1 1 1 1 1 1 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+ [926] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+ [963] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+[1000] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 1 1 1 1 1 1 4 4 4 4 4 4 4 4 4 4 4 4
+[1037] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+[1074] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+[1111] 4 4 4 4 4 4 4 4 4 4 4 4 4 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
 [1148] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
-[1185] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
-[1222] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
-[1259] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3
-[1296] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
-[1333] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+[1185] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[1222] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+[1259] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+[1296] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 2 2 2 2
+[1333] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3
 [1370] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
 [1407] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
-[1444] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
-[1481] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
-[1518] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+[1444] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[1481] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[1518] 2 2 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
 [1555] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
 
 $logViterbiScore
-[1] -4436.476
+[1] -4400.467
 
 $logProbSeq
-[1] -80.04224
+[1] -59.78922
 
 attr(,"class")
 [1] "viterbiClass"
@@ -3627,8 +3625,6 @@ attr(,"class")
 > #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
 > # gaussian mixture HMM: nrow = nMixture, ncol = nStates
 > #print(hm_model$HMM$transMat[last(VitPath$states),])
-> #print(hm_model$HMM$distribution)
-> #print(hm_model$HMM$distribution$mean)
 > #print(hm_model$HMM$distribution$mean[, seq(1, ncol(hm_model$HMM$distribution$mean), by = 2)])
 > #print(unlist(hm_model$HMM$distribution$mean))
 > #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
@@ -3677,15 +3673,12 @@ attr(,"class")
 + 
 + 	# MAPE = sum(|pred - actual|/|actual|)*100/n
 + 	diff = (abs ((pred - actual)/ actual))[1,]$AAPL.Open
-+ 	#print ("diff")
 + 	#print (diff)
 + 	#MAPEsum <- MAPEsum + diff$AAPL.Open
 + 	MAPEsum <- sum(MAPEsum, diff[1,1])
 + 	#MAPEsum = MAPEsum + abs((pred - actual)/todayclose)
-+ 	#print ("MAPEsum")
 + 	#print(MAPEsum)
 + 	#MAPE <- MAPEsum*100/rows
-+ 	#print("MAPE")
 + 	#print(MAPE)
 + 
 + 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
@@ -3699,11 +3692,6 @@ attr(,"class")
 + 	# single HMM
 + 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
 + 
-+ 	# Forward-backward 
-+ 	#fb <- forwardBackward(hm_model, test, FALSE)
-+ 	#print(fb)
-+ 	#print(AAPL_Subset[,4] - AAPL_Predict [,1])
-+ 
 + 	# update train data
 + 	train <- rbind (train, todayclose - todayopen)
 + 	
@@ -3714,782 +3702,779 @@ attr(,"class")
 + 	# Viterbi Algorithm to find the most probable state sequence
 + 	VitPath <- viterbi (hm_model, train)
 + }
-[1] -0.6922053
+[1] 0.4931117
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-01     441.9     443.7   427.74     428.91    13918927 441.2078
-[1] -0.7457239
+2013-04-02     427.6    438.14    426.4     429.79    18920462 428.0931
+[1] -0.7008623
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-02     427.6    438.14    426.4     429.79    18920462 426.8543
-[1] -0.6556244
+2013-04-03    431.37    437.28   430.31     431.99    12971961 430.6691
+[1] -0.8673967
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-03    431.37    437.28   430.31     431.99    12971961 430.7144
-[1] -0.6897156
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-04    433.76       435   425.25     427.72    12809234 433.0703
-[1] -0.8607742
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-05     424.5    424.95   419.68      423.2    13703354 423.6392
-[1] -0.7097761
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-08    424.85     427.5   422.49     426.21    10752106 424.1402
-[1] -0.8836693
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-09    426.36     428.5   422.75     426.98    10955445 425.4763
-[1] 1.736336
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-10     428.1    437.06   426.01     435.69    13425964 429.8363
-[1] -0.5837049
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-11    433.72    437.99    431.2     434.33    11736299 433.1363
-[1] -0.7031172
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-12    434.15    434.15   429.09      429.8     8525897 433.4469
-[1] -0.8933752
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-15       427    427.89   419.55     419.85    11339958 426.1066
-[1] -0.9318076
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-16    421.57    426.61   420.57     426.24    10920394 420.6382
-[1] -0.8786484
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-17    420.27     420.6   398.11      402.8    33751923 419.3914
-[1] -0.8484284
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-18    404.99    405.79   389.74     392.05    23796309 404.1416
-[1] -0.7052413
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-19    387.97     399.6    385.1     390.53    21759743 387.2648
-[1] 1.947413
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-22    392.64     402.2   391.28     398.67    15354206 394.5874
-[1] -0.1565988
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-23    403.99    408.38   398.81     406.13    23722707 403.8334
-[1] 0.1569192
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-24    393.54    415.25    392.5     405.46    34636913 393.6969
-[1] -0.7389691
+2013-04-04    433.76       435   425.25     427.72    12809234 432.8926
+[1] -0.6780333
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-04-25    411.22    413.94      407     408.38    13744165 410.481
-[1] 2.29346
+2013-04-05     424.5    424.95   419.68      423.2    13703354 423.822
+[1] -0.02642145
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-26    409.81    418.77   408.25      417.2    27295570 412.1035
-[1] -0.8756034
+2013-04-08    424.85     427.5   422.49     426.21    10752106 424.8236
+[1] -0.9072159
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-29    420.45    433.62      420     430.12    22868730 419.5744
-[1] 1.792938
+2013-04-09    426.36     428.5   422.75     426.98    10955445 425.4528
+[1] 1.829281
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-04-30     435.1    445.25   432.07     442.78    24697766 436.8929
-[1] 2.360955
+2013-04-10     428.1    437.06   426.01     435.69    13425964 429.9293
+[1] -0.6931635
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-11    433.72    437.99    431.2     434.33    11736299 433.0268
+[1] 1.784245
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-12    434.15    434.15   429.09      429.8     8525897 435.9342
+[1] 0.4950527
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-15       427    427.89   419.55     419.85    11339958 427.4951
+[1] -0.7364249
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-16    421.57    426.61   420.57     426.24    10920394 420.8336
+[1] -0.6847251
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-17    420.27     420.6   398.11      402.8    33751923 419.5853
+[1] -4.443834
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-18    404.99    405.79   389.74     392.05    23796309 400.5462
+[1] -0.8823743
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-19    387.97     399.6    385.1     390.53    21759743 387.0876
+[1] 0.5941282
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-22    392.64     402.2   391.28     398.67    15354206 393.2341
+[1] -0.7261326
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-23    403.99    408.38   398.81     406.13    23722707 403.2639
+[1] 0.04823282
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-24    393.54    415.25    392.5     405.46    34636913 393.5882
+[1] -0.8884692
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-25    411.22    413.94      407     408.38    13744165 410.3315
+[1] -1.302463
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-26    409.81    418.77   408.25      417.2    27295570 408.5075
+[1] 1.754945
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-29    420.45    433.62      420     430.12    22868730 422.2049
+[1] -0.8800559
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-04-30     435.1    445.25   432.07     442.78    24697766 434.2199
+[1] -0.682439
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-01    444.46    444.93   434.39     439.29    18112671 443.7776
+[1] 1.653887
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-02    441.78    448.59   440.63     445.52    15072312 443.4339
+[1] 1.931485
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-03    451.31    453.23   449.15     449.98    12911684 453.2415
+[1] -0.708093
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-06    455.71     462.2   454.31     460.71    17737166 455.0019
+[1] -0.7183003
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-07    464.97    465.75    453.7     458.66    17276868 464.2517
+[1] -2.114066
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-08    459.04    465.37   455.81     463.84    16878434 456.9259
+[1] -0.7397146
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-09    459.81       463   455.58     456.77    14241068 459.0703
+[1] -0.8571801
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-10    457.97    459.71   450.48     452.97    11958926 457.1128
+[1] 0.1697388
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-13    451.51     457.9    451.5     454.74    11325330 451.6797
+[1] -0.6687914
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-14    453.85     455.2   442.15     443.86    15968420 453.1812
+[1] 1.619418
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-15    439.16       441   422.36     428.85    26486155 440.7794
+[1] 0.1626077
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-16    423.24    437.85    418.9     434.58    21552354 423.4026
+[1] -0.9063696
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-17    439.05    440.09   431.01     433.26    15288547 438.1436
+[1] -0.1522343
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-20    431.91     445.8    430.1     442.93    16127712 431.7578
+[1] -0.7198591
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-05-21    438.15    445.48    434.2     439.66    16296320 437.4301
+[1] -0.716005
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-05-01    444.46    444.93   434.39     439.29    18112671 446.821
-[1] 2.13459
+2013-05-22    444.05    448.35   438.22     441.35    15830694 443.334
+[1] -0.7635062
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-02    441.78    448.59   440.63     445.52    15072312 443.9146
-[1] -0.8529244
+2013-05-23    435.95    446.16   435.79     442.14    12620748 435.1865
+[1] -0.9006861
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-03    451.31    453.23   449.15     449.98    12911684 450.4571
-[1] -0.695407
+2013-05-24    440.85    445.66   440.36     445.15     9872377 439.9493
+[1] -0.8746546
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-06    455.71     462.2   454.31     460.71    17737166 455.0146
-[1] -0.738541
+2013-05-28     449.9    451.11   440.85     441.44    13790884 449.0253
+[1] 0.2776765
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-07    464.97    465.75    453.7     458.66    17276868 464.2315
-[1] -0.6513831
+2013-05-29       440     447.5    439.4     444.95    11813667 440.2777
+[1] -0.8868417
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-08    459.04    465.37   455.81     463.84    16878434 458.3886
-[1] -1.923402
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-09    459.81       463   455.58     456.77    14241068 457.8866
-[1] -0.6885673
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-10    457.97    459.71   450.48     452.97    11958926 457.2814
-[1] 1.332705
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-13    451.51     457.9    451.5     454.74    11325330 452.8427
-[1] 1.360897
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-14    453.85     455.2   442.15     443.86    15968420 455.2109
-[1] -0.8771046
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-15    439.16       441   422.36     428.85    26486155 438.2829
-[1] -0.7298051
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-16    423.24    437.85    418.9     434.58    21552354 422.5102
-[1] 1.793338
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-17    439.05    440.09   431.01     433.26    15288547 440.8433
-[1] 0.1214264
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-20    431.91     445.8    430.1     442.93    16127712 432.0314
-[1] -0.6966999
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-21    438.15    445.48    434.2     439.66    16296320 437.4533
-[1] 1.762999
+2013-05-30    445.65     454.5   444.51     451.58    12632664 444.7632
+[1] -0.6930072
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-05-22    444.05    448.35   438.22     441.35    15830694 445.813
-[1] 1.75941
+2013-05-31     452.5     457.1    449.5     449.74    13725006 451.807
+[1] -0.6494564
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-23    435.95    446.16   435.79     442.14    12620748 437.7094
-[1] -0.6918136
+2013-06-03    447.78    452.36   442.48     450.72    13298263 447.1305
+[1] 0.4235149
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-24    440.85    445.66   440.36     445.15     9872377 440.1582
-[1] -1.272616
+2013-06-04    453.22    454.43   447.39     449.31    10454503 453.6435
+[1] -0.1720574
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-28     449.9    451.11   440.85     441.44    13790884 448.6274
-[1] 1.602364
+2013-06-05    445.65    450.72   443.71     445.11    10378191 445.4779
+[1] -0.7131113
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-29       440     447.5    439.4     444.95    11813667 441.6024
-[1] -0.7846643
+2013-06-06    445.47       447   434.05     438.46    14895494 444.7569
+[1] -0.8556572
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-30    445.65     454.5   444.51     451.58    12632664 444.8653
-[1] -1.766941
+2013-06-07     436.5    443.24   432.77     441.81    14455098 435.6443
+[1] 1.777835
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-05-31     452.5     457.1    449.5     449.74    13725006 450.7331
-[1] -0.6999402
+2013-06-10    444.73    449.08    436.8     438.89    16084149 446.5078
+[1] -0.9406775
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-03    447.78    452.36   442.48     450.72    13298263 447.0801
-[1] -0.6674755
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-04    453.22    454.43   447.39     449.31    10454503 452.5525
-[1] -0.7403884
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-05    445.65    450.72   443.71     445.11    10378191 444.9096
-[1] 0.1143814
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-06    445.47       447   434.05     438.46    14895494 445.5844
-[1] 1.780712
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-07     436.5    443.24   432.77     441.81    14455098 438.2807
-[1] -0.7068588
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-10    444.73    449.08    436.8     438.89    16084149 444.0231
-[1] 1.809451
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-11    435.74    442.76   433.32      437.6    10203764 437.5495
-[1] -0.698527
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-12     439.5    441.25    431.5     432.19     9479524 438.8015
-[1] 0.4143287
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-13     432.5    437.14   428.75     435.96    10218298 432.9143
-[1] 1.662181
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-14     435.4    436.29    428.5     430.05     9381840 437.0622
-[1] 1.038556
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-17    431.44     435.7   430.36        432     9265779 432.4786
-[1] -0.7352369
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-18    431.56     434.9   430.21     431.77     6970064 430.8248
-[1] -0.7014788
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-19     431.4    431.66      423        423    11108255 430.6985
-[1] 1.616094
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-20     419.3    425.98   415.17     416.84    12767794 420.9161
-[1] -0.5425098
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-21    418.49       420    408.1      413.5    17185334 417.9475
-[1] 1.47104
+2013-06-11    435.74    442.76   433.32      437.6    10203764 434.7993
+[1] -2.293954
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-06-24     407.4    408.66   398.05     402.54    17169490 408.871
-[1] -0.8870097
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-06-25     405.7    407.79   398.83     402.63    11226398 404.813
-[1] -0.6851001
+2013-06-12     439.5    441.25    431.5     432.19     9479524 437.206
+[1] -0.8501258
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-26     403.9    404.79   395.66     398.07    13140939 403.2149
-[1] -0.6959482
+2013-06-13     432.5    437.14   428.75     435.96    10218298 431.6499
+[1] -0.9772253
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-27    399.25    401.39   393.54     393.78    12050007 398.5541
-[1] 0.5015492
+2013-06-14     435.4    436.29    428.5     430.05     9381840 434.4228
+[1] -0.890294
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-06-28    391.36    400.27   388.87     396.53    20665631 391.8615
-[1] -0.8615684
+2013-06-17    431.44     435.7   430.36        432     9265779 430.5497
+[1] 0.1475209
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-01    402.69    412.27   401.22     409.22    13970435 401.8284
-[1] 0.1534439
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-02    409.96    421.63   409.47     418.49    16788797 410.1134
-[1] -0.6980418
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-07-03    420.86    422.98   417.45      420.8     8604594 420.162
-[1] -0.1856186
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-05    420.39    423.29   415.35     417.42     9788680 420.2044
-[1] -0.6742157
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-08    420.11       421   410.65     415.05    10654060 419.4358
-[1] 1.59804
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-07-09     413.6     423.5   410.38     422.35    12596034 415.198
-[1] 1.566495
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-10     419.6     424.8   418.25     420.73    10050117 421.1665
-[1] 0.4687138
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-11    422.95    428.25   421.17     427.29    11659852 423.4187
-[1] -0.8521649
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-12    427.65    429.79   423.41     426.51     9987209 426.7978
-[1] -0.08247741
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-15    425.01    431.46    424.8     427.44     8649015 424.9275
-[1] 1.666583
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-16    426.52    430.71   424.17      430.2     7733481 428.1866
-[1] 1.813537
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-17     429.7    432.22   428.22     430.31     7109152 431.5135
-[1] 0.3343412
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-18    433.38    434.87   430.61     431.76     7822974 433.7143
-[1] 0.5307806
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-19     433.1    433.98   424.35     424.95     9599245 433.6308
-[1] -0.6950844
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-22    429.46    429.75   425.47     426.31     7428228 428.7649
-[1] -0.7267487
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-23       426    426.96   418.71     418.99    13192629 425.2733
-[1] -0.1618803
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-24    438.93    444.59   435.26     440.51    21144832 438.7681
-[1] 0.4838186
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-25     440.7     441.4   435.81      438.5     8202948 441.1838
-[1] -0.7461153
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-26     435.3    441.04   434.34     440.99     7152679 434.5539
-[1] -0.7622284
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-29     440.8    449.99    440.2     447.79     8872900 440.0378
-[1] 1.706041
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-07-30    449.96    457.15   449.23     453.32    11050795 451.666
-[1] -0.7042775
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-07-31    454.99    457.34   449.43     452.53    11534193 454.2857
-[1] -0.6948779
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-01    455.75     456.8   453.26     456.68     7366046 455.0551
-[1] 0.5699324
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-02    458.01    462.85   456.66     462.54     9813618 458.5799
-[1] 1.569286
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-05    464.69    470.67   462.15     469.45    11387656 466.2593
-[1] -0.7209519
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-08-06    468.02    471.89   462.17     465.25    11961220 467.299
-[1] -0.9283459
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-07     463.8       467   461.77     464.98    10673424 462.8717
-[1] -0.6955572
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-08    463.86     464.1   457.95     461.01     9142834 463.1644
-[1] 0.4597061
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-09    458.64    460.46   453.65     454.45     9557887 459.0997
-[1] 0.1409181
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-12    456.86    468.65   456.63     467.36    13015470 457.0009
-[1] -0.6792756
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-13    470.94    494.66   468.05     489.57    31497848 470.2607
-[1] -1.926107
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-14    497.88    504.25    493.4      498.5    27013273 495.9539
-[1] -0.7341835
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-15    496.42     502.4   489.08     497.91    17510501 495.6858
-[1] -0.8861565
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-16    500.15    502.94   498.86     502.33    12939408 499.2638
-[1] -0.6738583
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-19    504.34    513.74      504     507.74    18232783 503.6661
-[1] 1.567717
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-20    509.71    510.57   500.82     501.07    12810249 511.2777
-[1] -0.8533609
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-21    503.59    507.15    501.2     502.36    11995615 502.7366
-[1] -0.7575674
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-22    504.98    505.59    498.2     502.96     8721668 504.2224
-[1] 0.4418757
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-23    503.27    503.35   499.35     501.02     7954603 503.7119
-[1] -0.8638518
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-26    500.75     510.2    500.5     502.97    11820150 499.8861
-[1] -0.7008392
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-27       498    502.51    486.3     488.59    15149587 497.2992
-[1] -0.7757718
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-28       486     495.8      486      490.9    10985954 485.2242
-[1] -0.7048247
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-29    491.65     496.5   491.13      491.7     8559102 490.9452
-[1] 1.486762
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-08-30       492    492.95    486.5     487.22     9728684 493.4868
-[1] 8.330139
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-03     493.1     500.6   487.35     488.58    11860738 501.4301
-[1] -0.6672533
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-04    499.56    502.24   496.28     498.69    12322554 498.8927
-[1] -0.7102475
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-05    500.25    500.68   493.64     495.27     8441697 499.5398
-[1] -0.6815017
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-06    498.44    499.38   489.95     498.22    12840179 497.7585
-[1] -2.33453
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-09       505    507.92   503.48     506.17    12167369 502.6655
-[1] 1.775091
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-10     506.2    507.45    489.5     494.64    26542696 507.9751
-[1] 1.155962
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-09-11    467.01    473.69   464.81     467.71    31932384 468.166
-[1] -0.7134223
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-12     468.5     475.4   466.01     472.69    14430353 467.7866
-[1] 1.582745
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-13    469.34    471.83    464.7      464.9    10672634 470.9227
-[1] 1.940173
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-16       461    461.61   447.22     450.12    19591095 462.9402
-[1] -0.9687302
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-17    447.96    459.71    447.5     455.32    14263539 446.9913
-[1] -3.281139
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-18    463.18    466.35   460.66     464.68    16316472 459.8989
-[1] 1.747253
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-19     470.7    475.83   469.25      472.3    14447816 472.4473
-[1] -0.8884009
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-20       478    478.55      466     467.41    24975046 477.1116
-[1] -0.8855864
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-23     496.1    496.91    482.6     490.64    27218075 495.2144
-[1] -0.8528434
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-24    494.88    495.47   487.82      489.1    13012249 494.0272
-[1] 1.806786
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-25     489.2    489.64   481.43     481.53    11319881 491.0068
-[1] -0.1547089
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-26       486    488.56    483.9     486.22     8472169 485.8453
-[1] -1.145944
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-27    483.78    484.67   480.72     482.75     8144247 482.6341
-[1] 0.4967075
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-09-30    477.25    481.66   474.41     476.75     9291344 477.7467
-[1] -2.741673
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-01    478.45    489.14   478.38     487.96    12638665 475.7083
-[1] -0.8955145
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-02    485.63     491.8   483.75     489.56    10327986 484.7345
-[1] 0.116021
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-10-03    490.51    492.35   480.74     483.41    11526929 490.626
-[1] 1.857791
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-04    483.86     484.6    478.6     483.03     9245340 485.7178
-[1] -0.7273849
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-07    486.56    492.65   485.35     487.75    11153301 485.8326
-[1] -0.652298
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-08    489.94    490.64   480.54     480.94    10389858 489.2877
-[1] -0.7042847
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-09    484.64    487.79   478.28     486.59    10775888 483.9357
-[1] -0.9107507
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-10    491.32    492.38   487.04     489.64     9950070 490.4092
-[1] -0.688527
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-11    486.99    493.84   485.16     492.81     9562134 486.3015
-[1] -0.8856951
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-14    489.83    497.58   489.35     496.04     9353506 488.9443
-[1] 1.749384
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-15     497.5       502   495.52     498.68    11431229 499.2494
-[1] -0.7189507
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-10-16    500.79    502.53   499.23     501.11     8967859 500.071
-[1] -0.7222168
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-17    499.98    504.78   499.68      504.5     9056905 499.2578
-[1] 1.340788
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-18    505.99    509.26   505.71     508.89    10376510 507.3308
-[1] 0.134537
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-21    511.77     524.3   511.52     521.36    14218135 511.9045
-[1] -0.6893614
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-22     526.4    528.45   508.03     519.87    19073679 525.7106
-[1] -0.9240233
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-10-23       519    525.67      519     524.96    11204446 518.076
-[1] 1.908497
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-24       525    532.47   522.45     531.91    13741585 526.9085
-[1] 1.913326
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-25    531.32    533.23   525.11     525.96    12064019 533.2333
-[1] -0.9099059
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-28    529.04       531   523.21     529.88    19658589 528.1301
-[1] -0.8792514
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-29    536.27    539.25   514.54     516.68    22707445 535.3907
-[1] 0.2314151
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-30    519.61    527.52   517.02      524.9    12648671 519.8414
-[1] -0.6902928
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-10-31       525    527.49   521.27      522.7     9846255 524.3097
-[1] 1.021377
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-01    524.02     524.8   515.84     520.03     9817472 525.0414
-[1] -0.7373904
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-04     521.1    526.82   518.81     526.75     8736719 520.3626
-[1] -0.1674128
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-05    524.58    528.88      523     525.45     9481153 524.4126
-[1] -0.898203
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-06    524.15    524.86    518.2     520.92     7977736 523.2518
-[1] 1.802178
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-07    519.58    523.19   512.38     512.49     9379300 521.3822
-[1] -0.8797463
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-08    514.58    521.13   512.59     520.56     9975649 513.7003
-[1] 1.790766
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-11    519.99    521.67   514.41     519.05     8123329 521.7808
-[1] -1.847503
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-12    517.67    523.92      517     520.01     7302093 515.8225
-[1] 0.06453241
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-13       518    522.25   516.96     520.63     7043561 518.0645
-[1] 1.089172
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-14    522.81    529.28   521.87     528.16    10086441 523.8992
-[1] -0.8937376
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-15    526.58    529.09   524.49     524.99    11354252 525.6863
-[1] -0.8658717
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-18    524.99    527.19    518.2     518.63     8748032 524.1241
-[1] -0.6749232
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-19    519.03    523.38   517.97     519.55     7462101 518.3551
-[1] 0.03653432
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-20    519.23    520.42   514.33        515     6935114 519.2665
-[1] -2.083148
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-21     517.6    521.21   513.67     521.14     9358123 515.5169
-[1] -2.157827
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-22    519.52    522.16   518.53      519.8     7990176 517.3622
-[1] -2.514838
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-25    521.02    525.87      521     523.74     8192629 518.5052
-[1] -0.7159303
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-26    524.12    536.14      524      533.4    14335104 523.4041
-[1] 0.1364622
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-27    536.31       546    533.4     545.96    12980263 536.4465
-[1] 0.5463776
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-11-29    549.48    558.33   547.81     556.07    11361745 550.0264
-[1] -0.6911426
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-02       558    564.33   550.82     551.23    16876555 557.3089
-[1] 1.372033
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-12-03     558.3    566.38   557.68     566.32    16105962 559.672
-[1] -0.6473595
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-04     565.5    569.19   560.82        565    13493238 564.8526
-[1] -0.8697919
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-05    572.65    575.14   566.41      567.9    15985045 571.7802
-[1] 0.3415093
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-06    565.79    566.75   559.57     560.02    12298336 566.1315
-[1] -0.8637933
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-09    560.95    569.58    560.9     566.43    11446219 560.0862
-[1] 0.2185006
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-10    563.64    567.88    561.2     565.55     9938230 563.8585
-[1] 0.2867971
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-11    567.04    570.97   559.69     561.36    12847099 567.3268
-[1] -0.7201786
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-12    562.69    565.34   560.03     560.54     9367474 561.9698
-[1] 0.233996
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-12-13    562.39    562.88   553.67     554.43    11886469 562.624
-[1] -2.408889
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-16    555.61    562.64   555.01      557.5    10092636 553.2011
-[1] -0.8732155
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-17     555.7    559.44   553.38     554.99     8210807 554.8268
-[1] -0.7137017
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-18    547.46    551.45    538.8     550.77    20209401 546.7463
-[1] -0.894043
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2013-12-19    548.65       550   543.73     544.46    11462767 547.756
-[1] 1.413253
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-20    545.34    551.61   544.82     549.02    15586205 546.7533
-[1] -0.6832437
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-23       568    570.72   562.76     570.09    17903833 567.3168
-[1] 1.658409
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-24    569.89    571.88   566.03     567.67     5984105 571.5484
-[1] 1.527533
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-26     568.1     569.5   563.38      563.9     7286005 569.6275
-[1] -0.8529314
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-27    563.82    564.41    559.5     560.09     8067331 562.9671
-[1] -0.8816072
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-30    557.46    560.09   552.32     554.52     9058246 556.5784
-[1] -0.7058849
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2013-12-31    554.17    561.28      554     561.02     7974196 553.4641
-[1] 0.1459044
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-02    555.68    557.03   552.02     553.13     8398851 555.8259
-[1] -0.711029
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2014-01-03    552.86     553.7   540.43     540.98    14043410 552.149
-[1] -0.9210183
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2014-01-06    537.45     546.8    533.6     543.93    14765593 536.529
-[1] -0.8595533
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-07    544.32    545.96   537.92     540.04    11347538 543.4604
-[1] -0.7071857
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-08    538.81    545.56   538.69     543.46     9240955 538.1028
-[1] 0.4224517
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-09     546.8    546.86   535.35     536.52     9986457 547.2225
-[1] -0.8640512
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-10    539.83     540.8   531.11     532.94    10902952 538.9659
-[1] -0.2450748
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-13    529.91     542.5   529.88     535.73    13551549 529.6649
-[1] -0.8918822
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-14    538.22    546.73   537.66     546.39    11962053 537.3281
-[1] -0.890044
+2013-06-18    431.56     434.9   430.21     431.77     6970064 431.7075
+[1] 1.380013
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume   Pred
-2014-01-15    553.52     560.2   551.66     557.36    14067517 552.63
-[1] 1.674271
+2013-06-19     431.4    431.66      423        423    11108255 432.78
+[1] -2.775386
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-16     554.9    556.85   551.68     554.25     8210190 556.5743
-[1] 0.5130513
+2013-06-20     419.3    425.98   415.17     416.84    12767794 416.5246
+[1] 0.07128037
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-17    551.48    552.07    539.9     540.67    15489527 551.9931
-[1] 0.5851757
+2013-06-21    418.49       420    408.1      413.5    17185334 418.5613
+[1] -0.6865003
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-21    540.99    550.07   540.42     549.07    11750792 541.5752
-[1] -2.148119
+2013-06-24     407.4    408.66   398.05     402.54    17169490 406.7135
+[1] -0.868436
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-22    550.91    557.29   547.81     551.51    13602762 548.7619
-[1] -2.158645
+2013-06-25     405.7    407.79   398.83     402.63    11226398 404.8316
+[1] -0.8837098
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-23    549.94     556.5   544.81     556.18    14425478 547.7814
-[1] 1.624106
+2013-06-26     403.9    404.79   395.66     398.07    13140939 403.0163
+[1] 0.2116952
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-24       554    555.62   544.75     546.07    15483491 555.6241
-[1] 1.770079
+2013-06-27    399.25    401.39   393.54     393.78    12050007 399.4617
+[1] 1.866841
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-27    550.07     554.8   545.75      550.5    20602736 551.8401
-[1] 0.1743277
+2013-06-28    391.36    400.27   388.87     396.53    20665631 393.2268
+[1] 0.1015677
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-28    508.76       515   502.07      506.5    38119083 508.9343
-[1] -0.1142547
+2013-07-01    402.69    412.27   401.22     409.22    13970435 402.7916
+[1] 1.650443
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-29    503.95    507.37   498.62     500.75    17991828 503.8357
-[1] 1.748594
+2013-07-02    409.96    421.63   409.47     418.49    16788797 411.6104
+[1] -0.7044487
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-30    502.54     506.5    496.7     499.78    24251827 504.2886
-[1] -2.664871
+2013-07-03    420.86    422.98   417.45      420.8     8604594 420.1556
+[1] 0.18292
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-01-31    495.18    501.53   493.55      500.6    16619492 492.5151
-[1] -0.8585217
+2013-07-05    420.39    423.29   415.35     417.42     9788680 420.5729
+[1] -0.7218819
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-03    502.61    507.73    499.3     501.53    14374396 501.7515
-[1] -0.6915696
+2013-07-08    420.11       421   410.65     415.05    10654060 419.3881
+[1] -0.8786769
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-04    505.85    509.46   502.76     508.79    13467649 505.1584
-[1] -0.9213192
+2013-07-09     413.6     423.5   410.38     422.35    12596034 412.7213
+[1] 0.06562299
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-05    506.56    515.28   506.25     512.59    11760308 505.6387
-[1] 1.660141
+2013-07-10     419.6     424.8   418.25     420.73    10050117 419.6656
+[1] -2.296525
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-06    510.06     513.5   507.81     512.51     9213889 511.7201
-[1] 1.740351
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-07    521.38    522.93   517.38     519.68    13376943 523.1204
-[1] -0.9039197
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-10    518.66    531.99      518     528.99    12350146 517.7561
-[1] 1.784502
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-11    530.61    537.75    529.5     535.96    10096036 532.3945
-[1] 0.4163171
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-12    536.95    539.56   533.24     535.92    11018152 537.3663
-[1] -0.1594717
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-13    534.66    544.85    534.2     544.43    10994308 534.5005
-[1] -0.6807921
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-14    542.47    545.98   541.21     543.99     9781148 541.7892
-[1] 0.1757022
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-18       546    551.19   545.61     545.99     9329464 546.1757
-[1] 1.837365
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-19    544.75    546.89   534.35     537.37    11222060 546.5874
-[1] 1.535329
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-20    532.99       537      529     531.15    10932729 534.5253
-[1] -0.6356442
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-21    532.79    534.57    524.6     525.25     9965321 532.1544
-[1] 0.1635385
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-24    523.15    529.92   522.42     527.55    10337850 523.3135
-[1] -0.5877385
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-25    529.38    529.56      521     522.06     8321050 528.7923
-[1] -0.8768422
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-26    523.61       525    515.6     517.35     9875898 522.7332
-[1] -0.7283196
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-27    517.14    528.78   516.05     527.67    10793903 516.4117
-[1] -0.7056385
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-02-28    529.08    532.75   522.12     526.24    13296379 528.3744
-[1] -0.8823893
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-03    523.42    530.65   522.81     527.76     8540642 522.5376
-[1] 0.2645076
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-04       531    532.64   527.77     531.24     9269262 531.2645
-[1] -0.6912394
-           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-05    530.92    534.75   529.13     532.36     7152217 530.2288
-[1] -0.9169879
+2013-07-11    422.95    428.25   421.17     427.29    11659852 420.6535
+[1] 0.135966
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2014-03-06    532.79    534.44    528.1     530.75     6631873 531.873
-[1] 0.5215237
+2013-07-12    427.65    429.79   423.41     426.51     9987209 427.786
+[1] -0.7008897
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-07    531.09    531.98   526.05     530.44     7916463 531.6115
-[1] 1.373597
+2013-07-15    425.01    431.46    424.8     427.44     8649015 424.3091
+[1] 1.770262
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-10    528.36    533.33   528.34     530.92     6384490 529.7336
-[1] -0.1484624
+2013-07-16    426.52    430.71   424.17      430.2     7733481 428.2903
+[1] -0.6992754
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-11    535.45    538.74   532.59     536.09    10028407 535.3015
-[1] -2.544943
+2013-07-17     429.7    432.22   428.22     430.31     7109152 429.0007
+[1] -0.8674957
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-12    534.51    537.35      532     536.61     7170780 531.9651
-[1] -0.696603
+2013-07-18    433.38    434.87   430.61     431.76     7822974 432.5125
+[1] -0.8797747
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-13    537.44    539.66   529.16     530.65     9205087 536.7434
-[1] -0.6943999
+2013-07-19     433.1    433.98   424.35     424.95     9599245 432.2202
+[1] 1.071629
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-14    528.79    530.89      523     524.69     8471356 528.0956
-[1] -0.1793542
+2013-07-22    429.46    429.75   425.47     426.31     7428228 430.5316
+[1] 1.780087
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-17     527.7    529.97   525.85     526.74     7126582 527.5206
-[1] -0.7039409
+2013-07-23       426    426.96   418.71     418.99    13192629 427.7801
+[1] -0.2569202
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-18     525.9    531.97    525.2      531.4     7487409 525.1961
-[1] 1.827412
+2013-07-24    438.93    444.59   435.26     440.51    21144832 438.6731
+[1] -0.6885769
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-19    532.26    536.24      529     531.26     8026994 534.0874
-[1] -0.8590441
+2013-07-25     440.7     441.4   435.81      438.5     8202948 440.0114
+[1] 1.576544
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-07-26     435.3    441.04   434.34     440.99     7152679 436.8765
+[1] -0.66717
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-07-29     440.8    449.99    440.2     447.79     8872900 440.1328
+[1] 1.543537
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-07-30    449.96    457.15   449.23     453.32    11050795 451.5035
+[1] 1.669667
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-07-31    454.99    457.34   449.43     452.53    11534193 456.6597
+[1] -2.586195
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-01    455.75     456.8   453.26     456.68     7366046 453.1638
+[1] -0.712666
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-02    458.01    462.85   456.66     462.54     9813618 457.2973
+[1] -0.6510211
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2014-03-20    529.89    532.67   527.35      528.7     7442791 529.031
-[1] 1.653302
+2013-08-05    464.69    470.67   462.15     469.45    11387656 464.039
+[1] -0.2287618
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-21    531.93    533.75   526.33     532.87    13373167 533.5833
-[1] -0.7030358
+2013-08-06    468.02    471.89   462.17     465.25    11961220 467.7912
+[1] -0.7283302
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-07     463.8       467   461.77     464.98    10673424 463.0717
+[1] 0.1489238
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-08    463.86     464.1   457.95     461.01     9142834 464.0089
+[1] 0.7471452
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-09    458.64    460.46   453.65     454.45     9557887 459.3871
+[1] -0.7966473
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-12    456.86    468.65   456.63     467.36    13015470 456.0634
+[1] -0.6693828
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-13    470.94    494.66   468.05     489.57    31497848 470.2706
+[1] -0.8656256
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-14    497.88    504.25    493.4      498.5    27013273 497.0144
+[1] -0.688884
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-15    496.42     502.4   489.08     497.91    17510501 495.7311
+[1] 0.4094968
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-16    500.15    502.94   498.86     502.33    12939408 500.5595
+[1] 0.02793192
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-19    504.34    513.74      504     507.74    18232783 504.3679
+[1] 2.018925
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-20    509.71    510.57   500.82     501.07    12810249 511.7289
+[1] -0.7117314
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-21    503.59    507.15    501.2     502.36    11995615 502.8783
+[1] -0.8537355
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-22    504.98    505.59    498.2     502.96     8721668 504.1263
+[1] -0.9094121
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-23    503.27    503.35   499.35     501.02     7954603 502.3606
+[1] -0.8609422
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-26    500.75     510.2    500.5     502.97    11820150 499.8891
+[1] 0.2524315
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-27       498    502.51    486.3     488.59    15149587 498.2524
+[1] -0.8803983
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-28       486     495.8      486      490.9    10985954 485.1196
+[1] -1.716664
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-29    491.65     496.5   491.13      491.7     8559102 489.9333
+[1] 0.188681
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-08-30       492    492.95    486.5     487.22     9728684 492.1887
+[1] 1.785361
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-09-03     493.1     500.6   487.35     488.58    11860738 494.8854
+[1] -0.6554222
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-09-04    499.56    502.24   496.28     498.69    12322554 498.9046
+[1] 0.490972
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2014-03-24    538.42     540.5   535.06     539.19    12703553 537.717
-[1] -0.8897085
+2013-09-05    500.25    500.68   493.64     495.27     8441697 500.741
+[1] 0.9958183
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-25     541.5    545.75   539.59     544.99    10081908 540.6103
-[1] 0.1410367
+2013-09-06    498.44    499.38   489.95     498.22    12840179 499.4358
+[1] -0.8828211
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-09-09       505    507.92   503.48     506.17    12167369 504.1172
+[1] 0.8972112
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-09-10     506.2    507.45    489.5     494.64    26542696 507.0972
+[1] -0.717399
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-09-11    467.01    473.69   464.81     467.71    31932384 466.2926
+[1] 1.210879
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-09-12     468.5     475.4   466.01     472.69    14430353 469.7109
+[1] -0.9100101
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume   Pred
+2013-09-13    469.34    471.83    464.7      464.9    10672634 468.43
+[1] 0.3747702
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-09-16       461    461.61   447.22     450.12    19591095 461.3748
+[1] -0.8922176
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-09-17    447.96    459.71    447.5     455.32    14263539 447.0678
+[1] -0.8929751
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
-2014-03-26    546.52       549   538.86     539.78    10706032 546.661
-[1] -0.734776
+2013-09-18    463.18    466.35   460.66     464.68    16316472 462.287
+[1] -0.6953926
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-27    540.02     541.5   535.12     537.46     7929668 539.2852
-[1] -0.7022319
+2013-09-19     470.7    475.83   469.25      472.3    14447816 470.0046
+[1] -2.764942
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-28    538.32    538.94   534.25     536.86     7163009 537.6178
-[1] 1.562378
+2013-09-20       478    478.55      466     467.41    24975046 475.2351
+[1] -0.8002385
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-03-31    539.23    540.81   535.93     536.74     6023884 540.7924
-[1] -0.6757663
+2013-09-23     496.1    496.91    482.6     490.64    27218075 495.2998
+[1] -2.24699
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2013-09-24    494.88    495.47   487.82      489.1    13012249 492.633
+[1] -0.7415477
            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
-2014-04-01    537.76    541.87   536.77     541.65     7169955 537.0842
+2013-09-25     489.2    489.64   481.43     481.53    11319881 488.4585
+[1] -0.7426501
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-09-26       486    488.56    483.9     486.22     8472169 485.2573
+[1] -0.8833559
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-09-27    483.78    484.67   480.72     482.75     8144247 482.8966
+[1] 1.5753
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-09-30    477.25    481.66   474.41     476.75     9291344 478.8253
+[1] -0.7251066
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-01    478.45    489.14   478.38     487.96    12638665 477.7249
+[1] -0.7140657
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-02    485.63     491.8   483.75     489.56    10327986 484.9159
+[1] 1.629414
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-03    490.51    492.35   480.74     483.41    11526929 492.1394
+[1] 0.1462719
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-04    483.86     484.6    478.6     483.03     9245340 484.0063
+[1] -0.9074535
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-07    486.56    492.65   485.35     487.75    11153301 485.6525
+[1] -0.6636579
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-08    489.94    490.64   480.54     480.94    10389858 489.2763
+[1] -1.617827
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-09    484.64    487.79   478.28     486.59    10775888 483.0222
+[1] -0.8585464
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-10    491.32    492.38   487.04     489.64     9950070 490.4615
+[1] -0.7403257
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-11    486.99    493.84   485.16     492.81     9562134 486.2497
+[1] -0.7280998
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-14    489.83    497.58   489.35     496.04     9353506 489.1019
+[1] -0.702007
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2013-10-15     497.5       502   495.52     498.68    11431229 496.798
+[1] -0.8602538
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-16    500.79    502.53   499.23     501.11     8967859 499.9297
+[1] -0.7404625
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-17    499.98    504.78   499.68      504.5     9056905 499.2395
+[1] -0.6509679
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2013-10-18    505.99    509.26   505.71     508.89    10376510 505.339
+[1] -0.8936763
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-21    511.77     524.3   511.52     521.36    14218135 510.8763
+[1] 1.801338
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-22     526.4    528.45   508.03     519.87    19073679 528.2013
+[1] -1.584071
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-23       519    525.67      519     524.96    11204446 517.4159
+[1] -0.67386
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-24       525    532.47   522.45     531.91    13741585 524.3261
+[1] -2.521371
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-25    531.32    533.23   525.11     525.96    12064019 528.7986
+[1] 0.1185004
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-28    529.04       531   523.21     529.88    19658589 529.1585
+[1] -0.870284
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-29    536.27    539.25   514.54     516.68    22707445 535.3997
+[1] 0.1479345
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-30    519.61    527.52   517.02      524.9    12648671 519.7579
+[1] -0.6958443
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-10-31       525    527.49   521.27      522.7     9846255 524.3042
+[1] 0.06340039
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-01    524.02     524.8   515.84     520.03     9817472 524.0834
+[1] 0.04434567
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-04     521.1    526.82   518.81     526.75     8736719 521.1443
+[1] -0.7184303
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-05    524.58    528.88      523     525.45     9481153 523.8616
+[1] -0.8592474
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-06    524.15    524.86    518.2     520.92     7977736 523.2908
+[1] -0.6517683
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-07    519.58    523.19   512.38     512.49     9379300 518.9282
+[1] -0.6895147
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-08    514.58    521.13   512.59     520.56     9975649 513.8905
+[1] -0.8623862
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-11    519.99    521.67   514.41     519.05     8123329 519.1276
+[1] 0.4237408
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-12    517.67    523.92      517     520.01     7302093 518.0937
+[1] -0.5004576
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-13       518    522.25   516.96     520.63     7043561 517.4995
+[1] -0.6575516
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-14    522.81    529.28   521.87     528.16    10086441 522.1524
+[1] -0.7289593
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2013-11-15    526.58    529.09   524.49     524.99    11354252 525.851
+[1] -0.695368
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-18    524.99    527.19    518.2     518.63     8748032 524.2946
+[1] -0.8680674
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-19    519.03    523.38   517.97     519.55     7462101 518.1619
+[1] -0.7036628
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-20    519.23    520.42   514.33        515     6935114 518.5263
+[1] 0.2550824
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-21     517.6    521.21   513.67     521.14     9358123 517.8551
+[1] -0.7168873
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-22    519.52    522.16   518.53      519.8     7990176 518.8031
+[1] -0.8736877
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-25    521.02    525.87      521     523.74     8192629 520.1463
+[1] -0.664575
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-26    524.12    536.14      524      533.4    14335104 523.4554
+[1] 1.390388
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-27    536.31       546    533.4     545.96    12980263 537.7004
+[1] 0.5066334
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-11-29    549.48    558.33   547.81     556.07    11361745 549.9866
+[1] -0.5411071
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-02       558    564.33   550.82     551.23    16876555 557.4589
+[1] -1.306975
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2013-12-03     558.3    566.38   557.68     566.32    16105962 556.993
+[1] 1.628287
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-04     565.5    569.19   560.82        565    13493238 567.1283
+[1] 1.799796
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-05    572.65    575.14   566.41      567.9    15985045 574.4498
+[1] -0.9092563
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-06    565.79    566.75   559.57     560.02    12298336 564.8807
+[1] -0.7020408
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2013-12-09    560.95    569.58    560.9     566.43    11446219 560.248
+[1] 1.743754
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-10    563.64    567.88    561.2     565.55     9938230 565.3838
+[1] -0.6902316
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-11    567.04    570.97   559.69     561.36    12847099 566.3498
+[1] -0.8982302
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-12    562.69    565.34   560.03     560.54     9367474 561.7918
+[1] -0.3573591
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-13    562.39    562.88   553.67     554.43    11886469 562.0326
+[1] -0.688926
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-16    555.61    562.64   555.01      557.5    10092636 554.9211
+[1] -0.8930451
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2013-12-17     555.7    559.44   553.38     554.99     8210807 554.807
+[1] 0.1520424
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2013-12-18    547.46    551.45    538.8     550.77    20209401 547.612
+[1] 1.632552
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-19    548.65       550   543.73     544.46    11462767 550.2826
+[1] -0.8580825
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-20    545.34    551.61   544.82     549.02    15586205 544.4819
+[1] -0.6937383
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-23       568    570.72   562.76     570.09    17903833 567.3063
+[1] 0.5374666
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-24    569.89    571.88   566.03     567.67     5984105 570.4275
+[1] -0.7324311
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-26     568.1     569.5   563.38      563.9     7286005 567.3676
+[1] -0.9140324
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2013-12-27    563.82    564.41    559.5     560.09     8067331 562.906
+[1] -0.7054442
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2013-12-30    557.46    560.09   552.32     554.52     9058246 556.7546
+[1] -0.8749672
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2013-12-31    554.17    561.28      554     561.02     7974196 553.295
+[1] -0.8955059
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-02    555.68    557.03   552.02     553.13     8398851 554.7845
+[1] 0.4931482
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-03    552.86     553.7   540.43     540.98    14043410 553.3531
+[1] -0.7341754
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-06    537.45     546.8    533.6     543.93    14765593 536.7158
+[1] -0.8928167
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-07    544.32    545.96   537.92     540.04    11347538 543.4272
+[1] -0.6005862
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-08    538.81    545.56   538.69     543.46     9240955 538.2094
+[1] -0.876689
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-09     546.8    546.86   535.35     536.52     9986457 545.9233
+[1] 1.630756
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-10    539.83     540.8   531.11     532.94    10902952 541.4608
+[1] 1.923512
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-13    529.91     542.5   529.88     535.73    13551549 531.8335
+[1] -0.1739235
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-14    538.22    546.73   537.66     546.39    11962053 538.0461
+[1] -0.6782251
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-15    553.52     560.2   551.66     557.36    14067517 552.8418
+[1] -0.6857453
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-16     554.9    556.85   551.68     554.25     8210190 554.2143
+[1] -0.7342232
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-17    551.48    552.07    539.9     540.67    15489527 550.7458
+[1] -0.6720702
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-21    540.99    550.07   540.42     549.07    11750792 540.3179
+[1] 0.165612
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-22    550.91    557.29   547.81     551.51    13602762 551.0756
+[1] 1.563934
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-23    549.94     556.5   544.81     556.18    14425478 551.5039
+[1] 1.793887
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-24       554    555.62   544.75     546.07    15483491 555.7939
+[1] -0.9000568
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-27    550.07     554.8   545.75      550.5    20602736 549.1699
+[1] 1.829337
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-28    508.76       515   502.07      506.5    38119083 510.5893
+[1] -2.296293
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-29    503.95    507.37   498.62     500.75    17991828 501.6537
+[1] 0.2534341
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-30    502.54     506.5    496.7     499.78    24251827 502.7934
+[1] -0.9043875
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-01-31    495.18    501.53   493.55      500.6    16619492 494.2756
+[1] 1.793261
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-03    502.61    507.73    499.3     501.53    14374396 504.4033
+[1] -0.6964661
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-04    505.85    509.46   502.76     508.79    13467649 505.1535
+[1] -0.6855581
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-05    506.56    515.28   506.25     512.59    11760308 505.8744
+[1] 1.626106
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-06    510.06     513.5   507.81     512.51     9213889 511.6861
+[1] 0.4647479
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-07    521.38    522.93   517.38     519.68    13376943 521.8447
+[1] -0.8711866
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-10    518.66    531.99      518     528.99    12350146 517.7888
+[1] -0.7289753
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2014-02-11    530.61    537.75    529.5     535.96    10096036 529.881
+[1] -0.9099231
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-12    536.95    539.56   533.24     535.92    11018152 536.0401
+[1] 1.744464
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-13    534.66    544.85    534.2     544.43    10994308 536.4045
+[1] 1.74023
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-14    542.47    545.98   541.21     543.99     9781148 544.2102
+[1] 1.930211
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-18       546    551.19   545.61     545.99     9329464 547.9302
+[1] -0.9146931
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-19    544.75    546.89   534.35     537.37    11222060 543.8353
+[1] -0.8831928
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-20    532.99       537      529     531.15    10932729 532.1068
+[1] -0.164815
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-21    532.79    534.57    524.6     525.25     9965321 532.6252
+[1] -0.8818829
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-24    523.15    529.92   522.42     527.55    10337850 522.2681
+[1] 1.613629
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-25    529.38    529.56      521     522.06     8321050 530.9936
+[1] -0.8746687
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-26    523.61       525    515.6     517.35     9875898 522.7353
+[1] -0.7030061
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2014-02-27    517.14    528.78   516.05     527.67    10793903 516.437
+[1] -0.7187109
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-02-28    529.08    532.75   522.12     526.24    13296379 528.3613
+[1] 1.761338
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-03    523.42    530.65   522.81     527.76     8540642 525.1813
+[1] 0.2489225
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-04       531    532.64   527.77     531.24     9269262 531.2489
+[1] -0.6918591
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-05    530.92    534.75   529.13     532.36     7152217 530.2281
+[1] -0.8711104
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-06    532.79    534.44    528.1     530.75     6631873 531.9189
+[1] -0.676433
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-07    531.09    531.98   526.05     530.44     7916463 530.4136
+[1] 0.165662
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-10    528.36    533.33   528.34     530.92     6384490 528.5257
+[1] 1.582861
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-11    535.45    538.74   532.59     536.09    10028407 537.0329
+[1] -0.7061421
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-12    534.51    537.35      532     536.61     7170780 533.8039
+[1] 1.842804
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-13    537.44    539.66   529.16     530.65     9205087 539.2828
+[1] -0.9033226
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-14    528.79    530.89      523     524.69     8471356 527.8867
+[1] -0.8944083
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-17     527.7    529.97   525.85     526.74     7126582 526.8056
+[1] -0.856682
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-18     525.9    531.97    525.2      531.4     7487409 525.0433
+[1] -1.976824
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-19    532.26    536.24      529     531.26     8026994 530.2832
+[1] -0.8748622
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-20    529.89    532.67   527.35      528.7     7442791 529.0151
+[1] -0.7407653
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-21    531.93    533.75   526.33     532.87    13373167 531.1892
+[1] -0.607941
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-24    538.42     540.5   535.06     539.19    12703553 537.8121
+[1] -0.7095542
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-25     541.5    545.75   539.59     544.99    10081908 540.7904
+[1] -0.878311
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-26    546.52       549   538.86     539.78    10706032 545.6417
+[1] -0.7091251
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-27    540.02     541.5   535.12     537.46     7929668 539.3109
+[1] -0.6929996
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume    Pred
+2014-03-28    538.32    538.94   534.25     536.86     7163009 537.627
+[1] -0.6913684
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-03-31    539.23    540.81   535.93     536.74     6023884 538.5386
+[1] -0.8453502
+           AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume     Pred
+2014-04-01    537.76    541.87   536.77     541.65     7169955 536.9146
 > 
-> print(rows)
-[1] 254
+> cat("Rows = ", rows)
+Rows =  253> #print(rows)
 > 
 > MAPE <- MAPEsum*100/rows
-> print(MAPE)
-[1] 0.9737802
+> cat("MAPE = ", MAPE)
+MAPE =  0.9486347> #print(MAPE)
 > 
 > actuals <- testset$AAPL.Close
 > ymax = max (actuals)
 > ymin = min (actuals)
 > NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
-> print(NRMSE)
-[1] 0.002045158
+> cat("NRMSE = ", NRMSE)
+NRMSE =  0.001993271> #print(NRMSE)
 > 
 > # plot actual with predicted values added
 > # compare actual closing value and predicted closing value
@@ -4498,25 +4483,9 @@ attr(,"class")
 + 	TA = "addTA(testset[1:rows, ncol(testset)], on = 1, col='red')") # 
 > #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
 > #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
-> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
-> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"), legend = \"Predicted\")") # 
-> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = \"Predicted\")") # yellow
-> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
-> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?
-> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
-> #chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
-> 
 > #chartSeries(testset)
-> 
-> #chartSeries(AAPL_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
-> #TA="addTA(AAPL_Predict[AAPL_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
-> #addTA(AAPL_Predict[AAPL_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
-> #")
 > 
 > 
 > proc.time()
    user  system elapsed 
-939.665   0.109 941.031 
+974.173   0.126 975.615 

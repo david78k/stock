@@ -19,6 +19,10 @@ symbol=LNKD #
 #symbol=AMZN # 
 #symbol=IBM # 
 
+name=$symbol
+out=$symbol # Gaussian mixture
+#out=$symbol-single 
+
 # training period
 startdate=2000-01-01
 #startdate=2010-09-07
@@ -28,27 +32,23 @@ enddate=2013-04-01
 teststart=2013-04-02
 testend=2014-04-01
 
+#name=$prefix
+script=${out}.R
+png=${out}.png
+emf=${out}.emf
+eps=${out}.eps
+
 xlabel="DATE"
 #xlabel="DAY"
 ylabel="STOCK VALUE ($)"
 #ylabel="CLOSE VALUE"
 
+src=yahoo
+#if [ $symbol == "GOOG"]; then # or $symbol == "TWTR" ]
+#	src=google
+#fi
+
 function genplot() {
-	name=$symbol
-	out=$symbol # Gaussian mixture
-	#out=$symbol-single 
-
-	#name=$prefix
-	script=${out}.R
-	png=${out}.png
-	emf=${out}.emf
-	eps=${out}.eps
-
-	src=yahoo
-	#if [ $symbol == "GOOG"]; then # or $symbol == "TWTR" ]
-	#	src=google
-	#fi
-
 	cmd="emf($emf)"
 
 	if [ $1 == "png" ]; then
@@ -107,6 +107,8 @@ ${name}_Predict <- cbind(trainset\$${name}.Close, VitPath\$states)
 #sum(a$HMM$transMat[last(v$states),] * .colSums((matrix(unlist(a$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(a$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
 # gaussian mixture HMM: nrow = nMixture, ncol = nStates
 #print(hm_model\$HMM\$transMat[last(VitPath\$states),])
+#print(hm_model\$HMM\$distribution)
+#print(hm_model\$HMM\$distribution\$mean)
 #print(hm_model\$HMM\$distribution\$mean[, seq(1, ncol(hm_model\$HMM\$distribution\$mean), by = 2)])
 #print(unlist(hm_model\$HMM\$distribution\$mean))
 #print(matrix(unlist(hm_model\$HMM\$distribution\$proportion[1,])))
@@ -155,12 +157,15 @@ for (i in 1: rows) {
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
 	diff = (abs ((pred - actual)/ actual))[1,]\$${name}.Open
+	#print ("diff")
 	#print (diff)
 	#MAPEsum <- MAPEsum + diff\$${name}.Open
 	MAPEsum <- sum(MAPEsum, diff[1,1])
 	#MAPEsum = MAPEsum + abs((pred - actual)/todayclose)
+	#print ("MAPEsum")
 	#print(MAPEsum)
 	#MAPE <- MAPEsum*100/rows
+	#print("MAPE")
 	#print(MAPE)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
@@ -174,6 +179,11 @@ for (i in 1: rows) {
 	# single HMM
 	#sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=1,ncol=5)), m=1,n=5))
 
+	# Forward-backward 
+	#fb <- forwardBackward(hm_model, test, FALSE)
+	#print(fb)
+	#print(${name}_Subset[,4] - ${name}_Predict [,1])
+
 	# update train data
 	train <- rbind (train, todayclose - todayopen)
 	
@@ -185,21 +195,16 @@ for (i in 1: rows) {
 	VitPath <- viterbi (hm_model, train)
 }
 
-print(paste0("[Stat] Rows = ", rows))
-#print(rows)
+print(rows)
 
 MAPE <- MAPEsum*100/rows
-sprintf("[Stat] MAPE = %s\n", MAPE)
-#cat("[Stat] MAPE = ", MAPE)
-#print(MAPE)
+print(MAPE)
 
 actuals <- testset\$${name}.Close
 ymax = max (actuals)
 ymin = min (actuals)
 NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
-print(paste0("[Stat] NRMSE = ", NRMSE))
-#cat("NRMSE = ", NRMSE)
-#print(NRMSE)
+print(NRMSE)
 
 # plot actual with predicted values added
 # compare actual closing value and predicted closing value
@@ -208,7 +213,23 @@ chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), nam
 	TA = "addTA(testset[1:rows, ncol(testset)], on = 1, col='red')") # 
 #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"), legend = \"Predicted\")") # 
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = \"Predicted\")") # yellow
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
+
 #chartSeries(testset)
+
+#chartSeries(${name}_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
+#TA="addTA(${name}_Predict[${name}_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
+#addTA(${name}_Predict[${name}_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
+#addTA(${name}_Predict[${name}_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
+#addTA(${name}_Predict[${name}_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
+#addTA(${name}_Predict[${name}_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
+#")
 
 EOF
 

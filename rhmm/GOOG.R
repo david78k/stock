@@ -19,7 +19,7 @@ print(trainset)
 train <- cbind(trainset$GOOG.Close - trainset$GOOG.Open)
 #print(train)
 
-testset <- window(GOOG, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
+testset <- window(GOOG, start = as.Date("2013-04-02"), end = as.Date("2014-04-01"))
 test <- cbind(testset$GOOG.Close - testset$GOOG.Open)
 print(testset)
 
@@ -42,8 +42,6 @@ GOOG_Predict <- cbind(trainset$GOOG.Close, VitPath$states)
 #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
 # gaussian mixture HMM: nrow = nMixture, ncol = nStates
 #print(hm_model$HMM$transMat[last(VitPath$states),])
-#print(hm_model$HMM$distribution)
-#print(hm_model$HMM$distribution$mean)
 #print(hm_model$HMM$distribution$mean[, seq(1, ncol(hm_model$HMM$distribution$mean), by = 2)])
 #print(unlist(hm_model$HMM$distribution$mean))
 #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
@@ -92,15 +90,12 @@ for (i in 1: rows) {
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
 	diff = (abs ((pred - actual)/ actual))[1,]$GOOG.Open
-	#print ("diff")
 	#print (diff)
 	#MAPEsum <- MAPEsum + diff$GOOG.Open
 	MAPEsum <- sum(MAPEsum, diff[1,1])
 	#MAPEsum = MAPEsum + abs((pred - actual)/todayclose)
-	#print ("MAPEsum")
 	#print(MAPEsum)
 	#MAPE <- MAPEsum*100/rows
-	#print("MAPE")
 	#print(MAPE)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
@@ -114,11 +109,6 @@ for (i in 1: rows) {
 	# single HMM
 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
 
-	# Forward-backward 
-	#fb <- forwardBackward(hm_model, test, FALSE)
-	#print(fb)
-	#print(GOOG_Subset[,4] - GOOG_Predict [,1])
-
 	# update train data
 	train <- rbind (train, todayclose - todayopen)
 	
@@ -130,16 +120,19 @@ for (i in 1: rows) {
 	VitPath <- viterbi (hm_model, train)
 }
 
-print(rows)
+cat("Rows = ", rows)
+#print(rows)
 
 MAPE <- MAPEsum*100/rows
-print(MAPE)
+cat("MAPE = ", MAPE)
+#print(MAPE)
 
 actuals <- testset$GOOG.Close
 ymax = max (actuals)
 ymin = min (actuals)
 NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
-print(NRMSE)
+cat("NRMSE = ", NRMSE)
+#print(NRMSE)
 
 # plot actual with predicted values added
 # compare actual closing value and predicted closing value
@@ -148,21 +141,5 @@ chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), nam
 	TA = "addTA(testset[1:rows, ncol(testset)], on = 1, col='red')") # 
 #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"), legend = \"Predicted\")") # 
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = \"Predicted\")") # yellow
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
-#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
-
 #chartSeries(testset)
-
-#chartSeries(GOOG_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
-#TA="addTA(GOOG_Predict[GOOG_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
-#addTA(GOOG_Predict[GOOG_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
-#addTA(GOOG_Predict[GOOG_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
-#addTA(GOOG_Predict[GOOG_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
-#addTA(GOOG_Predict[GOOG_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
-#")
 
