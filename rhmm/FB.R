@@ -120,18 +120,20 @@ for (i in 1: rows) {
 	VitPath <- viterbi (hm_model, train)
 }
 
-cat("Rows = ", rows)
+print(paste0("[Stat] Rows = ", rows))
 #print(rows)
 
 MAPE <- MAPEsum*100/rows
-cat("MAPE = ", MAPE)
+sprintf("[Stat] MAPE = %s\n", MAPE)
+#cat("[Stat] MAPE = ", MAPE)
 #print(MAPE)
 
 actuals <- testset$FB.Close
 ymax = max (actuals)
 ymin = min (actuals)
 NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
-cat("NRMSE = ", NRMSE)
+print(paste0("[Stat] NRMSE = ", NRMSE))
+#cat("NRMSE = ", NRMSE)
 #print(NRMSE)
 
 # plot actual with predicted values added

@@ -8,7 +8,8 @@ fi
 # Apple (NASDAQ:APPL), Google (NASDAQ:GOOG), Microsoft (NASDAQ:MSFT),
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
-symbols=( AAPL GOOG MSFT AMZN LNKD FB )
+#symbols=( AAPL GOOG MSFT AMZN LNKD FB )
+symbols=( MSFT AMZN LNKD FB )
 #symbol=$1
 #symbol=AAPL
 #symbol=GOOG # yahoo not working, google contains missing values NA
@@ -189,7 +190,7 @@ print(paste0("[Stat] Rows = ", rows))
 #print(rows)
 
 MAPE <- MAPEsum*100/rows
-sprintf("[Stat] MAPE = %s\n", MAPE)
+print("[Stat] MAPE = ", MAPE)
 #cat("[Stat] MAPE = ", MAPE)
 #print(MAPE)
 
