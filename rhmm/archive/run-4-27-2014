@@ -9,8 +9,7 @@ fi
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
 #symbols=( AAPL GOOG MSFT AMZN LNKD FB )
-#symbols=( MSFT AMZN LNKD FB )
-symbols=( TWTR )
+symbols=( MSFT AMZN LNKD FB )
 #symbol=$1
 #symbol=AAPL
 #symbol=GOOG # yahoo not working, google contains missing values NA
@@ -34,8 +33,6 @@ xlabel="DATE"
 #xlabel="DAY"
 ylabel="STOCK VALUE ($)"
 #ylabel="CLOSE VALUE"
-
-script=
 
 function genplot() {
 	name=$symbol
@@ -65,11 +62,7 @@ function genplot() {
 		figure=$emf
 		cmd="emf('$figure')"
 	fi
-	
-	hmm
-}
 
-function hmm() {
 cat >$script << EOF
 require(devEMF)
 library(quantmod)
@@ -223,35 +216,16 @@ EOF
         R CMD BATCH $script
 }
 
-# simple moving average
-function sma () {
-	# sum	
-	echo sma
-	#pred=pred-first.Close/n + last.Close 
-}
-
-# exponential weighted moving average
-function ewma () {
-	echo emwa
-}
-
-function upload () {
-	git add .
-	git commit -a -m $script
-	git push
-}
-
 for sym in ${symbols[@]}
 do 
 	echo $sym
 	symbol=$sym
-
-	sma
-	ewma	
-
-	#genplot png
-	#genplot eps
+	genplot png
+	genplot eps
 	#genplot emf
-#	upload
 done
+
+git add .
+git commit -a -m $script
+git push
 
