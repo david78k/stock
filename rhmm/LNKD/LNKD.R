@@ -19,7 +19,7 @@ print(trainset)
 train <- cbind(trainset$LNKD.Close - trainset$LNKD.Open)
 #print(train)
 
-testset <- window(LNKD, start = as.Date("2013-04-02"), end = as.Date("2014-04-01"))
+testset <- window(LNKD, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
 test <- cbind(testset$LNKD.Close - testset$LNKD.Open)
 print(testset)
 

@@ -1,0 +1,7 @@
+#!/bin/bash
+stocks=( AAPL GOOG )
+
+for stock in ${stocks[@]}
+do
+	time ./run $stock
+done

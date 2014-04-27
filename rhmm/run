@@ -8,6 +8,7 @@ fi
 # Apple (NASDAQ:APPL), Google (NASDAQ:GOOG), Microsoft (NASDAQ:MSFT),
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
+symbols=( AAPL GOOG MSFT AMZN LNKD FB )
 #symbol=$1
 #symbol=AAPL
 #symbol=GOOG # yahoo not working, google contains missing values NA
@@ -28,7 +29,7 @@ startdate=2000-01-01
 enddate=2013-04-01
 
 # test period
-teststart=2013-04-01
+teststart=2013-04-02
 testend=2014-04-01
 
 #name=$prefix
@@ -235,9 +236,14 @@ EOF
         R CMD BATCH $script
 }
 
-genplot png
-genplot eps
-#genplot emf
+for sym in ${symbols[@]}
+do 
+	echo $sym
+	symbol=$sym
+	genplot png
+	genplot eps
+	#genplot emf
+done
 
 git add .
 git commit -a -m $script
