@@ -9,8 +9,8 @@ fi
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
 #symbols=( AAPL GOOG MSFT AMZN LNKD FB )
-#symbols=( AAPL GOOG MSFT AMZN LNKD )
-symbols=( FB )
+symbols=( AAPL MSFT AMZN LNKD GOOG )
+#symbols=( FB )
 #symbols=( GOOG FB )
 #symbol=$1
 #symbol=AAPL # since 1980-12-12
@@ -172,8 +172,8 @@ for (i in 1: rows) {
 	print(testset[i, ])
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-	diff = (abs ((pred - actual)/ actual))[1,]\$${name}.Close
-	#diff = (abs ((pred - actual)/ actual))[1,]\$${name}.Open
+	#diff = (abs ((pred - actual)/ actual))[1,]\$${name}.Close
+	diff = (abs ((pred - actual)/ actual))[1,]\$${name}.Open
 	#print (diff)
 	#MAPEsum <- MAPEsum + diff\$${name}.Open
 	MAPEsum <- sum(MAPEsum, diff[1,1])
