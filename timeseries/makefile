@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-default: runscript
+default: runscript getstat
 
 runscript:
 	time ./run
@@ -11,5 +11,7 @@ arma:
 ema:
 	R CMD BATCH ema.R
 
-stat:
+getstat:
+	rm stat
 	egrep "\[1\] \"\[Stat\]" *.Rout > stat
+	cat stat
