@@ -8,9 +8,9 @@ fi
 # Apple (NASDAQ:APPL), Google (NASDAQ:GOOG), Microsoft (NASDAQ:MSFT),
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
-symbols=( AAPL GOOG MSFT AMZN LNKD FB )
+#symbols=( AAPL GOOG MSFT AMZN LNKD FB )
 #symbols=( AAPL GOOG MSFT AMZN LNKD )
-#symbols=( FB )
+symbols=( FB )
 #symbols=( GOOG FB )
 #symbol=$1
 #symbol=AAPL # since 1980-12-12
@@ -36,8 +36,6 @@ xlabel="DATE"
 #xlabel="DAY"
 ylabel="STOCK VALUE ($)"
 #ylabel="CLOSE VALUE"
-
-#script=
 
 #function genplot() {
 function config() {
@@ -148,8 +146,8 @@ NRMSEsum = 0
 
 # predict and update HMM to include the new actual value
 #for (i in 1: 251) {
-#for (i in 1: 3) {
-for (i in 1: rows) {
+for (i in 1: 3) {
+#for (i in 1: rows) {
 	#if (i == rows) break
 
 	if(i != 0) {
@@ -320,9 +318,9 @@ do
 	symbol=$sym
 
 	#sma
-	ewma 
+	#ewma 
 
-	#hmm png
+	hmm 
 	#genplot png
 	#genplot eps
 	#genplot emf
