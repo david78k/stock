@@ -10,3 +10,6 @@ arma:
 
 ema:
 	R CMD BATCH ema.R
+
+stat:
+	egrep "\[1\] \"\[Stat\]" *.Rout > stat

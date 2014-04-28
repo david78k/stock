@@ -11,7 +11,7 @@ fi
 #symbols=( AAPL GOOG MSFT AMZN LNKD FB )
 #symbols=( AAPL GOOG MSFT AMZN LNKD )
 #symbols=( FB )
-symbols=( GOOG )
+symbols=( GOOG FB )
 #symbol=$1
 #symbol=AAPL # since 1980-12-12
 #symbol=GOOG # yahoo not working, google contains missing values NA
@@ -52,8 +52,10 @@ function config() {
 	eps=${out}.eps
 
 	src=yahoo
+	symoptions=", from = '$startdate', to = '$testend', src = '$src'"
 	if [ $symbol == "GOOG" ]; then # or $symbol == "TWTR" ]
 		src=google
+		symoptions=", src = '$src'"
 		#symoptions("${name}", from = '$startdate', to = '$testend', src = '$src')
 	fi
 
@@ -254,7 +256,7 @@ cat >$script << EOF
 	require(devEMF)
 	library(quantmod)
 
-	getSymbols("${name}", $symoptions)
+	getSymbols("${name}" $symoptions)
 	#getSymbols("${name}", from = '$startdate', to = '$testend', src = '$src')
 	#getSymbols("${name}", src = '$src')
 	print(head(${name}))

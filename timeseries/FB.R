@@ -1,9 +1,9 @@
 	require(devEMF)
 	library(quantmod)
-	library(RHmm)
-	library(parallel)
 
-	getSymbols("FB", from = '1900-01-01', to = '2014-04-01')
+	getSymbols("FB" , from = '1900-01-01', to = '2014-04-01', src = 'yahoo')
+	#getSymbols("FB", from = '1900-01-01', to = '2014-04-01', src = 'yahoo')
+	#getSymbols("FB", src = 'yahoo')
 	print(head(FB))
 	print(tail(FB))
 

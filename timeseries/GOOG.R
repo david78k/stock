@@ -1,8 +1,9 @@
 	require(devEMF)
 	library(quantmod)
 
+	getSymbols("GOOG" , src = 'google')
 	#getSymbols("GOOG", from = '1900-01-01', to = '2014-04-01', src = 'google')
-	getSymbols("GOOG", src = 'google')
+	#getSymbols("GOOG", src = 'google')
 	print(head(GOOG))
 	print(tail(GOOG))
 
