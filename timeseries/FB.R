@@ -1,0 +1,12 @@
+	require(devEMF)
+	library(quantmod)
+	library(RHmm)
+	library(parallel)
+
+	getSymbols("FB", start = '1900-01-01')
+	#getSymbols("FB")
+	print(head(FB))
+	ema = EMA( tail( Cl( FB ), 300 ), 200 )
+	ema = cbind(tail(Cl(FB), 300), ema)
+	print(ema)
+	#print( as.numeric( last( spyEMA ) ) )

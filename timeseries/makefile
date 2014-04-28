@@ -1,5 +1,8 @@
 
-default: ema
+default: runscript
+
+runscript:
+	time ./run
 
 arma:
 	R CMD BATCH arma.R
