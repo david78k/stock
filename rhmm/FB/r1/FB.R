@@ -2,28 +2,24 @@ require(devEMF)
 library(quantmod)
 library(RHmm)
 library(parallel)
-#png('FB.png')
+#postscript('FB.eps')
 
-getSymbols("FB", src = "yahoo", from = "1900-01-01", to = "2014-04-01")
-#getSymbols("FB", src = "google")
+getSymbols("FB", src = "google")
 #getSymbols("FB")
-print(head(FB))
-print(tail(FB))
 chartSeries(FB, theme="white")
-
-#trainset <- window(FB, start = as.Date("1900-01-01"), end = as.Date("2013-04-01"))
-trainsetraw <- window(FB, start = as.Date("1900-01-01"), end = as.Date("2013-04-01"))
+#trainset <- window(FB, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
+trainsetraw <- window(FB, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
 print(ncol(trainsetraw)-1)
 print(trainsetraw[,1:ncol(trainsetraw)-1])
 trainset <- na.omit(trainsetraw[,1:ncol(trainsetraw)-1])
 print(trainset)
 
-#FB_Subset <- window(FB, start = as.Date("1900-01-01"), end = as.Date("2013-04-01"))
+#FB_Subset <- window(FB, start = as.Date("2000-01-01"), end = as.Date("2013-04-01"))
 #FB_Train <- cbind(FB_Subset$FB.Close - FB_Subset$FB.Open, FB_Subset$FB.Volume)
 train <- cbind(trainset$FB.Close - trainset$FB.Open)
 #print(train)
 
-testset <- window(FB, start = as.Date("2013-04-02"), end = as.Date("2014-04-01"))
+testset <- window(FB, start = as.Date("2013-04-01"), end = as.Date("2014-04-01"))
 test <- cbind(testset$FB.Close - testset$FB.Open)
 print(testset)
 
@@ -37,7 +33,7 @@ VitPath <- viterbi (hm_model, train)
 print(VitPath)
 
 # scatter plot
-png('FB.png')
+postscript('FB.eps')
 FB_Predict <- cbind(trainset$FB.Close, VitPath$states)
 #FB_Predict <- cbind(FB_Subset$FB.Close, VitPath$states)
 #print(FB_Subset[,4] - FB_Predict [,1])
@@ -46,6 +42,8 @@ FB_Predict <- cbind(trainset$FB.Close, VitPath$states)
 #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
 # gaussian mixture HMM: nrow = nMixture, ncol = nStates
 #print(hm_model$HMM$transMat[last(VitPath$states),])
+#print(hm_model$HMM$distribution)
+#print(hm_model$HMM$distribution$mean)
 #print(hm_model$HMM$distribution$mean[, seq(1, ncol(hm_model$HMM$distribution$mean), by = 2)])
 #print(unlist(hm_model$HMM$distribution$mean))
 #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
@@ -93,14 +91,16 @@ for (i in 1: rows) {
 	print(testset[i, ])
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-	#diff = (abs ((pred - actual)/ actual))[1,]$FB.Close
 	diff = (abs ((pred - actual)/ actual))[1,]$FB.Open
-#	print (diff)
+	#print ("diff")
+	#print (diff)
 	#MAPEsum <- MAPEsum + diff$FB.Open
 	MAPEsum <- sum(MAPEsum, diff[1,1])
 	#MAPEsum = MAPEsum + abs((pred - actual)/todayclose)
-#	print(MAPEsum)
+	#print ("MAPEsum")
+	#print(MAPEsum)
 	#MAPE <- MAPEsum*100/rows
+	#print("MAPE")
 	#print(MAPE)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
@@ -114,6 +114,11 @@ for (i in 1: rows) {
 	# single HMM
 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
 
+	# Forward-backward 
+	#fb <- forwardBackward(hm_model, test, FALSE)
+	#print(fb)
+	#print(FB_Subset[,4] - FB_Predict [,1])
+
 	# update train data
 	train <- rbind (train, todayclose - todayopen)
 	
@@ -125,21 +130,16 @@ for (i in 1: rows) {
 	VitPath <- viterbi (hm_model, train)
 }
 
-print(paste0("[Stat] Rows = ", rows))
-#print(rows)
+print(rows)
 
 MAPE <- MAPEsum*100/rows
-print(paste0("[Stat] MAPEsum = ", MAPEsum))
-print(paste0("[Stat] MAPE = ", MAPE))
-#print(MAPE)
+print(MAPE)
 
 actuals <- testset$FB.Close
 ymax = max (actuals)
 ymin = min (actuals)
 NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
-print(paste0("[Stat] NRMSE = ", NRMSE))
-#cat("NRMSE = ", NRMSE)
-#print(NRMSE)
+print(NRMSE)
 
 # plot actual with predicted values added
 # compare actual closing value and predicted closing value
@@ -148,9 +148,21 @@ chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), nam
 	TA = "addTA(testset[1:rows, ncol(testset)], on = 1, col='red')") # 
 #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=26, legend = \"Predicted\")") # blue
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=col2rgb("blue"), legend = \"Predicted\")") # 
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=7, legend = \"Predicted\")") # yellow
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=10)") # red
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=8)") # grey?
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=6)") # pink
+#chartSeries(testset[, 1], TA = "addTA(testset[, 7], on = 1, col=9)") # black
+
 #chartSeries(testset)
 
-# plot eps
-postscript('FB.eps')
-chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "FB", legend = "Actual",
-	TA = "addTA(testset[1:rows, ncol(testset)], on = 1, col='red')") # 
+#chartSeries(FB_Predict[,1], layout = layout(matrix(2:1)), # 1, 2, byrow = TRUE), #respect = TRUE), #theme="white.mono", 
+#TA="addTA(FB_Predict[FB_Predict[,2]==1,1], legend = \"one day?\", on=1, col=5,pch=25);
+#addTA(FB_Predict[FB_Predict[,2]==2,1],on=1,type='p',col=6,pch=24);
+#addTA(FB_Predict[FB_Predict[,2]==3,1],on=1,type='p',col=7,pch=23);
+#addTA(FB_Predict[FB_Predict[,2]==4,1],on=1,type='p',col=8,pch=22);
+#addTA(FB_Predict[FB_Predict[,2]==5,1],on=1,type='p',col=10,pch=21)
+#")
+

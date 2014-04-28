@@ -10,7 +10,7 @@ fi
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
 #symbols=( AAPL GOOG MSFT AMZN LNKD FB )
 #symbols=( MSFT AMZN LNKD FB )
-symbols=( TWTR )
+symbols=( FB )
 #symbol=$1
 #symbol=AAPL
 #symbol=GOOG # yahoo not working, google contains missing values NA
@@ -22,7 +22,7 @@ symbol=LNKD #
 #symbol=IBM # 
 
 # training period
-startdate=2000-01-01
+startdate=1900-01-01
 #startdate=2010-09-07
 enddate=2013-04-01
 
@@ -35,9 +35,8 @@ xlabel="DATE"
 ylabel="STOCK VALUE ($)"
 #ylabel="CLOSE VALUE"
 
-script=
-
-function genplot() {
+#function genplot() {
+function config() {
 	name=$symbol
 	out=$symbol # Gaussian mixture
 	#out=$symbol-single 
@@ -49,27 +48,29 @@ function genplot() {
 	eps=${out}.eps
 
 	src=yahoo
-	#if [ $symbol == "GOOG"]; then # or $symbol == "TWTR" ]
-	#	src=google
-	#fi
-
-	cmd="emf($emf)"
-
-	if [ $1 == "png" ]; then
-		figure=$png
-		cmd="png('$figure')"
-	elif [ $1 == "eps" ]; then
-		figure=$eps
-		cmd="postscript('$figure')"
-	elif [ $1 == "emf" ]; then
-		figure=$emf
-		cmd="emf('$figure')"
+	if [ $symbol == "GOOG" ]; then # or $symbol == "TWTR" ]
+		src=google
 	fi
+
+	cmd="png('$png')"
+
+	#if [ $1 == "png" ]; then
+#		figure=$png
+#		cmd="png('$figure')"
+#	elif [ $1 == "eps" ]; then
+#		figure=$eps
+#		cmd="postscript('$figure')"
+#	elif [ $1 == "emf" ]; then
+#		figure=$emf
+#		cmd="emf('$figure')"
+#	fi
 	
-	hmm
+#	hmm
 }
 
 function hmm() {
+	config
+
 cat >$script << EOF
 require(devEMF)
 library(quantmod)
@@ -77,9 +78,13 @@ library(RHmm)
 library(parallel)
 #$cmd
 
-getSymbols("${name}", src = "google")
+getSymbols("${name}", src = "$src", from = "$startdate", to = "$testend")
+#getSymbols("${name}", src = "google")
 #getSymbols("${name}")
+print(head(${name}))
+print(tail(${name}))
 chartSeries(${name}, theme="white")
+
 #trainset <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 trainsetraw <- window(${name}, start = as.Date("$startdate"), end = as.Date("$enddate"))
 print(ncol(trainsetraw)-1)
@@ -162,12 +167,13 @@ for (i in 1: rows) {
 	print(testset[i, ])
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
+	#diff = (abs ((pred - actual)/ actual))[1,]\$${name}.Close
 	diff = (abs ((pred - actual)/ actual))[1,]\$${name}.Open
-	#print (diff)
+#	print (diff)
 	#MAPEsum <- MAPEsum + diff\$${name}.Open
 	MAPEsum <- sum(MAPEsum, diff[1,1])
 	#MAPEsum = MAPEsum + abs((pred - actual)/todayclose)
-	#print(MAPEsum)
+#	print(MAPEsum)
 	#MAPE <- MAPEsum*100/rows
 	#print(MAPE)
 
@@ -197,8 +203,8 @@ print(paste0("[Stat] Rows = ", rows))
 #print(rows)
 
 MAPE <- MAPEsum*100/rows
-print("[Stat] MAPE = ", MAPE)
-#cat("[Stat] MAPE = ", MAPE)
+#print(paste0("[Stat] MAPEsum = ", MAPEsum))
+print(paste0("[Stat] MAPE = ", MAPE))
 #print(MAPE)
 
 actuals <- testset\$${name}.Close
@@ -218,6 +224,10 @@ chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), nam
 #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
 #chartSeries(testset)
 
+# plot eps
+postscript('$eps')
+chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "${name}", legend = "Actual",
+	TA = "addTA(testset[1:rows, ncol(testset)], on = 1, col='red')") # 
 EOF
 
         R CMD BATCH $script
@@ -246,9 +256,10 @@ do
 	echo $sym
 	symbol=$sym
 
-	sma
-	ewma	
+	#sma
+	#ewma	
 
+	hmm 
 	#genplot png
 	#genplot eps
 	#genplot emf
