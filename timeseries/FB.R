@@ -10,9 +10,8 @@
 	actuals = Cl( FB )
 	print(length(actuals))
 
-	pred = EMA( actuals, length(actuals) - 253 )
-	#ema = EMA( tail( Cl( FB ), 300 ), 200 )
-	#ema = cbind(tail(Cl(FB), 300), ema)
+	pred = EMA( actuals, 50 )
+	#pred = EMA( actuals, length(actuals) - 253 )
 	ema = cbind(actuals, pred)
 	print(tail(ema, 255))
 	#print( as.numeric( last( spyEMA ) ) )

@@ -8,10 +8,10 @@ fi
 # Apple (NASDAQ:APPL), Google (NASDAQ:GOOG), Microsoft (NASDAQ:MSFT),
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
-#symbols=( AAPL GOOG MSFT AMZN LNKD FB )
+symbols=( AAPL GOOG MSFT AMZN LNKD FB )
 #symbols=( AAPL GOOG MSFT AMZN LNKD )
 #symbols=( FB )
-symbols=( GOOG FB )
+#symbols=( GOOG FB )
 #symbol=$1
 #symbol=AAPL # since 1980-12-12
 #symbol=GOOG # yahoo not working, google contains missing values NA
@@ -85,8 +85,9 @@ library(RHmm)
 library(parallel)
 #$cmd
 
+getSymbols("${name}" $symoptions)
 #getSymbols("${name}", src = "google")
-getSymbols("${name}", from = '$startdate')
+#getSymbols("${name}", from = '$startdate')
 #getSymbols("${name}")
 print(head(${name}))
 chartSeries(${name}, theme="white")
@@ -249,8 +250,10 @@ function sma () {
 # exponential weighted moving average
 function ewma () {
 	echo emwa
-	
+		
 	config
+	# number of past values
+	npast=50
 
 cat >$script << EOF
 	require(devEMF)
@@ -265,9 +268,8 @@ cat >$script << EOF
 	actuals = Cl( ${name} )
 	print(length(actuals))
 
-	pred = EMA( actuals, length(actuals) - 253 )
-	#ema = EMA( tail( Cl( ${name} ), 300 ), 200 )
-	#ema = cbind(tail(Cl(${name}), 300), ema)
+	pred = EMA( actuals, $npast )
+	#pred = EMA( actuals, length(actuals) - 253 )
 	ema = cbind(actuals, pred)
 	print(tail(ema, 255))
 	#print( as.numeric( last( spyEMA ) ) )

@@ -1,16 +1,17 @@
 	require(devEMF)
 	library(quantmod)
 
-	getSymbols("AMZN", from = '1900-01-01', to = '2014-04-01')
+	getSymbols("AMZN" , from = '1900-01-01', to = '2014-04-01', src = 'yahoo')
+	#getSymbols("AMZN", from = '1900-01-01', to = '2014-04-01', src = 'yahoo')
+	#getSymbols("AMZN", src = 'yahoo')
 	print(head(AMZN))
 	print(tail(AMZN))
 
 	actuals = Cl( AMZN )
 	print(length(actuals))
 
-	pred = EMA( actuals, length(actuals) - 253 )
-	#ema = EMA( tail( Cl( AMZN ), 300 ), 200 )
-	#ema = cbind(tail(Cl(AMZN), 300), ema)
+	pred = EMA( actuals, 50 )
+	#pred = EMA( actuals, length(actuals) - 253 )
 	ema = cbind(actuals, pred)
 	print(tail(ema, 255))
 	#print( as.numeric( last( spyEMA ) ) )
