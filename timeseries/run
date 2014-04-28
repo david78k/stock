@@ -9,8 +9,9 @@ fi
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
 #symbols=( AAPL GOOG MSFT AMZN LNKD FB )
-#symbols=( MSFT AMZN LNKD FB )
-symbols=( FB )
+#symbols=( AAPL GOOG MSFT AMZN LNKD )
+#symbols=( FB )
+symbols=( GOOG )
 #symbol=$1
 #symbol=AAPL # since 1980-12-12
 #symbol=GOOG # yahoo not working, google contains missing values NA
@@ -51,9 +52,10 @@ function config() {
 	eps=${out}.eps
 
 	src=yahoo
-	#if [ $symbol == "GOOG"]; then # or $symbol == "TWTR" ]
-	#	src=google
-	#fi
+	if [ $symbol == "GOOG" ]; then # or $symbol == "TWTR" ]
+		src=google
+		#symoptions("${name}", from = '$startdate', to = '$testend', src = '$src')
+	fi
 
 	cmd="png('$png')"
 
@@ -205,7 +207,7 @@ print(paste0("[Stat] Rows = ", rows))
 #print(rows)
 
 MAPE <- MAPEsum*100/rows
-print("[Stat] MAPE = ", MAPE)
+print(paste0("[Stat] MAPE = ", MAPE))
 #cat("[Stat] MAPE = ", MAPE)
 #print(MAPE)
 
@@ -247,13 +249,14 @@ function ewma () {
 	echo emwa
 	
 	config
+
 cat >$script << EOF
 	require(devEMF)
 	library(quantmod)
-	library(RHmm)
-	library(parallel)
 
-	getSymbols("${name}", from = '$startdate', to = '$testend')
+	getSymbols("${name}", $symoptions)
+	#getSymbols("${name}", from = '$startdate', to = '$testend', src = '$src')
+	#getSymbols("${name}", src = '$src')
 	print(head(${name}))
 	print(tail(${name}))
 
@@ -274,26 +277,21 @@ cat >$script << EOF
 	print (actual)
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-	diff = (abs ((pred - actual)/ actual))
-	#diff = (abs ((pred - actual)/ actual))[1,]\$${name}.Open
+	diff = abs ((pred - actual)/ actual)
 	print (diff)
-	#MAPEsum <- MAPEsum + diff\$${name}.Open
-	#MAPEsum <- sum(MAPEsum, diff[1,1])
-	#MAPEsum = MAPEsum + abs((pred - actual)/todayclose)
-	#print(MAPEsum)
-	#MAPE <- MAPEsum*100/rows
-	#print(MAPE)
-	#MAPE <- MAPEsum*100/rows
-	#print("[Stat] MAPE = ", MAPE)
+	MAPEsum = sum(diff)
+	print(MAPEsum)
+	rows = length(diff)
+	print(paste0("[Stat] Rows = ", rows))
+	MAPE <- MAPEsum*100/rows
+	print(paste0("[Stat] MAPE = ", MAPE))
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
-	#NRMSEsum <- sum(NRMSEsum, (pred - actual)^2) 
-
-	#actuals <- testset\$${name}.Close
-	#ymax = max (actuals)
-	#ymin = min (actuals)
-	#NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
-	#print(paste0("[Stat] NRMSE = ", NRMSE))
+	NRMSEsum <- sum((pred - actual)^2) 
+	ymax = max (actual)
+	ymin = min (actual)
+	NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
+	print(paste0("[Stat] NRMSE = ", NRMSE))
 EOF
 
         R CMD BATCH $script

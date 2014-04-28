@@ -849,8 +849,7 @@ Loading required package: nlme
 2014-04-01         50.39105
 > 
 > 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-> 	diff = (abs ((pred - actual)/ actual))
-> 	#diff = (abs ((pred - actual)/ actual))[1,]$FB.Open
+> 	diff = abs ((pred - actual)/ actual)
 > 	print (diff)
               FB.Close
 2013-04-02 0.011753468
@@ -1106,24 +1105,24 @@ Loading required package: nlme
 2014-03-28 0.195784816
 2014-03-31 0.198155250
 2014-04-01 0.242681028
-> 	#MAPEsum <- MAPEsum + diff$FB.Open
-> 	#MAPEsum <- sum(MAPEsum, diff[1,1])
-> 	#MAPEsum = MAPEsum + abs((pred - actual)/todayclose)
-> 	#print(MAPEsum)
-> 	#MAPE <- MAPEsum*100/rows
-> 	#print(MAPE)
-> 	#MAPE <- MAPEsum*100/rows
-> 	#print("[Stat] MAPE = ", MAPE)
+> 	MAPEsum = sum(diff)
+> 	print(MAPEsum)
+[1] 76.22223
+> 	rows = length(diff)
+> 	print(paste0("[Stat] Rows = ", rows))
+[1] "[Stat] Rows = 253"
+> 	MAPE <- MAPEsum*100/rows
+> 	print(paste0("[Stat] MAPE = ", MAPE))
+[1] "[Stat] MAPE = 30.1273628121148"
 > 
 > 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
-> 	#NRMSEsum <- sum(NRMSEsum, (pred - actual)^2) 
-> 
-> 	#actuals <- testset$FB.Close
-> 	#ymax = max (actuals)
-> 	#ymin = min (actuals)
-> 	#NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
-> 	#print(paste0("[Stat] NRMSE = ", NRMSE))
+> 	NRMSEsum <- sum((pred - actual)^2) 
+> 	ymax = max (actual)
+> 	ymin = min (actual)
+> 	NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
+> 	print(paste0("[Stat] NRMSE = ", NRMSE))
+[1] "[Stat] NRMSE = 0.0334226231623992"
 > 
 > proc.time()
    user  system elapsed 
-  0.922   0.050   1.096 
+  0.927   0.048   1.137 
