@@ -141,7 +141,7 @@ sprintf("[Stat] NRMSE = %.7f", NRMSE)
 # compare actual closing value and predicted closing value
 #chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "FB", legend = "Actual",
 chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "FB", legend = "Actual",
-	TA = "addTA(testset[1:rows, ncol(testset)], legend='Predicted', on = 1, col='red')") # 
+	TA = "addTA(testset[1:rows, ncol(testset)], legend='Predicted', type='candlesticks', on = 1, col='red')") # 
 #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
 #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
 #chartSeries(testset)
