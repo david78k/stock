@@ -12,7 +12,7 @@ fi
 #symbols=( AAPL MSFT AMZN LNKD GOOG )
 symbols=( FB )
 #symbols=( GOOG FB )
-#symbol=$1
+
 #symbol=AAPL # since 1980-12-12
 #symbol=GOOG # yahoo not working, google contains missing values NA
 symbol=FB # since 2012-05-18
@@ -37,7 +37,6 @@ xlabel="DATE"
 ylabel="STOCK PRICE ($)"
 #ylabel="CLOSE VALUE"
 
-#function genplot() {
 function config() {
 	name=$symbol
 	out=$symbol # Gaussian mixture
@@ -91,6 +90,7 @@ test <- cbind(testset\$${name}.Close - testset\$${name}.Open)
 print(testset)
 
 # Baum-Welch Algorithm to find the model for the given observations
+# Gaussian mixture HMM: nStates = number of states, nMixt = number of Gaussian distributions 
 hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
 print(hm_model)
 
@@ -101,20 +101,10 @@ print(VitPath)
 # scatter plot
 $cmd
 ${name}_Predict <- cbind(trainset\$${name}.Close, VitPath\$states)
-#${name}_Predict <- cbind(${name}_Subset\$${name}.Close, VitPath\$states)
-#print(${name}_Subset[,4] - ${name}_Predict [,1])
-
-# predict next stock value m = nMixt, n = nStates
-#sum(a$HMM$transMat[last(v$states),] * .colSums((matrix(unlist(a$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(a$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
-# gaussian mixture HMM: nrow = nMixture, ncol = nStates
 
 # add a new colum "Pred"
 testset <- cbind(testset, Pred = 0)
-#testset <- cbind(testset\$${name}.Close, Pred = 0)
 #print(testset)
-
-#chartSeries(testset, theme="white")
-#chartSeries(test, theme="white")
 
 # number of rows of test set data
 rows = nrow(testset)
@@ -126,8 +116,6 @@ NRMSEsum = 0
 #for (i in 1: 251) {
 #for (i in 1: 3) {
 for (i in 1: rows) {
-	#if (i == rows) break
-
 	if(i != 0) {
 		testrow <- testset[i, ]
 		#print(testrow)
@@ -149,26 +137,13 @@ for (i in 1: rows) {
 	print(testset[i, ])
 
 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-	#diff = (abs ((pred - actual)/ actual))[1,]\$${name}.Close
 	diff = (abs ((pred - actual)/ actual))[1,]\$${name}.Open
 	#print (diff)
-	#MAPEsum <- MAPEsum + diff\$${name}.Open
 	MAPEsum <- sum(MAPEsum, diff[1,1])
-	#MAPEsum = MAPEsum + abs((pred - actual)/todayclose)
 	#print(MAPEsum)
-	#MAPE <- MAPEsum*100/rows
-	#print(MAPE)
 
 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
 	NRMSEsum <- sum(NRMSEsum, (pred - actual)^2) 
-
-	# ROC
-
-	# [Optional] Returns: sell or buy
-	# if stock would increase sell, otherwise buy
-
-	# single HMM
-	#sum(hm_model\$HMM\$transMat[last(VitPath\$states),] * .colSums((matrix(unlist(hm_model\$HMM\$distribution\$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model\$HMM\$distribution\$proportion), nrow=1,ncol=5)), m=1,n=5))
 
 	# update train data
 	train <- rbind (train, actual - todayopen)
