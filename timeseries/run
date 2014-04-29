@@ -9,8 +9,8 @@ fi
 #Facebook (NASDAQ:FB), Twitter (NYSE:TWTR), LinkedIn
 #(NYSE:LNKD), Amazon (NASDAQ:AMZN), Oracle (NYSE:ORCL), IBM (NYSE:IBM), Intel (NASDAQ:INT)
 #symbols=( AAPL GOOG MSFT AMZN LNKD FB )
-#symbols=( AAPL MSFT AMZN LNKD GOOG )
-symbols=( FB )
+symbols=( AAPL MSFT AMZN LNKD GOOG )
+#symbols=( FB )
 #symbols=( GOOG FB )
 
 #symbol=AAPL # since 1980-12-12
@@ -91,8 +91,8 @@ print(testset)
 
 # Baum-Welch Algorithm to find the model for the given observations
 # Gaussian mixture HMM: nStates = number of states, nMixt = number of Gaussian distributions 
-#hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
-hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE", control=list(verbose=1, init="KMEANS"))
+hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
+#hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE", control=list(verbose=1, init="KMEANS"))
 print(hm_model)
 
 # Viterbi Algorithm to find the most probable state sequence
