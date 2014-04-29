@@ -51,9 +51,6 @@ Loading required package: nlme
  This message is shown once per session and may be disabled by setting 
  options("getSymbols.warning4.0"=FALSE). See ?getSymbol for more details
 [1] "FB"
-> #getSymbols("FB", src = "google")
-> #getSymbols("FB", from = '1900-01-01')
-> #getSymbols("FB")
 > print(head(FB))
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted
 2012-05-18   42.05   45.00  38.00    38.23 573576400       38.23
@@ -515,7 +512,6 @@ Loading required package: nlme
 2013-04-01   25.63   25.89  25.28    25.53  22249300
 > 
 > #FB_Subset <- window(FB, start = as.Date("1900-01-01"), end = as.Date("2013-04-01"))
-> #FB_Train <- cbind(FB_Subset$FB.Close - FB_Subset$FB.Open, FB_Subset$FB.Volume)
 > train <- cbind(trainset$FB.Close - trainset$FB.Open)
 > #print(train)
 > 
@@ -778,13 +774,58 @@ Loading required package: nlme
 2014-04-01   60.46   62.66  60.24    62.62  59291000       62.62
 > 
 > # Baum-Welch Algorithm to find the model for the given observations
-> #hm_model <- HMMFit(obs = FB_Train, nStates = 5)
-> hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
+> # Gaussian mixture HMM: nStates = number of states, nMixt = number of Gaussian distributions 
+> #hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE")
+> hm_model <- HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE", control=list(verbose=1, init="KMEANS"))
+Iter num 0 - LLH :  -225.9442 -  Normalized LLH : -1.046038
+Iter num 0 - LLH :  -225.4454 -  Normalized LLH : -1.043729
+Iter num 1 - LLH :  -224.9656 -  Normalized LLH : -1.041508
+Iter num 2 - LLH :  -224.5079 -  Normalized LLH : -1.039388
+Iter num 3 - LLH :  -224.0878 -  Normalized LLH : -1.037444
+Iter num 4 - LLH :  -223.7201 -  Normalized LLH : -1.035741
+Iter num 5 - LLH :  -223.3978 -  Normalized LLH : -1.034249
+Iter num 6 - LLH :  -223.0809 -  Normalized LLH : -1.032782
+Iter num 7 - LLH :  -222.7069 -  Normalized LLH : -1.031050
+Iter num 8 - LLH :  -222.2323 -  Normalized LLH : -1.028853
+Iter num 9 - LLH :  -221.6804 -  Normalized LLH : -1.026298
+Iter num 10 - LLH :  -221.1660 -  Normalized LLH : -1.023917
+Iter num 11 - LLH :  -220.7780 -  Normalized LLH : -1.022121
+Iter num 12 - LLH :  -220.4834 -  Normalized LLH : -1.020757
+Iter num 13 - LLH :  -220.2378 -  Normalized LLH : -1.019619
+Iter num 14 - LLH :  -220.0249 -  Normalized LLH : -1.018634
+Iter num 15 - LLH :  -219.8284 -  Normalized LLH : -1.017724
+Iter num 16 - LLH :  -219.6331 -  Normalized LLH : -1.016820
+Iter num 17 - LLH :  -219.4287 -  Normalized LLH : -1.015873
+Iter num 18 - LLH :  -219.2086 -  Normalized LLH : -1.014855
+Iter num 19 - LLH :  -218.9695 -  Normalized LLH : -1.013748
+Iter num 20 - LLH :  -218.7099 -  Normalized LLH : -1.012546
+Iter num 21 - LLH :  -218.4291 -  Normalized LLH : -1.011246
+Iter num 22 - LLH :  -218.1254 -  Normalized LLH : -1.009840
+Iter num 23 - LLH :  -217.7950 -  Normalized LLH : -1.008310
+Iter num 24 - LLH :  -217.4362 -  Normalized LLH : -1.006649
+Iter num 25 - LLH :  -217.0629 -  Normalized LLH : -1.004921
+Iter num 26 - LLH :  -216.6657 -  Normalized LLH : -1.003082
+Iter num 27 - LLH :  -216.2267 -  Normalized LLH : -1.001050
+Iter num 28 - LLH :  -215.7225 -  Normalized LLH : -0.998715
+Iter num 29 - LLH :  -215.1653 -  Normalized LLH : -0.996136
+Iter num 30 - LLH :  -214.6360 -  Normalized LLH : -0.993685
+Iter num 31 - LLH :  -214.1123 -  Normalized LLH : -0.991260
+Iter num 32 - LLH :  -213.5964 -  Normalized LLH : -0.988872
+Iter num 33 - LLH :  -213.0918 -  Normalized LLH : -0.986536
+Iter num 34 - LLH :  -212.5434 -  Normalized LLH : -0.983997
+Iter num 35 - LLH :  -211.0080 -  Normalized LLH : -0.976889
+Iter num 36 - LLH :  -194.8541 -  Normalized LLH : -0.902102
+Iter num 37 - LLH :  -188.1417 -  Normalized LLH : -0.871026
+Iter num 38 - LLH :       -nan -  Normalized LLH :     -nan
+Warning message:
+In HMMFit(obs = train, nStates = 5, nMixt = 4, dis = "MIXTURE",  :
+  'KMEANS' initialization only for 'NORMAL' conditionnal distribution. 'RANDOM' init used instead.
+
 > print(hm_model)
 
 Call:
 ----
-HMMFit(obs = train, dis = "MIXTURE", nStates = 5, nMixt = 4)
+HMMFit(obs = train, dis = "MIXTURE", nStates = 5, nMixt = 4,     control = list(verbose = 1, init = "KMEANS"))
 
 Model:
 ------
@@ -793,7 +834,7 @@ Model:
 Baum-Welch algorithm status:
 ----------------------------
 
-NO CONVERGENCE AFTER 23 ITERATIONS
+NO CONVERGENCE AFTER 39 ITERATIONS
 
 PROBLEM IN BAUM-WELCH'S ALGORITHM
 
@@ -801,54 +842,54 @@ Last Estimation:
 ----------------
 
 Initial probabilities:
-           Pi 1          Pi 2         Pi 3          Pi 4 Pi 5
-  1.254249e-266 1.150655e-187 2.21258e-171 1.871506e-122    1
+  Pi 1 Pi 2 Pi 3          Pi 4 Pi 5
+     0    0    0 3.553191e-245    1
 
 Transition matrix:
-             State 1      State 2     State 3    State 4      State 5
-State 1 0.5241939155 0.2399587141 0.157640710 0.07820652 1.435120e-07
-State 2 0.5285767805 0.3459717956 0.091445200 0.03346934 5.368790e-04
-State 3 0.7110364816 0.0763923868 0.148100628 0.03055323 3.391727e-02
-State 4 0.4194365044 0.0475358389 0.072392765 0.43732115 2.331374e-02
-State 5 0.0003456641 0.0008428343 0.002581956 0.54354447 4.526851e-01
+            State 1      State 2      State 3      State 4      State 5
+State 1 0.002501995 1.926754e-03 9.949193e-01 6.519800e-04 1.692715e-09
+State 2 0.347351324 4.373971e-02 3.586939e-01 2.502151e-01 3.847417e-11
+State 3 0.187316163 4.284436e-01 3.663622e-01 1.787807e-02 3.455430e-14
+State 4 0.720646934 5.220286e-02 2.071315e-01 2.001871e-02 2.089383e-12
+State 5 0.142857971 2.275697e-14 1.982894e-14 9.182945e-12 8.571420e-01
 
 Conditionnal distribution parameters:
 
 Distribution parameters:
   State 1
-                mean       var      prop
-mixt.  1 -0.18027023 0.2857543 0.0929167
-mixt.  2  0.17666188 0.3333245 0.1698996
-mixt.  3  0.10939259 0.3088453 0.3134059
-mixt.  4  0.05626383 0.3064138 0.4237778
+               mean         var      prop
+mixt.  1 -0.4048855 0.169022792 0.0115545
+mixt.  2 -0.3929927 0.181490595 0.1325671
+mixt.  3 -0.4382300 0.003850077 0.2785312
+mixt.  4 -0.5971395 0.112018208 0.5773472
 
   State 2
-               mean        var       prop
-mixt.  1 -0.2046113 0.23954369 0.03897954
-mixt.  2 -0.4162265 0.05829342 0.12534562
-mixt.  3  0.2130020 0.66287004 0.40967699
-mixt.  4 -0.3113644 0.16592058 0.42599785
+               mean       var       prop
+mixt.  1 -0.3776588 0.2284028 0.04130388
+mixt.  2  0.6993148 0.7587318 0.27118926
+mixt.  3 -0.3372271 0.2511954 0.33086654
+mixt.  4 -0.2634310 0.2884793 0.35664032
 
   State 3
-                mean        var      prop
-mixt.  1  0.02551036 0.33461270 0.1010706
-mixt.  2  0.04733125 0.61087416 0.1080131
-mixt.  3 -0.30476415 0.30003229 0.3003563
-mixt.  4 -0.55613151 0.08635137 0.4905600
+               mean       var       prop
+mixt.  1 0.07420797 0.2706984 0.07001444
+mixt.  2 0.39047012 0.2904864 0.07165264
+mixt.  3 0.33134723 0.2065981 0.37725790
+mixt.  4 0.16433747 0.2515867 0.48107502
 
   State 4
-               mean       var       prop
-mixt.  1 -0.6014253 0.9208323 0.04968454
-mixt.  2 -0.7459232 0.6814961 0.24784999
-mixt.  3 -0.3531385 0.8368160 0.34343879
-mixt.  4  0.3790355 0.8450950 0.35902668
+                mean        var      prop
+mixt.  1 -0.06354016 0.48607473 0.1359831
+mixt.  2 -0.40701439 0.50155895 0.1886980
+mixt.  3 -0.27390734 0.03462089 0.2045292
+mixt.  4 -1.14600044 0.42689821 0.4707897
 
   State 5
-              mean           var         prop
-mixt.  1 -2.121277  3.583988e-01 0.0004232874
-mixt.  2 -2.712650  4.135167e-01 0.2225228125
-mixt.  3 -0.510000 -1.110223e-16 0.3095399959
-mixt.  4 -2.969197  4.744880e-01 0.4675139042
+              mean          var      prop
+mixt.  1 -0.990000 1.143088e-10 0.1367686
+mixt.  2  0.630000 0.000000e+00 0.1428533
+mixt.  3  0.080000 8.673617e-19 0.1428580
+mixt.  4 -2.625056 6.402677e-01 0.5775202
 
 
 Log-likelihood: NaN
@@ -859,15 +900,15 @@ AIC criterium: NaN
 > VitPath <- viterbi (hm_model, train)
 > print(VitPath)
 $states
-  [1] 4 4 4 4 4 4 4 4 4 4 1 3 1 3 1 1 1 1 1 2 2 1 1 1 1 3 1 1 1 3 1 1 1 1 1 3 1
- [38] 1 1 4 1 1 1 1 1 1 1 3 1 4 4 4 4 4 4 4 1 1 1 1 3 1 1 3 1 1 1 1 1 1 1 1 1 3
- [75] 1 1 1 1 1 1 1 1 1 3 1 1 1 1 1 3 1 3 1 1 1 1 1 3 1 1 1 1 1 1 1 1 3 1 1 1 3
-[112] 1 1 1 1 1 1 1 1 1 3 1 1 4 4 4 4 1 1 3 1 1 1 1 1 3 1 1 3 1 1 1 1 1 1 1 1 1
-[149] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1 1 1 3 1 1 1 1 1 4 4 4 4 4 1 1 1 1 1 1 1
-[186] 1 1 1 1 3 1 1 1 1 1 1 1 1 3 1 1 1 1 1 1 1 1 1 3 1 1 3 1 1 1 1
+  [1] 4 4 1 3 3 2 4 1 3 2 4 1 3 1 3 2 4 1 3 2 3 3 1 3 3 1 3 3 2 4 1 3 3 3 2 4 1
+ [38] 3 2 4 1 3 1 3 3 1 3 1 3 2 4 1 3 3 2 4 1 3 3 2 1 3 2 1 3 1 3 2 4 1 3 2 3 2
+ [75] 1 3 3 2 1 3 2 1 3 1 3 2 1 3 2 1 3 1 3 3 2 1 3 1 3 2 1 3 2 4 1 3 1 3 3 3 2
+[112] 4 1 3 3 2 3 2 1 3 1 3 3 2 3 2 1 3 2 1 3 3 3 3 3 1 3 2 1 3 3 2 1 3 2 3 3 1
+[149] 3 1 3 2 1 3 3 3 2 3 3 1 3 3 3 2 4 1 3 1 3 2 1 3 3 1 3 2 4 1 3 2 1 3 2 1 3
+[186] 3 2 3 2 4 1 3 2 1 3 3 2 4 1 3 1 3 2 1 3 1 3 2 1 3 2 1 3 2 1 3
 
 $logViterbiScore
-[1] -643.2477
+[1] -860.3916
 
 $logProbSeq
 [1] NaN
@@ -878,24 +919,10 @@ attr(,"class")
 > # scatter plot
 > png('FB.png')
 > FB_Predict <- cbind(trainset$FB.Close, VitPath$states)
-> #FB_Predict <- cbind(FB_Subset$FB.Close, VitPath$states)
-> #print(FB_Subset[,4] - FB_Predict [,1])
-> 
-> # predict next stock value m = nMixt, n = nStates
-> #sum(a[last(v),] * .colSums((matrix(unlist(a), nrow=4,ncol=5)) * (matrix(unlist(a), nrow=4,ncol=5)), m=4,n=5))
-> # gaussian mixture HMM: nrow = nMixture, ncol = nStates
-> #print(hm_model$HMM$transMat[last(VitPath$states),])
-> #print(hm_model$HMM$distribution$mean[, seq(1, ncol(hm_model$HMM$distribution$mean), by = 2)])
-> #print(unlist(hm_model$HMM$distribution$mean))
-> #print(matrix(unlist(hm_model$HMM$distribution$proportion[1,])))
 > 
 > # add a new colum "Pred"
 > testset <- cbind(testset, Pred = 0)
-> #testset <- cbind(testset$FB.Close, Pred = 0)
 > #print(testset)
-> 
-> #chartSeries(testset, theme="white")
-> #chartSeries(test, theme="white")
 > 
 > # number of rows of test set data
 > rows = nrow(testset)
@@ -907,8 +934,6 @@ attr(,"class")
 > #for (i in 1: 251) {
 > #for (i in 1: 3) {
 > for (i in 1: rows) {
-+ 	#if (i == rows) break
-+ 
 + 	if(i != 0) {
 + 		testrow <- testset[i, ]
 + 		#print(testrow)
@@ -919,7 +944,6 @@ attr(,"class")
 + 
 + 	# predict the closing value of today
 + 	change <- sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=4,ncol=5)), m=4,n=5))
-+ 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean[1,]), nrow=4,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion[1,]), nrow=4,ncol=5)), m=4,n=5))
 + 	print(change)
 + 
 + 	pred <- todayopen + change
@@ -931,26 +955,13 @@ attr(,"class")
 + 	print(testset[i, ])
 + 
 + 	# MAPE = sum(|pred - actual|/|actual|)*100/n
-+ 	#diff = (abs ((pred - actual)/ actual))[1,]$FB.Close
 + 	diff = (abs ((pred - actual)/ actual))[1,]$FB.Open
 + 	#print (diff)
-+ 	#MAPEsum <- MAPEsum + diff$FB.Open
 + 	MAPEsum <- sum(MAPEsum, diff[1,1])
-+ 	#MAPEsum = MAPEsum + abs((pred - actual)/todayclose)
 + 	#print(MAPEsum)
-+ 	#MAPE <- MAPEsum*100/rows
-+ 	#print(MAPE)
 + 
 + 	# NRMSE = sqrt(sum((pred - actual)^2) / n)
 + 	NRMSEsum <- sum(NRMSEsum, (pred - actual)^2) 
-+ 
-+ 	# ROC
-+ 
-+ 	# [Optional] Returns: sell or buy
-+ 	# if stock would increase sell, otherwise buy
-+ 
-+ 	# single HMM
-+ 	#sum(hm_model$HMM$transMat[last(VitPath$states),] * .colSums((matrix(unlist(hm_model$HMM$distribution$mean), nrow=1,ncol=5)) * (matrix(unlist(hm_model$HMM$distribution$proportion), nrow=1,ncol=5)), m=1,n=5))
 + 
 + 	# update train data
 + 	train <- rbind (train, actual - todayopen)
@@ -962,790 +973,786 @@ attr(,"class")
 + 	# Viterbi Algorithm to find the most probable state sequence
 + 	VitPath <- viterbi (hm_model, train)
 + }
-[1] -0.05976134
+[1] -0.03682527
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-02   25.77   26.12   25.3    25.42  35153300       25.42 25.71024
-[1] 0.1061005
+2013-04-02   25.77   26.12   25.3    25.42  35153300       25.42 25.73317
+[1] -0.09051479
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-03   25.83   26.39   25.7    26.25  48195200       26.25 25.73949
+[1] -0.08630489
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-04-03   25.83   26.39   25.7    26.25  48195200       26.25 25.9361
-[1] 0.3991382
+2013-04-04   26.62   27.23  26.11    27.07  82016800       27.07 26.5337
+[1] -0.4047919
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-04   26.62   27.23  26.11    27.07  82016800       27.07 27.01914
-[1] -0.1709562
+2013-04-05   26.86    27.8  26.61    27.39  64566600       27.39 26.45521
+[1] -0.1640323
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-05   26.86    27.8  26.61    27.39  64566600       27.39 26.68904
-[1] -0.3901688
+2013-04-08   27.19    27.2  26.63    26.85  27256000       26.85 27.02597
+[1] 0.09411852
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-08   27.19    27.2  26.63    26.85  27256000       26.85 26.79983
-[1] 0.07006892
+2013-04-09   26.58   26.89  26.42    26.59  21311100       26.59 26.67412
+[1] 0.04876871
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-09   26.58   26.89  26.42    26.59  21311100       26.59 26.65007
-[1] -0.01537813
+2013-04-10   27.01   27.84   26.9    27.57  45949400       27.57 27.05877
+[1] -0.08116887
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-10   27.01   27.84   26.9    27.57  45949400       27.57 26.99462
-[1] -0.0920496
+2013-04-11   27.48    28.1  27.25    28.02  33368500       28.02 27.39883
+[1] -0.1301821
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-11   27.48    28.1  27.25    28.02  33368500       28.02 27.38795
-[1] 0.1147952
+2013-04-12      28      28  27.24     27.4  28697400        27.4 27.86982
+[1] -0.05532157
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-15   27.16   27.48  26.36    26.52  30275400       26.52 27.10468
+[1] 0.1551905
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-16   26.81   27.11   26.4    26.92  27365900       26.92 26.96519
+[1] 0.001507143
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-17   26.65    27.2  26.39    26.63  26440600       26.63 26.65151
+[1] 0.2063319
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-18   26.82   26.82  25.15    25.69  39059000       25.69 27.02633
+[1] -0.005576566
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-19   25.62   25.96  25.33    25.73  20380900       25.73 25.61442
+[1] -0.05296455
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-22   25.81   26.36   25.7    25.97  25687600       25.97 25.75704
+[1] 0.002244075
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-23   26.22   26.33  25.77    25.98  25191500       25.98 26.22224
+[1] 0.05652447
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-24   25.93    26.4   25.8    26.11  19729900       26.11 25.98652
+[1] -0.04959206
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-25   26.07    26.4     26    26.14  17150000       26.14 26.02041
+[1] -0.08571646
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-26    26.6   27.62   26.6    26.85  33018000       26.85 26.51428
+[1] -0.1017139
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-04-29   27.16   27.41  26.86    26.98  29201100       26.98 27.05829
+[1] 0.01680037
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-04-12      28      28  27.24     27.4  28697400        27.4 28.1148
-[1] -0.01678343
+2013-04-30   27.13   27.85  27.01    27.77  36245700       27.77 27.1468
+[1] -0.07818581
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-15   27.16   27.48  26.36    26.52  30275400       26.52 27.14322
-[1] 0.2092263
+2013-05-01   27.85   27.92  27.31    27.43  64567600       27.43 27.77181
+[1] -0.01018376
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-16   26.81   27.11   26.4    26.92  27365900       26.92 27.01923
-[1] -0.08394119
+2013-05-02   28.01   29.02  27.98    28.97 104257000       28.97 27.99982
+[1] -0.03996705
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-17   26.65    27.2  26.39    26.63  26440600       26.63 26.56606
-[1] 0.01327712
+2013-05-03   29.04   29.07  28.15    28.31  58506400       28.31 29.00003
+[1] -0.5625336
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-18   26.82   26.82  25.15    25.69  39059000       25.69 26.83328
-[1] -0.1884958
+2013-05-06   28.33   28.46  27.48    27.57  43939400       27.57 27.76747
+[1] 0.02342135
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-07   27.55   27.85  26.85    26.89  41259100       26.89 27.57342
+[1] 0.1923758
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-08   26.88    27.3  26.65    27.12  34654900       27.12 27.07238
+[1] -0.1259461
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-09   27.08   27.55  26.85    27.04  33457200       27.04 26.95405
+[1] 0.116395
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-10   27.14    27.3  26.57    26.68  30847100       26.68 27.25639
+[1] -0.071788
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-13    26.6   27.33  26.53    26.82  29068800       26.82 26.52821
+[1] 0.2673307
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-14   26.89   27.28  26.82    27.07  24930300       27.07 27.15733
+[1] -0.04021153
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-15   26.92   26.99   26.4     26.6  30299800        26.6 26.87979
+[1] -0.03938432
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-16   26.48   26.55   25.9    26.13  35499100       26.13 26.44062
+[1] -0.07444984
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-17    26.4    26.6   26.2    26.25  29462700       26.25 26.32555
+[1] -0.112267
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-20   26.18   26.19  25.69    25.76  42402900       25.76 26.06773
+[1] -0.11174
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-21   25.87   26.08  25.59    25.66  26261300       25.66 25.75826
+[1] -0.09105318
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-22   25.65   25.85  24.92    25.16  45314500       25.16 25.55895
+[1] 0.2902782
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-23    24.8   25.53  24.77    25.06  37663100       25.06 25.09028
+[1] -0.0555587
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-24   24.97   24.97  24.08    24.31  58727900       24.31 24.91444
+[1] -0.1353146
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-28   24.54   24.54  23.92     24.1  50079700        24.1 24.40469
+[1] -0.04527973
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-29   23.79   23.81  23.26    23.32  64237800       23.32 23.74472
+[1] -0.06683617
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-30   24.13   24.78  23.93    24.55  60733200       24.55 24.06316
+[1] -0.02120821
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-05-31   24.63   24.95  24.27    24.35  35925000       24.35 24.60879
+[1] -0.1120613
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-03   24.27   24.32  23.71    23.85  35733800       23.85 24.15794
+[1] -0.1133894
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-04   23.89   23.93  23.32    23.52  34760800       23.52 23.77661
+[1] -0.1166163
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-05   23.35   23.71  22.79     22.9  53819700        22.9 23.23338
+[1] 0.06171668
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-06   22.99   23.09  22.67    22.97  31260700       22.97 23.05172
+[1] -0.1609844
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-07   23.03    23.4  22.86    23.29  38699200       23.29 22.86902
+[1] 0.01507339
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-10   24.06    24.6  23.99    24.33  58393000       24.33 24.07507
+[1] -0.03664927
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-11   24.03   24.35     24    24.03  29885900       24.03 23.99335
+[1] -0.09483654
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-12   24.16   24.26  23.58    23.77  26445800       23.77 24.06516
+[1] 0.1088795
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-13   23.72   23.83  23.27    23.73  31189300       23.73 23.82888
+[1] -0.2615249
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-14   23.56   23.89  23.26    23.63  30677100       23.63 23.29848
+[1] 0.007439086
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-17   23.91   24.25  23.75    24.02  33664500       24.02 23.91744
+[1] -0.02608311
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-18   24.09   24.69  24.08    24.21  36709100       24.21 24.06392
+[1] -0.05229063
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-19    24.2   25.19   24.1    24.31  31790600       24.31 24.14771
+[1] -0.124474
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-20   24.28   24.75  23.65     23.9  42765600        23.9 24.15553
+[1] -0.07576567
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-21   24.59    24.7  24.05    24.53  45833900       24.53 24.51423
+[1] -0.1358462
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-24   23.95   24.11  23.38    23.94  40626000       23.94 23.81415
+[1] -0.3554229
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-25   24.14   24.43  24.04    24.25  24713200       24.25 23.78458
+[1] -0.02235472
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-26   24.51   24.65  23.99    24.16  29890300       24.16 24.48765
+[1] -0.1242713
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-27   24.24   24.84  24.21    24.66  34694100       24.66 24.11573
+[1] -0.1236523
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-06-28   24.68   24.98  24.42    24.88  96778900       24.88 24.55635
+[1] -0.04441667
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-01   24.97   25.06  24.62    24.81  20582200       24.81 24.92558
+[1] -0.05268464
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-02    24.7   24.77   24.3    24.41  18394100       24.41 24.64732
+[1] 0.06420733
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-03   24.22   24.71  24.15    24.52  10404400       24.52 24.28421
+[1] -0.02267513
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-05   24.65   24.66   24.2    24.37  20229500       24.37 24.62732
+[1] 0.08463056
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-08   24.47   25.04  24.42    24.71  27064600       24.71 24.55463
+[1] 0.1522498
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-09   25.07   25.49  25.03    25.48  30387900       25.48 25.22225
+[1] -0.2573373
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-10   25.58   25.83  25.47     25.8  26721800        25.8 25.32266
+[1] -0.07663978
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-11   25.96      26  25.45    25.81  26777400       25.81 25.88336
+[1] 0.09188119
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-12   25.74   25.93  25.55    25.91  16537900       25.91 25.83188
+[1] -0.1930218
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-15   25.93   26.43  25.65    26.28  24234000       26.28 25.73698
+[1] 0.6481663
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-16   26.39   26.75  26.01    26.32  30817600       26.32 27.03817
+[1] 0.06013471
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-17   26.37   26.78   26.3    26.65  21518500       26.65 26.43013
+[1] -0.09436421
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-18   26.75   26.77  26.12    26.18  24806900       26.18 26.65564
+[1] -0.08481737
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-19   25.82   26.11   25.6    25.88  46539700       25.88 25.73518
+[1] -0.07233329
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-22   25.99   26.13  25.72    26.05  27526300       26.05 25.91767
+[1] -0.3607502
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-23    26.1    26.3  25.97    26.13  28221600       26.13 25.73925
+[1] -0.02321835
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-24   26.32   26.53  26.05    26.51  82635600       26.51 26.29678
+[1] -0.07677134
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-25   33.54   34.88  32.75    34.36 365457900       34.36 33.46323
+[1] -0.07385194
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-26   33.77   34.73  33.56    34.01 136028900       34.01 33.69615
+[1] 0.123839
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-07-29   34.07   35.63  34.01    35.43 124718800       35.43 34.19384
+[1] -0.08189598
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-04-19   25.62   25.96  25.33    25.73  20380900       25.73 25.4315
-[1] 0.07124068
+2013-07-30   35.65   37.96  35.32    37.63 173582800       37.63 35.5681
+[1] 0.01013438
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-22   25.81   26.36   25.7    25.97  25687600       25.97 25.88124
-[1] 0.002811187
+2013-07-31   37.96   38.31  36.33     36.8 154828700        36.8 37.97013
+[1] -0.03380783
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-23   26.22   26.33  25.77    25.98  25191500       25.98 26.22281
-[1] 0.05954807
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-24   25.93    26.4   25.8    26.11  19729900       26.11 25.98955
-[1] -0.3817703
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-25   26.07    26.4     26    26.14  17150000       26.14 25.68823
-[1] -0.05109055
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-26    26.6   27.62   26.6    26.85  33018000       26.85 26.54891
-[1] -0.05936726
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-29   27.16   27.41  26.86    26.98  29201100       26.98 27.10063
-[1] 0.01234179
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-04-30   27.13   27.85  27.01    27.77  36245700       27.77 27.14234
-[1] -0.01661929
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-01   27.85   27.92  27.31    27.43  64567600       27.43 27.83338
-[1] -0.1911986
+2013-08-01    37.3   38.29  36.92    37.49 106066500       37.49 37.26619
+[1] -0.1528977
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-05-02   28.01   29.02  27.98    28.97 104257000       28.97 27.8188
-[1] -0.1428022
+2013-08-02   37.66   38.49   37.5    38.05  73058500       38.05 37.5071
+[1] -0.01672099
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-08-05   38.43   39.32  38.25    39.19  79994800       39.19 38.41328
+[1] -0.369261
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-08-06   39.11   39.25  37.94    38.55  63950800       38.55 38.74074
+[1] 0.01420481
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-05-03   29.04   29.07  28.15    28.31  58506400       28.31 28.8972
-[1] -0.00583946
+2013-08-07   38.61   38.94   37.7    38.87  68854800       38.87 38.6242
+[1] -0.08998169
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-06   28.33   28.46  27.48    27.57  43939400       27.57 28.32416
-[1] -0.03056397
+2013-08-08   39.13   39.19  38.43    38.54  41301000       38.54 39.04002
+[1] -0.0517613
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-07   27.55   27.85  26.85    26.89  41259100       26.89 27.51944
-[1] -0.3022787
+2013-08-09   38.59   38.74  38.01     38.5  43532300        38.5 38.53824
+[1] -0.03714895
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-08   26.88    27.3  26.65    27.12  34654900       27.12 26.57772
-[1] -0.1320085
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-09   27.08   27.55  26.85    27.04  33457200       27.04 26.94799
-[1] -0.01610301
+2013-08-12    38.2    38.5   38.1    38.22  31161000       38.22 38.16285
+[1] -0.07520486
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-05-10   27.14    27.3  26.57    26.68  30847100       26.68 27.1239
-[1] 0.026555
+2013-08-13   38.24   38.32  36.77    37.02  65379200       37.02 38.1648
+[1] -0.06436021
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-13    26.6   27.33  26.53    26.82  29068800       26.82 26.62656
-[1] -0.1424804
+2013-08-14   36.83   37.55  36.62    36.65  48423900       36.65 36.76564
+[1] -0.02955904
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-14   26.89   27.28  26.82    27.07  24930300       27.07 26.74752
-[1] -0.05461174
+2013-08-15   36.36   37.07  36.02    36.56  56521100       36.56 36.33044
+[1] -0.262251
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-15   26.92   26.99   26.4     26.6  30299800        26.6 26.86539
-[1] 0.07791529
+2013-08-16   36.97   37.49   36.9    37.08  45840800       37.08 36.70775
+[1] 0.1608311
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-16   26.48   26.55   25.9    26.13  35499100       26.13 26.55792
-[1] 0.1389206
+2013-08-19   37.43   38.28  37.14    37.81  57609600       37.81 37.59083
+[1] -0.01984431
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-17    26.4    26.6   26.2    26.25  29462700       26.25 26.53892
-[1] -0.05778083
+2013-08-20   38.35   38.58  37.69    38.41  57995200       38.41 38.33016
+[1] -0.1411195
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-20   26.18   26.19  25.69    25.76  42402900       25.76 26.12222
-[1] -0.01697725
+2013-08-21   38.38   38.85  38.15    38.32  46116900       38.32 38.23888
+[1] -0.06614081
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-21   25.87   26.08  25.59    25.66  26261300       25.66 25.85302
-[1] -0.07328423
+2013-08-22   38.37   38.75  38.34    38.55  21931200       38.55 38.30386
+[1] -0.03449406
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-22   25.65   25.85  24.92    25.16  45314500       25.16 25.57672
-[1] 0.07538333
+2013-08-23      39   40.63  38.93    40.55  86442300       40.55 38.96551
+[1] -0.2475305
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-23    24.8   25.53  24.77    25.06  37663100       25.06 24.87538
-[1] -0.06852397
+2013-08-26    40.9   41.94  40.62    41.34  94162400       41.34 40.65247
+[1] -0.06365888
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-24   24.97   24.97  24.08    24.31  58727900       24.31 24.90148
-[1] -0.09292665
+2013-08-27   40.68    41.2  39.42    39.64  72695100       39.64 40.61634
+[1] -0.02131325
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-28   24.54   24.54  23.92     24.1  50079700        24.1 24.44707
-[1] 0.1504876
+2013-08-28   39.96   40.85  39.88    40.55  57918200       40.55 39.93869
+[1] -0.2977587
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-29   23.79   23.81  23.26    23.32  64237800       23.32 23.94049
-[1] -0.06008731
+2013-08-29   40.89   41.78   40.8    41.28  58303400       41.28 40.59224
+[1] -0.03805823
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-30   24.13   24.78  23.93    24.55  60733200       24.55 24.06991
-[1] -0.01112787
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-05-31   24.63   24.95  24.27    24.35  35925000       24.35 24.61887
-[1] -0.00248398
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-03   24.27   24.32  23.71    23.85  35733800       23.85 24.26752
-[1] 0.04209821
+2013-08-30   42.02   42.26  41.06    41.29  67735100       41.29 41.98194
+[1] 0.0652031
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-06-04   23.89   23.93  23.32    23.52  34760800       23.52 23.9321
-[1] -0.08094898
+2013-09-03   41.84   42.16  41.51    41.87  48774900       41.87 41.9052
+[1] -0.1476151
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-05   23.35   23.71  22.79     22.9  53819700        22.9 23.26905
-[1] 0.04092816
+2013-09-04   42.01   42.17  41.44    41.78  42581900       41.78 41.86238
+[1] -0.07830524
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-06   22.99   23.09  22.67    22.97  31260700       22.97 23.03093
-[1] -0.1257706
+2013-09-05   41.79   42.77  41.77    42.66  50035400       42.66 41.71169
+[1] -0.0514273
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-07   23.03    23.4  22.86    23.29  38699200       23.29 22.90423
-[1] -0.1401426
+2013-09-06   43.09   44.61   42.4    43.95 117535700       43.95 43.03857
+[1] -0.01266698
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-10   24.06    24.6  23.99    24.33  58393000       24.33 23.91986
-[1] -0.001584956
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-11   24.03   24.35     24    24.03  29885900       24.03 24.02842
-[1] 0.1084044
+2013-09-09   44.36   44.79   43.7    44.04  75794700       44.04 44.34733
+[1] 0.08310108
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-06-12   24.16   24.26  23.58    23.77  26445800       23.77 24.2684
-[1] 0.2096904
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-13   23.72   23.83  23.27    23.73  31189300       23.73 23.92969
-[1] -0.08471228
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-14   23.56   23.89  23.26    23.63  30677100       23.63 23.47529
-[1] -0.1290984
+2013-09-10   44.24   44.26  43.23     43.6  54540300        43.6 44.3231
+[1] -0.1883981
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-06-17   23.91   24.25  23.75    24.02  33664500       24.02 23.7809
-[1] 0.02189291
+2013-09-11   43.39   45.09  43.11    45.04  72328300       45.04 43.2016
+[1] -0.04799498
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-18   24.09   24.69  24.08    24.21  36709100       24.21 24.11189
-[1] -0.2517197
+2013-09-12   45.53   45.62  44.65    44.75  68072300       44.75 45.48201
+[1] 0.05615331
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-19    24.2   25.19   24.1    24.31  31790600       24.31 23.94828
-[1] 0.04219191
+2013-09-13   45.04   45.08  43.93    44.31  52765300       44.31 45.09615
+[1] -0.04381369
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-20   24.28   24.75  23.65     23.9  42765600        23.9 24.32219
-[1] -5.579272e-05
+2013-09-16   44.85   44.94  42.43    42.51  70424200       42.51 44.80619
+[1] -0.03684187
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-21   24.59    24.7  24.05    24.53  45833900       24.53 24.58994
-[1] -0.1670457
+2013-09-17    42.5   45.44  42.43    45.07  91934600       45.07 42.46316
+[1] 0.1780432
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-24   23.95   24.11  23.38    23.94  40626000       23.94 23.78295
-[1] -0.1707879
+2013-09-18   44.84   45.47   44.4    45.23  79317000       45.23 45.01804
+[1] -0.1396504
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-25   24.14   24.43  24.04    24.25  24713200       24.25 23.96921
-[1] -0.0899376
+2013-09-19   45.51   46.05  45.23    45.98  63972400       45.98 45.37035
+[1] 0.2477532
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-26   24.51   24.65  23.99    24.16  29890300       24.16 24.42006
-[1] -0.0129921
+2013-09-20   46.32    47.6  45.74    47.49 115508400       47.49 46.56775
+[1] 0.01902588
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-27   24.24   24.84  24.21    24.66  34694100       24.66 24.22701
-[1] -0.4067306
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-06-28   24.68   24.98  24.42    24.88  96778900       24.88 24.27327
-[1] -0.06481073
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-01   24.97   25.06  24.62    24.81  20582200       24.81 24.90519
-[1] -0.1504311
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-02    24.7   24.77   24.3    24.41  18394100       24.41 24.54957
-[1] -0.09850475
+2013-09-23   47.28   47.55  46.29    47.19  75177000       47.19 47.29903
+[1] 0.2976964
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-07-03   24.22   24.71  24.15    24.52  10404400       24.52 24.1215
-[1] -0.2002684
+2013-09-24   48.51   49.66  48.16    48.45 136716100       48.45 48.8077
+[1] -0.06518179
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-05   24.65   24.66   24.2    24.37  20229500       24.37 24.44973
-[1] -0.03043395
+2013-09-25   49.23   49.54  48.46    49.46  87879700       49.46 49.16482
+[1] -0.09301692
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-08   24.47   25.04  24.42    24.71  27064600       24.71 24.43957
-[1] -0.1426816
+2013-09-26   50.01    50.6   49.5    50.39  98220100       50.39 49.91698
+[1] 0.01834771
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-09   25.07   25.49  25.03    25.48  30387900       25.48 24.92732
-[1] -0.3515975
+2013-09-27   50.29   51.28  49.86    51.24  81410500       51.24 50.30835
+[1] 0.001045654
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-09-30   50.14    51.6   49.8    50.23 100095000       50.23 50.14105
+[1] -0.05002074
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-10-01   49.97   51.03  49.45    50.42  98114000       50.42 49.91998
+[1] 0.1185018
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-07-10   25.58   25.83  25.47     25.8  26721800        25.8 25.2284
-[1] -0.1024576
+2013-10-02   50.13    51.1  49.95    50.28  62834000       50.28 50.2485
+[1] -0.1834631
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-11   25.96      26  25.45    25.81  26777400       25.81 25.85754
-[1] -0.08318739
+2013-10-03   50.47   50.72  49.06    49.18  82045000       49.18 50.28654
+[1] 0.1747286
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-12   25.74   25.93  25.55    25.91  16537900       25.91 25.65681
-[1] -0.07984821
+2013-10-04   49.77   51.16  49.57    51.04  74447000       51.04 49.94473
+[1] 0.159336
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-15   25.93   26.43  25.65    26.28  24234000       26.28 25.85015
-[1] -0.06341325
+2013-10-07   50.73   51.29   50.4    50.52  57204000       50.52 50.88934
+[1] 0.2041599
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-16   26.39   26.75  26.01    26.32  30817600       26.32 26.32659
-[1] 0.1302145
+2013-10-08    50.6    50.6  47.08    47.14 136081000       47.14 50.80416
+[1] -0.2002777
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-17   26.37   26.78   26.3    26.65  21518500       26.65 26.50021
-[1] -0.04272528
+2013-10-09   47.38   47.84  45.26    46.77 147297000       46.77 47.17972
+[1] -0.7576694
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-18   26.75   26.77  26.12    26.18  24806900       26.18 26.70727
-[1] -0.09126037
+2013-10-10   47.87   49.68  47.83    49.05  99774000       49.05 47.11233
+[1] -0.1185281
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-19   25.82   26.11   25.6    25.88  46539700       25.88 25.72874
-[1] -0.1590806
+2013-10-11   49.18   49.87  48.79    49.11  58428000       49.11 49.06147
+[1] -0.3258843
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-22   25.99   26.13  25.72    26.05  27526300       26.05 25.83092
-[1] -0.07836734
+2013-10-14   48.31   49.63  47.91    49.51  68781000       49.51 47.98412
+[1] -0.1202189
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-23    26.1    26.3  25.97    26.13  28221600       26.13 26.02163
-[1] -0.1127066
+2013-10-15   49.99      51  49.18     49.5  81167000        49.5 49.86978
+[1] 0.02753816
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-24   26.32   26.53  26.05    26.51  82635600       26.51 26.20729
-[1] -0.4388684
+2013-10-16   50.04   51.24   49.9    51.14  64678000       51.14 50.06754
+[1] -0.007991283
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-25   33.54   34.88  32.75    34.36 365457900       34.36 33.10113
-[1] -0.05320398
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-07-26   33.77   34.73  33.56    34.01 136028900       34.01 33.7168
-[1] -0.06586788
+2013-10-17   51.12   52.22  50.95    52.21  71522000       52.21 51.11201
+[1] 0.04996063
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-29   34.07   35.63  34.01    35.43 124718800       35.43 34.00413
-[1] 0.1779758
+2013-10-18   54.18   54.83   53.6    54.22  88260000       54.22 54.22996
+[1] 0.006053108
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-30   35.65   37.96  35.32    37.63 173582800       37.63 35.82798
-[1] 0.008589463
+2013-10-21   54.68   54.81  53.51    53.85  58235000       53.85 54.68605
+[1] -0.05769372
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-07-31   37.96   38.31  36.33     36.8 154828700        36.8 37.96859
-[1] -0.1452086
+2013-10-22   54.33   54.76   52.2    52.68  83204000       52.68 54.27231
+[1] 0.02282672
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-01    37.3   38.29  36.92    37.49 106066500       37.49 37.15479
-[1] -0.2136488
+2013-10-23   51.75   52.25  51.13     51.9  57207000        51.9 51.77283
+[1] -0.07598289
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-02   37.66   38.49   37.5    38.05  73058500       38.05 37.44635
-[1] 0.03678304
+2013-10-24   52.38   52.84  51.59    52.45  46775000       52.45 52.30402
+[1] 0.02806419
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-05   38.43   39.32  38.25    39.19  79994800       39.19 38.46678
-[1] -0.4470532
+2013-10-25   53.18   53.24  51.88    51.95  45085000       51.95 53.20806
+[1] -0.06595772
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-06   39.11   39.25  37.94    38.55  63950800       38.55 38.66295
-[1] 0.1137841
+2013-10-28   51.54    51.7  49.61    50.23  73472000       50.23 51.47404
+[1] 0.01631064
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-07   38.61   38.94   37.7    38.87  68854800       38.87 38.72378
-[1] -0.08178048
+2013-10-29   50.73   50.79  49.25     49.4 102143000        49.4 50.74631
+[1] -0.2017789
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-08   39.13   39.19  38.43    38.54  41301000       38.54 39.04822
-[1] -0.1327513
+2013-10-30      50   50.21  48.75    49.01 127073000       49.01 49.79822
+[1] -0.03967982
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-09   38.59   38.74  38.01     38.5  43532300        38.5 38.45725
-[1] 0.007231339
+2013-10-31   47.16      52   46.5    50.21 248809000       50.21 47.12032
+[1] 0.03813858
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-12    38.2    38.5   38.1    38.22  31161000       38.22 38.20723
-[1] -0.07381359
+2013-11-01   50.85   52.09  49.72    49.75  95033000       49.75 50.88814
+[1] -0.02896771
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-13   38.24   38.32  36.77    37.02  65379200       37.02 38.16619
-[1] -0.2534242
+2013-11-04   49.37   49.75  48.02    48.22  80371000       48.22 49.34103
+[1] -0.8944427
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-14   36.83   37.55  36.62    36.65  48423900       36.65 36.57658
-[1] 0.0703823
+2013-11-05   47.79   50.18  47.51    50.11  76835000       50.11 46.89556
+[1] -0.05979182
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-15   36.36   37.07  36.02    36.56  56521100       36.56 36.43038
-[1] -0.09181824
+2013-11-06   50.26   50.45  48.71    49.12  67889000       49.12 50.20021
+[1] 0.08799256
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-16   36.97   37.49   36.9    37.08  45840800       37.08 36.87818
-[1] -0.08763299
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-19   37.43   38.28  37.14    37.81  57609600       37.81 37.34237
-[1] -0.0003604103
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-20   38.35   38.58  37.69    38.41  57995200       38.41 38.34964
-[1] 0.0374799
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-21   38.38   38.85  38.15    38.32  46116900       38.32 38.41748
-[1] -0.06903782
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-22   38.37   38.75  38.34    38.55  21931200       38.55 38.30096
-[1] -0.09009466
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-23      39   40.63  38.93    40.55  86442300       40.55 38.90991
-[1] 0.01095524
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-26    40.9   41.94  40.62    41.34  94162400       41.34 40.91096
-[1] -0.1447082
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-27   40.68    41.2  39.42    39.64  72695100       39.64 40.53529
-[1] -0.1128506
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-28   39.96   40.85  39.88    40.55  57918200       40.55 39.84715
-[1] -0.2305115
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-29   40.89   41.78   40.8    41.28  58303400       41.28 40.65949
-[1] -0.06278665
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-08-30   42.02   42.26  41.06    41.29  67735100       41.29 41.95721
-[1] -0.09926308
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-03   41.84   42.16  41.51    41.87  48774900       41.87 41.74074
-[1] 0.05250062
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-09-04   42.01   42.17  41.44    41.78  42581900       41.78 42.0625
-[1] 0.1219564
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-05   41.79   42.77  41.77    42.66  50035400       42.66 41.91196
-[1] -0.1159432
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-06   43.09   44.61   42.4    43.95 117535700       43.95 42.97406
-[1] -0.06101973
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-09   44.36   44.79   43.7    44.04  75794700       44.04 44.29898
-[1] -0.1130549
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-10   44.24   44.26  43.23     43.6  54540300        43.6 44.12695
-[1] -0.3047617
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-11   43.39   45.09  43.11    45.04  72328300       45.04 43.08524
-[1] -0.029003
+2013-11-07   49.24   49.87   47.3    47.56  97128000       47.56 49.32799
+[1] -0.5589992
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted   Pred
-2013-09-12   45.53   45.62  44.65    44.75  68072300       44.75 45.501
-[1] -0.00454623
+2013-11-08   47.81   48.65  47.25    47.53  70731000       47.53 47.251
+[1] -0.1951106
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-13   45.04   45.08  43.93    44.31  52765300       44.31 45.03545
-[1] 0.06611346
+2013-11-11   47.04   47.53  45.73     46.2  80910000        46.2 46.84489
+[1] -0.08660783
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-16   44.85   44.94  42.43    42.51  70424200       42.51 44.91611
-[1] -0.07199727
+2013-11-12      46   47.37  45.83    46.61  68196000       46.61 45.91339
+[1] 0.04820465
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
+2013-11-13   46.23   48.74  46.06    48.71  79245000       48.71 46.2782
+[1] 0.01926658
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-11-14    48.7   49.57  48.03    48.99  75117000       48.99 48.71927
+[1] -0.331201
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
+2013-11-15   49.11   49.48  48.71    49.01  42453000       49.01 48.7788
+[1] 0.1529728
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-11-18   48.47   48.84   45.8    45.83  85910000       45.83 48.62297
+[1] 0.1244068
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-11-19   46.26      47  45.72    46.36  75602000       46.36 46.38441
+[1] -0.2903147
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-11-20   46.61   47.55  46.31    46.43  53933000       46.43 46.31969
+[1] -0.580109
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-11-21   46.99   47.46  46.69     46.7  34886000        46.7 46.40989
+[1] 0.0004869029
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2013-11-22   47.04   47.27  45.96    46.23  40545000       46.23 47.04049
+[1] 0.1310044
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted   Pred
-2013-09-17    42.5   45.44  42.43    45.07  91934600       45.07 42.428
-[1] -0.03206078
+2013-11-25   46.36   46.65  44.04    44.82  82565000       44.82 46.491
+[1] -0.007936119
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-18   44.84   45.47   44.4    45.23  79317000       45.23 44.80794
-[1] 0.1069351
+2013-11-26   44.66   46.17  43.55    45.89  82016000       45.89 44.65206
+[1] 0.07504603
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-19   45.51   46.05  45.23    45.98  63972400       45.98 45.61694
-[1] -0.1497774
+2013-11-27   45.97   46.67  45.53    46.49  44993000       46.49 46.04505
+[1] -0.09726295
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-20   46.32    47.6  45.74    47.49 115508400       47.49 46.17022
-[1] -0.2302367
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-23   47.28   47.55  46.29    47.19  75177000       47.19 47.04976
-[1] 0.03595808
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-24   48.51   49.66  48.16    48.45 136716100       48.45 48.54596
-[1] -0.05561716
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-25   49.23   49.54  48.46    49.46  87879700       49.46 49.17438
-[1] -0.07519323
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-26   50.01    50.6   49.5    50.39  98220100       50.39 49.93481
-[1] -0.03080239
+2013-11-29   46.75   47.21   46.5    47.01  22953900       47.01 46.65274
+[1] 0.07269838
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-09-27   50.29   51.28  49.86    51.24  81410500       51.24 50.2592
-[1] 0.09785575
+2013-12-02    46.9   47.54  46.26    47.06  50774000       47.06 46.9727
+[1] -0.07928415
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-09-30   50.14    51.6   49.8    50.23 100095000       50.23 50.23786
-[1] -0.1653481
+2013-12-03   46.75    47.2  46.29    46.73  32086000       46.73 46.67072
+[1] -0.2193271
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-01   49.97   51.03  49.45    50.42  98114000       50.42 49.80465
-[1] -0.02813207
+2013-12-04   46.46   48.77  46.26    48.62  60890000       48.62 46.24067
+[1] -0.1134437
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-02   50.13    51.1  49.95    50.28  62834000       50.28 50.10187
-[1] 0.03670958
+2013-12-05   48.15    48.7  47.87    48.34  43855000       48.34 48.03656
+[1] 0.01624698
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-03   50.47   50.72  49.06    49.18  82045000       49.18 50.50671
-[1] 0.1020694
+2013-12-06   48.98   49.39  47.71    47.94  42938000       47.94 48.99625
+[1] 0.1119166
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-04   49.77   51.16  49.57    51.04  74447000       51.04 49.87207
-[1] -0.15086
+2013-12-09   48.09   48.97  47.74    48.84  36056000       48.84 48.20192
+[1] -0.007126999
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-07   50.73   51.29   50.4    50.52  57204000       50.52 50.57914
-[1] -0.0672319
+2013-12-10   48.64   50.77  48.54    50.25  68479000       50.25 48.63287
+[1] 0.005307745
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-08    50.6    50.6  47.08    47.14 136081000       47.14 50.53277
-[1] -0.1049519
+2013-12-11   50.55   50.77  49.01    49.38  65776000       49.38 50.55531
+[1] 0.006732995
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-09   47.38   47.84  45.26    46.77 147297000       46.77 47.27505
-[1] -0.6536541
+2013-12-12   51.05   52.07  50.66    51.83  92723000       51.83 51.05673
+[1] 0.008689657
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-10   47.87   49.68  47.83    49.05  99774000       49.05 47.21635
-[1] -0.005228451
+2013-12-13   51.66    53.5  51.34    53.32  82641000       53.32 51.66869
+[1] -0.03061177
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-11   49.18   49.87  48.79    49.11  58428000       49.11 49.17477
-[1] 0.09813814
+2013-12-16   53.25    54.5  52.91    53.81  85119000       53.81 53.21939
+[1] 0.1159817
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-14   48.31   49.63  47.91    49.51  68781000       49.51 48.40814
-[1] -0.06431768
+2013-12-17   54.76   55.18  54.24    54.86  78751000       54.86 54.87598
+[1] -0.004292009
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-15   49.99      51  49.18     49.5  81167000        49.5 49.92568
-[1] -0.06357442
+2013-12-18   54.86   55.89  53.75    55.57  76003000       55.57 54.85571
+[1] -0.07664209
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-16   50.04   51.24   49.9    51.14  64678000       51.14 49.97643
-[1] -0.2464424
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-17   51.12   52.22  50.95    52.21  71522000       52.21 50.87356
-[1] -0.04046206
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-18   54.18   54.83   53.6    54.22  88260000       54.22 54.13954
-[1] -0.2148007
+2013-12-19   54.33   55.19  53.95    55.05  89753200       55.05 54.25336
+[1] -0.1460993
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-10-21   54.68   54.81  53.51    53.85  58235000       53.85 54.4652
-[1] 0.2320628
+2013-12-20   54.93   55.15  54.23    55.12 239824000       55.12 54.7839
+[1] 0.08412598
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-22   54.33   54.76   52.2    52.68  83204000       52.68 54.56206
-[1] -0.04165883
+2013-12-23    55.5   58.32  55.45    57.77  98297000       57.77 55.58413
+[1] -0.03530561
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-23   51.75   52.25  51.13     51.9  57207000        51.9 51.70834
-[1] -0.03606183
+2013-12-24   58.27   58.58  56.91    57.96  46617800       57.96 58.23469
+[1] 0.06695132
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-24   52.38   52.84  51.59    52.45  46775000       52.45 52.34394
-[1] -0.3292269
+2013-12-26   58.32   58.38  57.37    57.73  55101000       57.73 58.38695
+[1] -0.02027735
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-25   53.18   53.24  51.88    51.95  45085000       51.95 52.85077
-[1] -0.02667935
+2013-12-27   57.48   57.68  55.25    55.44  60466000       55.44 57.45972
+[1] -0.265464
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-28   51.54    51.7  49.61    50.23  73472000       50.23 51.51332
-[1] 0.009639325
+2013-12-30   54.93   55.18  53.43    53.71  68307000       53.71 54.66454
+[1] 0.02193644
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-29   50.73   50.79  49.25     49.4 102143000        49.4 50.73964
-[1] -0.03586542
+2013-12-31   54.12   54.86  53.91    54.65  43076200       54.65 54.14194
+[1] 0.1140516
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-30      50   50.21  48.75    49.01 127073000       49.01 49.96413
-[1] -0.08041135
+2014-01-02   54.83   55.22  54.19    54.71  43195500       54.71 54.94405
+[1] 0.1033688
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-10-31   47.16      52   46.5    50.21 248809000       50.21 47.07959
-[1] -0.1873493
+2014-01-03   55.02   55.65  54.53    54.56  38246200       54.56 55.12337
+[1] -0.05788078
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-01   50.85   52.09  49.72    49.75  95033000       49.75 50.66265
-[1] -0.04538058
+2014-01-06   54.42   57.26  54.05     57.2  68852600        57.2 54.36212
+[1] 0.06687818
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-04   49.37   49.75  48.02    48.22  80371000       48.22 49.32462
-[1] -0.07044634
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-05   47.79   50.18  47.51    50.11  76835000       50.11 47.71955
-[1] -0.2376313
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-06   50.26   50.45  48.71    49.12  67889000       49.12 50.02237
-[1] -0.06430653
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-07   49.24   49.87   47.3    47.56  97128000       47.56 49.17569
-[1] -0.8205592
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-08   47.81   48.65  47.25    47.53  70731000       47.53 46.98944
-[1] -0.03690885
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-11   47.04   47.53  45.73     46.2  80910000        46.2 47.00309
-[1] -0.2383523
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-12      46   47.37  45.83    46.61  68196000       46.61 45.76165
-[1] -0.1192753
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-13   46.23   48.74  46.06    48.71  79245000       48.71 46.11072
-[1] -0.4034145
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-14    48.7   49.57  48.03    48.99  75117000       48.99 48.29659
-[1] -0.006229308
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-15   49.11   49.48  48.71    49.01  42453000       49.01 49.10377
-[1] 0.1009774
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-18   48.47   48.84   45.8    45.83  85910000       45.83 48.57098
-[1] -0.2536951
+2014-01-07    57.7   58.55  57.22    57.92  77207400       57.92 57.76688
+[1] 0.08879721
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-11-19   46.26      47  45.72    46.36  75602000       46.36 46.0063
-[1] -0.5543069
+2014-01-08    57.6   58.41  57.23    58.23  56682400       58.23 57.6888
+[1] -0.02784663
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-20   46.61   47.55  46.31    46.43  53933000       46.43 46.05569
-[1] 0.05646267
+2014-01-09   58.65   58.96  56.65    57.22  92253300       57.22 58.62215
+[1] -0.2156837
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-21   46.99   47.46  46.69     46.7  34886000        46.7 47.04646
-[1] 0.1037023
+2014-01-10   57.13    58.3  57.06    57.94  42449500       57.94 56.91432
+[1] 0.01966698
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-01-13   57.91   58.25  55.38    55.91  63010900       55.91 57.92967
+[1] -0.08471231
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-01-14   56.46   57.78   56.1    57.74  37503600       57.74 56.37529
+[1] -0.1657475
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-01-15   57.98   58.57  57.27     57.6  33663400        57.6 57.81425
+[1] -0.07678642
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-01-16   57.26   58.02  56.83    57.19  34541800       57.19 57.18321
+[1] -0.4223001
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-11-22   47.04   47.27  45.96    46.23  40545000       46.23 47.1437
-[1] 0.2360202
+2014-01-17    57.3   57.82  56.07     56.3  40849200        56.3 56.8777
+[1] -0.02362038
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-25   46.36   46.65  44.04    44.82  82565000       44.82 46.59602
-[1] -0.0681856
+2014-01-21    56.6   58.58   56.5    58.51  48669200       58.51 56.57638
+[1] 0.0193936
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-26   44.66   46.17  43.55    45.89  82016000       45.89 44.59181
-[1] -0.06280201
+2014-01-22   58.85   59.31   57.1    57.51  61352900       57.51 58.86939
+[1] -0.1871705
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-01-23   56.37   56.68  55.69    56.63  47951800       56.63 56.18283
+[1] -0.05744882
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-01-24   56.15   56.42   54.4    54.45  55200700       54.45 56.09255
+[1] -0.08974291
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-01-27   54.73   54.94  51.85    53.55  73924100       53.55 54.64026
+[1] -0.09390802
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-01-28   54.02   55.28     54    55.14  48191200       55.14 53.92609
+[1] -0.06681215
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-01-29   54.61   54.95  53.19    53.53  92995600       53.53 54.54319
+[1] -0.1071652
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-01-30   62.12    62.5  60.46    61.08 150178900       61.08 62.01283
+[1] -0.1168039
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-11-27   45.97   46.67  45.53    46.49  44993000       46.49 45.9072
-[1] 0.06683835
+2014-01-31   60.47   63.37  60.17    62.57  87794600       62.57 60.3532
+[1] -0.1596811
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-11-29   46.75   47.21   46.5    47.01  22953900       47.01 46.81684
-[1] 0.05067902
+2014-02-03   63.03   63.77   60.7    61.48  74866600       61.48 62.87032
+[1] -0.2162578
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-02    46.9   47.54  46.26    47.06  50774000       47.06 46.95068
-[1] -0.1368212
+2014-02-04   62.05   63.14  61.82    62.75  45985500       62.75 61.83374
+[1] -0.2714842
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-03   46.75    47.2  46.29    46.73  32086000       46.73 46.61318
-[1] -0.0193829
+2014-02-05   62.74   63.16  61.27    62.19  51685100       62.19 62.46852
+[1] -0.03257158
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-04   46.46   48.77  46.26    48.62  60890000       48.62 46.44062
-[1] 0.004703604
+2014-02-06   61.46   62.78  61.46    62.16  42086500       62.16 61.42743
+[1] -0.1329052
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-07   62.27   64.57  62.22    64.32  60704300       64.32 62.13709
+[1] -0.1056803
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-10    64.3   64.49  63.47    63.55  43666100       63.55 64.19432
+[1] -0.1598404
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-11   63.75      65  63.35    64.85  45675600       64.85 63.59016
+[1] -0.4317498
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-12   64.92   65.06  64.05    64.45  47282100       64.45 64.48825
+[1] -0.07705017
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-13   64.18   67.33  64.05    67.33  61911700       67.33 64.10295
+[1] -0.003015866
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-14    67.5   67.58  66.72    67.09  36694900       67.09 67.49698
+[1] 0.297861
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-18   66.94   67.54  66.07     67.3  43809900        67.3 67.23786
+[1] -0.1411287
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-19   67.05   69.08     67    68.06  62087100       68.06 66.90887
+[1] -0.288583
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-20   67.73   70.11  65.73    69.63 130928900       69.63 67.44142
+[1] 0.2620378
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-21   69.69   69.96  68.45    68.59  70932400       68.59 69.95204
+[1] 0.1933224
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-24   68.74   71.44  68.54    70.78  76620300       70.78 68.93332
+[1] -0.4202707
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-25   70.95      71  69.45    69.85  52077000       69.85 70.52973
+[1] -0.08417942
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-26   70.19   71.22  68.85    69.26  55322700       69.26 70.10582
+[1] 0.1158305
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-27   69.34   70.01  68.87    68.94  41653700       68.94 69.45583
+[1] 0.1122934
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-02-28   69.47   69.88  67.38    68.46  66783700       68.46 69.58229
+[1] 0.1794766
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-03-03   66.96   68.05  66.51    67.41  56824100       67.41 67.13948
+[1] 0.02969425
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-03-04   68.66    68.9  67.62     68.8  42013500        68.8 68.68969
+[1] -0.5071297
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-03-05   69.69   71.97  69.62    71.57  74567700       71.57 69.18287
+[1] 0.0490659
+           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
+2014-03-06   71.88   71.89  70.25    70.84  46026500       70.84 71.92907
+[1] 0.04029626
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-12-05   48.15    48.7  47.87    48.34  43855000       48.34 48.1547
-[1] -0.02957998
+2014-03-07   71.08   71.18  69.47     69.8  38927000        69.8 71.1203
+[1] -0.6062585
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-06   48.98   49.39  47.71    47.94  42938000       47.94 48.95042
-[1] -0.006931592
+2014-03-10   70.77   72.15  70.51    72.03  59871600       72.03 70.16374
+[1] -0.0637205
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-09   48.09   48.97  47.74    48.84  36056000       48.84 48.08307
-[1] -0.2939106
+2014-03-11    72.5   72.59  69.96     70.1  59408300        70.1 72.43628
+[1] 0.1182563
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-10   48.64   50.77  48.54    50.25  68479000       50.25 48.34609
-[1] -0.08906966
+2014-03-12   69.86   71.35     69    70.88  46340500       70.88 69.97826
+[1] -0.7255734
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-11   50.55   50.77  49.01    49.38  65776000       49.38 50.46093
-[1] 0.2335048
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-12-12   51.05   52.07  50.66    51.83  92723000       51.83 51.2835
-[1] 0.07448492
+2014-03-13   71.29   71.35  68.15    68.83  57091000       68.83 70.56443
+[1] -0.1606887
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-13   51.66    53.5  51.34    53.32  82641000       53.32 51.73448
-[1] -0.008282535
+2014-03-14   68.49   69.43  67.46    67.72  48227000       67.72 68.32931
+[1] -0.0432182
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-16   53.25    54.5  52.91    53.81  85119000       53.81 53.24172
-[1] -0.083896
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-12-17   54.76   55.18  54.24    54.86  78751000       54.86 54.6761
-[1] 0.08444004
+2014-03-17   68.18   68.95  66.62    68.74  52197000       68.74 68.13678
+[1] 0.01803045
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-18   54.86   55.89  53.75    55.57  76003000       55.57 54.94444
-[1] -0.03669784
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-12-19   54.33   55.19  53.95    55.05  89753200       55.05 54.2933
-[1] 0.0460581
+2014-03-18   68.76    69.6   68.3    69.19  40827000       69.19 68.77803
+[1] -0.05832763
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-20   54.93   55.15  54.23    55.12 239824000       55.12 54.97606
-[1] -0.3133798
+2014-03-19   69.17   69.29  67.47    68.24  43981000       68.24 69.11167
+[1] -0.04235514
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-23    55.5   58.32  55.45    57.77  98297000       57.77 55.18662
-[1] 0.07590416
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2013-12-24   58.27   58.58  56.91    57.96  46617800       57.96 58.3459
-[1] -0.1909915
+2014-03-20   68.01   68.23  66.82    66.97  44439000       66.97 67.96764
+[1] -0.02416663
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-26   58.32   58.38  57.37    57.73  55101000       57.73 58.12901
-[1] -0.1220425
+2014-03-21   67.53   67.92  66.18    67.24  59999900       67.24 67.50583
+[1] -0.1337239
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-27   57.48   57.68  55.25    55.44  60466000       55.44 57.35796
-[1] -0.1109866
+2014-03-24   67.19   67.36  63.36     64.1  85696000        64.1 67.05628
+[1] 0.09753614
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-30   54.93   55.18  53.43    53.71  68307000       53.71 54.81901
-[1] -0.01089448
+2014-03-25   64.89   66.19  63.78    64.89  68786000       64.89 64.98754
+[1] 0.1216737
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2013-12-31   54.12   54.86  53.91    54.65  43076200       54.65 54.10911
-[1] -0.1059215
+2014-03-26   64.74   64.95  60.37    60.39  97503900       60.39 64.86167
+[1] -0.002721817
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-02   54.83   55.22  54.19    54.71  43195500       54.71 54.72408
-[1] 0.1539902
+2014-03-27   60.51    61.9  57.98    60.97 112650000       60.97 60.50728
+[1] -0.08988896
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-03   55.02   55.65  54.53    54.56  38246200       54.56 55.17399
-[1] -0.1115854
+2014-03-28   61.34   61.95  59.34    60.01  67052000       60.01 61.25011
+[1] -0.05476202
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-06   54.42   57.26  54.05     57.2  68852600        57.2 54.30841
-[1] -0.5312219
+2014-03-31   60.78   61.52  59.87    60.24  53011000       60.24 60.72524
+[1] -0.01576193
            FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-07    57.7   58.55  57.22    57.92  77207400       57.92 57.16878
-[1] 0.2531922
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-08    57.6   58.41  57.23    58.23  56682400       58.23 57.85319
-[1] -0.1219595
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-09   58.65   58.96  56.65    57.22  92253300       57.22 58.52804
-[1] 0.1327436
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-10   57.13    58.3  57.06    57.94  42449500       57.94 57.26274
-[1] 0.14819
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-13   57.91   58.25  55.38    55.91  63010900       55.91 58.05819
-[1] -0.3039906
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-14   56.46   57.78   56.1    57.74  37503600       57.74 56.15601
-[1] -0.3284711
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-15   57.98   58.57  57.27     57.6  33663400        57.6 57.65153
-[1] 0.02839685
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2014-01-16   57.26   58.02  56.83    57.19  34541800       57.19 57.2884
-[1] -0.09523441
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-17    57.3   57.82  56.07     56.3  40849200        56.3 57.20477
-[1] 0.145531
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-21    56.6   58.58   56.5    58.51  48669200       58.51 56.74553
-[1] 0.07591952
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-22   58.85   59.31   57.1    57.51  61352900       57.51 58.92592
-[1] -0.1383948
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-23   56.37   56.68  55.69    56.63  47951800       56.63 56.23161
-[1] -0.09384194
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-24   56.15   56.42   54.4    54.45  55200700       54.45 56.05616
-[1] -0.05323592
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-27   54.73   54.94  51.85    53.55  73924100       53.55 54.67676
-[1] -0.1372888
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-28   54.02   55.28     54    55.14  48191200       55.14 53.88271
-[1] -0.02105603
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-29   54.61   54.95  53.19    53.53  92995600       53.53 54.58894
-[1] 0.1315704
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-30   62.12    62.5  60.46    61.08 150178900       61.08 62.25157
-[1] -0.1372579
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-01-31   60.47   63.37  60.17    62.57  87794600       62.57 60.33274
-[1] -0.2980481
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-03   63.03   63.77   60.7    61.48  74866600       61.48 62.73195
-[1] -0.5564942
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-04   62.05   63.14  61.82    62.75  45985500       62.75 61.49351
-[1] 0.2031329
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-05   62.74   63.16  61.27    62.19  51685100       62.19 62.94313
-[1] 0.01845314
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-06   61.46   62.78  61.46    62.16  42086500       62.16 61.47845
-[1] 0.06098873
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-07   62.27   64.57  62.22    64.32  60704300       64.32 62.33099
-[1] 0.1894055
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-10    64.3   64.49  63.47    63.55  43666100       63.55 64.48941
-[1] -0.4244753
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-11   63.75      65  63.35    64.85  45675600       64.85 63.32552
-[1] -0.2767788
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-12   64.92   65.06  64.05    64.45  47282100       64.45 64.64322
-[1] -0.09222889
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-13   64.18   67.33  64.05    67.33  61911700       67.33 64.08777
-[1] -0.387366
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-14    67.5   67.58  66.72    67.09  36694900       67.09 67.11263
-[1] -0.02126861
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-18   66.94   67.54  66.07     67.3  43809900        67.3 66.91873
-[1] -0.233847
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-19   67.05   69.08     67    68.06  62087100       68.06 66.81615
-[1] -0.256017
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-20   67.73   70.11  65.73    69.63 130928900       69.63 67.47398
-[1] -0.02740425
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2014-02-21   69.69   69.96  68.45    68.59  70932400       68.59 69.6626
-[1] -0.03550044
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2014-02-24   68.74   71.44  68.54    70.78  76620300       70.78 68.7045
-[1] -0.5606333
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-25   70.95      71  69.45    69.85  52077000       69.85 70.38937
-[1] 0.3290306
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-26   70.19   71.22  68.85    69.26  55322700       69.26 70.51903
-[1] 0.2061298
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-27   69.34   70.01  68.87    68.94  41653700       68.94 69.54613
-[1] -0.0768196
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-02-28   69.47   69.88  67.38    68.46  66783700       68.46 69.39318
-[1] 0.1122997
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2014-03-03   66.96   68.05  66.51    67.41  56824100       67.41 67.0723
-[1] 0.05863203
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-04   68.66    68.9  67.62     68.8  42013500        68.8 68.71863
-[1] -0.3493253
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-05   69.69   71.97  69.62    71.57  74567700       71.57 69.34067
-[1] -0.2876288
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-06   71.88   71.89  70.25    70.84  46026500       70.84 71.59237
-[1] -0.1976969
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted    Pred
-2014-03-07   71.08   71.18  69.47     69.8  38927000        69.8 70.8823
-[1] 0.02264642
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-10   70.77   72.15  70.51    72.03  59871600       72.03 70.79265
-[1] -0.04352851
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-11    72.5   72.59  69.96     70.1  59408300        70.1 72.45647
-[1] -0.4186656
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-12   69.86   71.35     69    70.88  46340500       70.88 69.44133
-[1] 0.060433
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-13   71.29   71.35  68.15    68.83  57091000       68.83 71.35043
-[1] -0.05661571
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-14   68.49   69.43  67.46    67.72  48227000       67.72 68.43338
-[1] -0.2580567
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-17   68.18   68.95  66.62    68.74  52197000       68.74 67.92194
-[1] 0.1200609
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-18   68.76    69.6   68.3    69.19  40827000       69.19 68.88006
-[1] -0.1415875
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-19   69.17   69.29  67.47    68.24  43981000       68.24 69.02841
-[1] -0.07514032
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-20   68.01   68.23  66.82    66.97  44439000       66.97 67.93486
-[1] 0.1198738
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-21   67.53   67.92  66.18    67.24  59999900       67.24 67.64987
-[1] 0.1434513
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-24   67.19   67.36  63.36     64.1  85696000        64.1 67.33345
-[1] 0.158086
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-25   64.89   66.19  63.78    64.89  68786000       64.89 65.04809
-[1] -0.08963353
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-26   64.74   64.95  60.37    60.39  97503900       60.39 64.65037
-[1] -5.07464e-05
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-27   60.51    61.9  57.98    60.97 112650000       60.97 60.50995
-[1] -0.07451156
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-28   61.34   61.95  59.34    60.01  67052000       60.01 61.26549
-[1] -0.08901698
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-03-31   60.78   61.52  59.87    60.24  53011000       60.24 60.69098
-[1] 0.6751897
-           FB.Open FB.High FB.Low FB.Close FB.Volume FB.Adjusted     Pred
-2014-04-01   60.46   62.66  60.24    62.62  59291000       62.62 61.13519
+2014-04-01   60.46   62.66  60.24    62.62  59291000       62.62 60.44424
 > 
 > print(paste0("[Stat] Rows = ", rows))
 [1] "[Stat] Rows = 253"
 > 
 > print(MAPEsum)
-[1] 4.247423
+[1] 4.126964
 > MAPE <- MAPEsum*100/rows
 > sprintf("[Stat] MAPE = %.7f", MAPE)
-[1] "[Stat] MAPE = 1.6788234"
+[1] "[Stat] MAPE = 1.6312111"
 > 
 > actuals <- testset$FB.Close
 > ymax = max (actuals)
 > ymin = min (actuals)
 > NRMSE <- sqrt(NRMSEsum)/(rows * (ymax - ymin))
 > sprintf("[Stat] NRMSE = %.7f", NRMSE)
-[1] "[Stat] NRMSE = 0.0013685"
+[1] "[Stat] NRMSE = 0.0013662"
 > 
 > # plot actual with predicted values added
 > # compare actual closing value and predicted closing value
-> #chartSeries(testset[2:rows, 4], theme='white', col = 'green', name = "FB", legend = "Actual",
 > chartSeries(testset[1:rows, 1], theme= chartTheme('white', up.col = 'blue'), name = "FB", legend = "Actual",
 + 	TA = "addTA(testset[1:rows, ncol(testset)], on = 1, col='red')") # 
-> #chartSeries(testset[2:rows, 1], theme='white.mono', name = 'Actual', TA = "addTA(testset[2:rows, 7], on = 1, col='yellow', legend = \"Predicted\")") # 
-> #chartSeries(testset[, 1], name = 'Actual', TA = "addTA(testset[, 7], on = 1, col='blue', legend = \"Predicted\")") # 
-> #chartSeries(testset)
 > 
 > # plot eps
 > postscript('FB.eps')
@@ -1754,4 +1761,4 @@ attr(,"class")
 > 
 > proc.time()
    user  system elapsed 
-103.754   0.088 104.046 
+105.171   0.112 105.521 
